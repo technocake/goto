@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "Usage: addproject <projectkey> <path to project dir>"
+echo project: $1
+echo path: $2
+echo "$2" > "/usr/local/opt/goto/.state/projects/$1"

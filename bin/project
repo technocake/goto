@@ -1,0 +1,21 @@
+#!/bin/bash
+
+STATEDIR=/usr/local/opt/goto/.state
+
+if [ $# -eq 0 ]
+	then cat "$STATEDIR/active-project" 
+	exit
+fi
+
+if  [ "$1" = "list" ] 
+	then ls "$STATEDIR/projects" | grep -v .json
+	exit
+fi
+
+if [ "$1" = "add" ]
+	then addproject "$2"
+	exit
+fi
+
+# otherwise, activate project given
+echo "$1" > "$STATEDIR/active-project"

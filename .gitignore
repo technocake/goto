@@ -1,0 +1,4 @@
+# magic words and projects are stored in this folder
+.state
+# active project is stored in this file
+active-project
