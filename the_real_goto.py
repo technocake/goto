@@ -69,6 +69,10 @@ if __name__ == "__main__":
             print('Removed magic word %s' % sys.argv[3])
             exit()
 
+        if sys.argv[2] == 'show':
+            print(magic[sys.argv[3]])
+            exit()
+
         if sys.argv[2] == 'list':
             list_words(magic)
             exit()
