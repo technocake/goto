@@ -47,6 +47,7 @@ def load_magic(jfile):
         magic = {}
     return magic
 
+
 def save_magic(jfile, magic):
     with open(jfile, 'w+') as f:
         json.dump(magic, f, sort_keys=True, indent=4)
@@ -61,31 +62,31 @@ if __name__ == "__main__":
             magic[sys.argv[3]] = sys.argv[4]
             save_magic(jfile, magic)
             print('Added magic word %s' % sys.argv[3])
-            exit()
+            exit(0)
 
         if sys.argv[2] == 'rm':
             magic.pop(sys.argv[3])
             save_magic(jfile, magic)
             print('Removed magic word %s' % sys.argv[3])
-            exit()
+            exit(0)
 
         if sys.argv[2] == 'show':
             print(magic[sys.argv[3]])
-            exit()
+            exit(0)
 
         if sys.argv[2] == 'list':
             list_words(magic)
-            exit()
+            exit(0)
 
         if sys.argv[2] == 'subl':
             open_sublime(magic['code'])
-            exit()
+            exit(0)
 
         if '-f' in sys.argv:
             open_folder(magic[sys.argv[3]])
-            exit()
+            exit(0)
 
         if sys.argv[2] == 'cd':
             open_terminal(magic[sys.argv[3]])
-            exit()
+            exit(0)
         open_link(magic[sys.argv[2]])
