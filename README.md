@@ -41,3 +41,11 @@ Eksempler:
 Full kommando dersom man vil være spesifikk:
 
      goto add [-p <project-name>] <magic-word> <URI>
+
+
+## Setup (OS-X)
+
+cd /usr/local/opt
+git clone https://github.com/technocake/goto
+# add goto | project commands to the terminal
+ln -s /usr/local/opt/goto/bin/* /usr/local/bin/
