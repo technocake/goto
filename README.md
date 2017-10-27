@@ -65,7 +65,7 @@ project add goto
 project goto
 
 # add your first shortcuts
-goto add code /usr/local
+goto add code /usr/local/opt/goto
 goto add github https://github.com/technocake/goto
 
 #use them
