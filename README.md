@@ -48,6 +48,23 @@ Full kommando dersom man vil være spesifikk:
 ```
 cd /usr/local/opt
 git clone https://github.com/technocake/goto
-# add goto | project commands to the terminal
+
+mkdir /usr/local/opt/goto/.state
+
+# add commands
 ln -s /usr/local/opt/goto/bin/* /usr/local/bin/
+
+# add your first project
+project add goto
+
+# set the context to this project
+project goto
+
+# add your first shortcuts
+goto add code /usr/local
+goto add github https://github.com/technocake/goto
+
+#use them
+goto -f code
+goto github
 ```
