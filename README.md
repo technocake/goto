@@ -8,7 +8,7 @@ For eksempel:
     goto visualstudio  -->  åpner solution for det aktive prosjektet i visual studio
     goto jira          -->  åpner jira boardet for det aktive prosjektet
     goto bitbucket     -->  bitbucket for prosjektet.
-
+```
  
 
 #### Hvordan vet Goto hvilket prosjekt som er aktivt?
