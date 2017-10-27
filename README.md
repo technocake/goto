@@ -4,35 +4,34 @@ Project Goto er en "sublime project manager" som gir utviklere kjappe snarveger 
 
 For eksempel:
 
-    goto visualstudio --> åpner solution for det aktive prosjektet i visual studio
-    goto jira --> åpner jira boardet for det aktive prosjektet
-    goto bitbucket --> bitbucket for prosjektet.
+```
+    goto visualstudio  -->  åpner solution for det aktive prosjektet i visual studio
+    goto jira          -->  åpner jira boardet for det aktive prosjektet
+    goto bitbucket     -->  bitbucket for prosjektet.
 
  
 
-Hvordan vet Goto hvilket prosjekt som er aktivt?
+#### Hvordan vet Goto hvilket prosjekt som er aktivt?
 
 Du forteller det med kommandoen:  project <project-name>
 
 Eksempler: project sylvsmidja  | project bankid  |  project fjordtours
 
- 
 
-Hvordan vet Goto om hvilke prosjekter som finnes?
+#### Hvordan vet Goto om hvilke prosjekter som finnes?
 
 Du forteller det med kommandoen:
 
-     project add <project-name> <path-to-project-dir>
+     project add <project-name>
 
  
-
-Hvordan vet Goto om hvilke snarveger som finnes i  prosjektet?
+#### Hvordan vet Goto om hvilke snarveger som finnes i  prosjektet?
 
 Du definerer dem en gang, og bruker dem 1000 ganger deretter.  Dette med kommandoen:
 
      goto add <magic-word> <URI>
 
-Når et prosjekt er aktivt, husker goto hvilket prosjekt du tenker på akkurat nå. Dermed gir det mening å kalle snarvegen for jira, for det da implsitt betyr at det er snakk om jira for dette prosjektet. F.eks sylvsmidja.
+Når et prosjekt er aktivt, husker goto hvilket prosjekt du tenker på akkurat nå. Dermed gir det mening å kalle snarvegen for visualstudio, for det da implsitt betyr at det er snakk om solutionen for dette prosjektet. F.eks sylvsmidja.
 
 Eksempler:
 
