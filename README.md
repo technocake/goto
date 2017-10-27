@@ -53,7 +53,11 @@ mkdir /usr/local/opt/goto/.state
 
 # add commands
 ln -s /usr/local/opt/goto/bin/* /usr/local/bin/
+```
 
+Now you can test it. No need to close the terminal.
+
+```
 # add your first project
 project add goto
 
