@@ -53,6 +53,12 @@ mkdir /usr/local/opt/goto/.state
 # add commands
 ln -s /usr/local/opt/goto/bin/* /usr/local/bin/
 ```
+# in .bash_profile add this:
+
+function goto {
+	source goto $@
+}
+
 
 Now you can test it. No need to close the terminal.
 

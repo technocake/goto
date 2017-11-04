@@ -1,3 +1,14 @@
+#!/bin/bash
+
 PROJECT=`cat /usr/local/opt/goto/.state/active-project`
 GOTOPATH="/usr/local/opt/goto/.state/projects/${PROJECT}.json"
-python /usr/local/opt/goto/the_real_goto.py "$GOTOPATH" "$@"
+GOTO="/usr/local/opt/goto/the_real_goto.py"
+
+if [ "$1" = "cd" ]
+	then
+	# hack to cd in this shell to the ouput of goto show <magicword>
+	path=`goto show "$2"`
+	cd "$path"
+else
+	python /usr/local/opt/goto/the_real_goto.py "$GOTOPATH" "$@"
+fi
