@@ -36,7 +36,7 @@ def open_terminal(path):
 
 def list_words(magic):
     for k, v in magic.items():
-        print("%s --> %s" % (k, v))
+        print("%16s \t --> \t %s" % (k, v))
 
 
 def load_magic(jfile):
