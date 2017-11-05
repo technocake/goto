@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PROJECT=`cat /usr/local/opt/goto/.state/active-project`
-GOTOPATH="/usr/local/opt/goto/.state/projects/${PROJECT}.json"
+PROJECT=`cat ${HOME}/.goto/active-project`
+GOTOPATH="${HOME}/.goto/projects/${PROJECT}.json"
 GOTO="/usr/local/opt/goto/the_real_goto.py"
 
 if [ "$1" = "cd" ]

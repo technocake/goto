@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mkdir /usr/local/opt/goto/.state
-mkdir /usr/local/opt/goto/.state/projects
-touch /usr/local/opt/goto/.state/active-project
+mkdir ${HOME}/.goto
+mkdir ${HOME}/.goto/projects
+touch ${HOME}/.goto/active-project
 
 # add commands
 ln -s /usr/local/opt/goto/bin/* /usr/local/bin/

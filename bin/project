@@ -1,9 +1,9 @@
 #!/bin/bash
 
-STATEDIR=/usr/local/opt/goto/.state
+STATEDIR=${HOME}/.goto
 
 _addproject() {
-    touch "/usr/local/opt/goto/.state/projects/$1"
+    touch "$STATEDIR/projects/$1"
 }
 
 _usage() {

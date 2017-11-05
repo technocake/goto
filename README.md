@@ -65,7 +65,6 @@ rm -rf /usr/local/opt/goto
 # remove symbolic links
 rm /usr/local/bin/goto
 rm /usr/local/bin/project
-rm /usr/local/bin/addproject
 rm /usr/local/bin/start_goto
 
 #lastly, remove the line `source start_goto` from .bash_profile
