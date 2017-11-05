@@ -34,9 +34,13 @@ def open_terminal(path):
                     """ % path, shell=True)
 
 
-def list_words(magic):
-    for k, v in magic.items():
-        print("%16s --> %s" % (k, v))
+def list_words(magic, args):
+    if "-v" in args:
+        for k, v in magic.items():
+            print("%16s --> %s" % (k, v))
+    else:
+        for k in magic.keys():
+            print(k)
 
 
 def load_magic(jfile):
@@ -75,7 +79,7 @@ if __name__ == "__main__":
             exit(0)
 
         if sys.argv[2] == 'list':
-            list_words(magic)
+            list_words(magic, sys.argv)
             exit(0)
 
         if sys.argv[2] == 'subl':

@@ -1,8 +1,40 @@
 #!/bin/bash
 
 # autocompletion
-export IFS=" "
-complete -W "list add rm cd show" "goto"
+_goto_completions() 
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="--for --future --implementation"
+
+    if [[ ${prev} == "goto" ]] || [[ ${prev} == "show" ]] || [[ ${prev} == "rm" ]]; then 
+        COMPREPLY=( $(compgen -W "$(goto list)" ${cur}) )
+        return 0
+    fi
+
+    if [[ ${cur} == --* ]] ; then
+            COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        return 0
+    fi
+}
+complete -F _goto_completions goto
+
+
+_project_completions() 
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    if [[ ${prev} == "project" ]] ; then 
+        COMPREPLY=( $(compgen -W "$(project list)" ${cur}) )
+        return 0
+    fi
+}
+complete -F _project_completions project
 
 
 #make it possible to cd

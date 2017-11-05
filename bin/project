@@ -19,3 +19,4 @@ fi
 
 # otherwise, activate project given
 echo "$1" > "$STATEDIR/active-project"
+#echo "set active project to: $1"
