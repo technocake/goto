@@ -47,8 +47,8 @@ Full kommando dersom man vil være spesifikk:
 ```
 git clone https://github.com/technocake/goto /usr/local/opt/goto
 bash /usr/local/opt/goto/install_goto.sh
-```
 
+```
 
 
 Now you can test it. No need to close the terminal.
@@ -56,3 +56,19 @@ Now you can test it. No need to close the terminal.
 ```
 goto goto
 ```
+
+
+## Unsetup (OS-X)
+
+```
+rm -rf /usr/local/opt/goto
+# remove symbolic links
+rm /usr/local/bin/goto
+rm /usr/local/bin/project
+rm /usr/local/bin/addproject
+rm /usr/local/bin/start_goto
+
+#lastly, remove the line `source start_goto` from .bash_profile
+
+```
+
