@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# autocompletion
+export IFS=" "
+complete -W "list add rm cd show" "goto"
+
+
+#make it possible to cd
+function goto {
+	# jump around in browser or in terminal
+	source goto $@
+}
