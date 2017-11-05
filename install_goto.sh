@@ -21,5 +21,5 @@ project goto
 
 # add your first shortcuts
 goto add code /usr/local/opt/goto
-goto add goto /usr/local/opt/goto
+goto add goto https://github.com/technocake/goto
 goto add github https://github.com/technocake/goto
