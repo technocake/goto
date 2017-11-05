@@ -1,6 +1,7 @@
 #!/bin/bash
 
 mkdir /usr/local/opt/goto/.state
+mkdir /usr/local/opt/goto/.state/projects
 touch /usr/local/opt/goto/.state/active-project
 
 # add commands
