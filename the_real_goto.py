@@ -1,60 +1,18 @@
 #!/usr/bin/env python
 # code: utf-8
 'Goto - the magic project that takes you where you need to be, now.'
-
-import subprocess
-import webbrowser
-import json
 import sys
-import os
+from gotomagic.handlers import *
+from gotomagic.magic import load_magic, save_magic
 
 
-def open_sublime(code):
-    "hack"
-    subprocess.call('subl "%s"' % code, shell=True)
-
-
-def open_folder(folder):
-    "opens folders"
-    folder = os.path.expanduser(folder)
-    subprocess.call('open "%s"' % folder, shell=True)
-
-
-def open_link(url):
-    "Opens a link. Might do more stuff later."
-    webbrowser.open(url)
-
-
-def open_terminal(path):
-    " Opens a new terminal window and cd-s to the given path "
-    path = os.path.expanduser(path)
-    subprocess.call(""" osascript <<END
-                        tell app "Terminal" to do script "cd %s"
-                        END
-                    """ % path, shell=True)
-
-
-def list_words(magic, args):
+def list_shortcuts(magic, args):
     if "-v" in args:
         for k, v in magic.items():
             print("%16s --> %s" % (k, v))
     else:
         for k in magic.keys():
             print(k)
-
-
-def load_magic(jfile):
-    if os.path.isfile(jfile) and os.path.getsize(jfile) > 0:
-        with open(jfile, 'r') as f:
-            magic = json.load(f)
-    else:
-        magic = {}
-    return magic
-
-
-def save_magic(jfile, magic):
-    with open(jfile, 'w+') as f:
-        json.dump(magic, f, sort_keys=True, indent=4)
 
 
 if __name__ == "__main__":
@@ -79,7 +37,7 @@ if __name__ == "__main__":
             exit(0)
 
         if sys.argv[2] == 'list':
-            list_words(magic, sys.argv)
+            list_shortcuts(magic, sys.argv)
             exit(0)
 
         if sys.argv[2] == 'subl':
@@ -93,4 +51,5 @@ if __name__ == "__main__":
         if sys.argv[2] == 'cd':
             open_terminal(magic[sys.argv[3]])
             exit(0)
+        # default
         open_link(magic[sys.argv[2]])

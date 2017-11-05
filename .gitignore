@@ -2,3 +2,7 @@
 .state
 # active project is stored in this file
 active-project
+
+*.pyc
+
+.DS_Store
