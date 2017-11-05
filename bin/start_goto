@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# make zsh emulate bash if necessary
+if [[ -n "$ZSH_VERSION" ]]; then
+    autoload bashcompinit
+    bashcompinit
+fi
+
+
 # autocompletion
 _goto_completions() 
 {
@@ -19,7 +26,7 @@ _goto_completions()
         return 0
     fi
 }
-complete -F _goto_completions goto
+complete -o default -F _goto_completions goto
 
 
 _project_completions() 
