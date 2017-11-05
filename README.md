@@ -45,16 +45,10 @@ Full kommando dersom man vil være spesifikk:
 ## Setup (OS-X)
 
 ```
-cd /usr/local/opt
-git clone https://github.com/technocake/goto
-
-mkdir /usr/local/opt/goto/.state
-
-# add commands
-ln -s /usr/local/opt/goto/bin/* /usr/local/bin/
+git clone https://github.com/technocake/goto /usr/local/opt/goto
+bash /usr/local/opt/goto/install_goto.sh
 ```
-# add init_script to.bash_profile:
-echo "source start_goto" >> ~/.bash_profile
+
 
 
 Now you can test it. No need to close the terminal.
