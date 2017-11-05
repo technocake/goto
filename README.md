@@ -54,17 +54,5 @@ bash /usr/local/opt/goto/install_goto.sh
 Now you can test it. No need to close the terminal.
 
 ```
-# add your first project
-project add goto
-
-# set the context to this project
-project goto
-
-# add your first shortcuts
-goto add code /usr/local/opt/goto
-goto add github https://github.com/technocake/goto
-
-#use them
-goto -f code
-goto github
+goto goto
 ```
