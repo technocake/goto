@@ -11,11 +11,29 @@ For eksempel:
 ```
  
 
+## Setup (OS-X/linux)
+
+```
+git clone https://github.com/technocake/goto /usr/local/opt/goto
+bash /usr/local/opt/goto/install_goto.sh
+
+```
+
+
+Now you can test it. No need to close the terminal.
+
+```
+goto goto
+```
+
+
+
+
 #### Hvordan vet Goto hvilket prosjekt som er aktivt?
 
 Du forteller det med kommandoen:  project <project-name>
 
-Eksempler: project sylvsmidja  | project bankid  |  project fjordtours
+Eksempler: project sylvsmidja  | project bankid  |  project goto
 
 
 #### Hvordan vet Goto om hvilke prosjekter som finnes?
@@ -42,26 +60,13 @@ Full kommando dersom man vil være spesifikk:
      goto add [-p <project-name>] <magic-word> <URI>
 
 
-## Setup (OS-X)
-
-```
-git clone https://github.com/technocake/goto /usr/local/opt/goto
-bash /usr/local/opt/goto/install_goto.sh
-
-```
 
 
-Now you can test it. No need to close the terminal.
-
-```
-goto goto
-```
-
-
-## Unsetup (OS-X)
+## Uninstall (OS-X)
 
 ```
 rm -rf /usr/local/opt/goto
+
 # remove symbolic links
 rm /usr/local/bin/goto
 rm /usr/local/bin/project
