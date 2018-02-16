@@ -2,25 +2,53 @@
 
 STATEDIR=${HOME}/.goto
 
+_usage() {
+    echo "Usage: project [add <projectname>] | [list]"
+    echo "   other commands:"
+    echo "     add <projectname> - adds a new project and makes it the active project."
+    echo "     rm  <projectname> - removes the project"
+    echo "     list              - lists all projects"
+    echo "     help              - if you want to read this one more time."
+}
+
 _addproject() {
     touch "$STATEDIR/projects/$1"
 }
 
-_usage() {
-    echo "Usage: project [add <projectname>] | [list]"
+_rmproject() {
+    rm "$STATEDIR/projects/$1"
 }
 
-# args parsing
+_listprojects() {
+    ls "$STATEDIR/projects" | grep -v .json
+}
+
+_changeproject() {
+    echo "$1" > "$STATEDIR/active-project"
+    echo "active project is now: $1"
+}
+
+_showactiveproject() {
+    cat "$STATEDIR/active-project" 
+}
+
+# ---------------------------
+#  args parsing below
+# ---------------------------
 if [ $# -eq 0 ]
-	then cat "$STATEDIR/active-project" 
-	exit
+	then _showactiveproject && exit
 fi
 
+
 if [ "$1" = "list" ] 
-	then 
-        ls "$STATEDIR/projects" | grep -v .json
-        exit
+    then _listprojects && exit 
 fi
+
+
+if [ "$1" = "help" ] 
+    then _usage 
+fi
+
 
 if [ "$1" = "add" ] 
     then 
@@ -28,12 +56,11 @@ if [ "$1" = "add" ]
         _usage
     else
 	   _addproject "$2"
+       _changeproject "$2"
         exit 0
     fi
 fi
 
 
-
 # otherwise, activate project given
-echo "$1" > "$STATEDIR/active-project"
-#echo "set active project to: $1"
+_changeproject "$1"
