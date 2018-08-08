@@ -16,7 +16,7 @@ _goto_completions()
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="--for --future --implementation"
 
-    if [[ ${prev} == "goto" ]] || [[ ${prev} == "show" ]] || [[ ${prev} == "rm" ]] || [[ ${prev} == "-f" ]] ; then 
+    if [[ ${prev} == "goto" ]] || [[ ${prev} == "show" ]] || [[ ${prev} == "copy" ]] || [[ ${prev} == "rm" ]] || [[ ${prev} == "-f" ]] ; then 
         COMPREPLY=( $(compgen -W "$(goto list)" ${cur}) )
         return 0
     fi

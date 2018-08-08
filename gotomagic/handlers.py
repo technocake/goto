@@ -24,6 +24,11 @@ def parse_magic_word(current_project, word):
     return (project, word)
 
 
+def copy_to_clipboard(url):
+    import pyperclip
+    pyperclip.copy(url)
+
+
 def open_sublime(code):
     "hack"
     subprocess.call('subl "%s"' % code, shell=True)

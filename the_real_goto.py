@@ -36,6 +36,10 @@ if __name__ == "__main__":
             print(magic[sys.argv[3]])
             exit(0)
 
+        if sys.argv[2] == 'copy':
+            copy_to_clipboard(str(magic[sys.argv[3]]))
+            exit(0)
+
         if sys.argv[2] == 'list':
             list_shortcuts(magic, sys.argv)
             exit(0)
