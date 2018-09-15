@@ -24,8 +24,15 @@ _listprojects() {
 }
 
 _changeproject() {
-    echo "$1" > "$STATEDIR/active-project"
-    echo "active project is now: $1"
+    if [ -f "$STATEDIR/projects/$1" ]; then
+        echo "$1" > "$STATEDIR/active-project"
+        echo "active project is now: $1"
+    else
+        echo "Warning - tried to change to a non existing project."
+        echo "If you want to create it use the command:"
+        echo
+        echo "  project add $1"
+    fi
 }
 
 _showactiveproject() {
