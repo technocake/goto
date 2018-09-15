@@ -31,6 +31,7 @@ class GotoMagic():
         """ Adds a magic shortcut if it does not exist yet.
             If it exists, it warns the user.
         """
+        uri = parse_uri(uri)
         if magicword in self.magic.keys():
             print_text(
                 text.warning["adding_existing_magicword"],
@@ -42,6 +43,7 @@ class GotoMagic():
 
     def update_shortcut(self, magicword, uri):
         """ Simply overwrites the content of the magicword """
+        uri = parse_uri(uri)
         self.magic[magicword] = uri
 
     def remove_shortcut(self, magicword):
@@ -112,6 +114,31 @@ class GotoMagic():
     def __len__(self):
         """ returns number of magicwords. """
         return len(self.magic.keys())
+
+
+def parse_uri(raw_uri):
+    ''' Main goal right now: distinguish filesystem paths
+        and urls/uris.
+        If no scheme is present, assume it is
+        a filesystem path. And test for path existence.
+        This embeds a rule that all web-urls must start with
+        either http:// or https:// for goto to handle them
+        properly. One might ponder if goto should magically
+        understand that www.gotomagic.com (without scheme)
+        is a http-uri.
+        TODO: here one could test if the raw_uri
+              could work as a valid http(s):// uri,
+              in the case where a uri is entered
+              with no scheme.
+        To handle cases such as: `goto add .`
+        if the raw_uri is a path, get the absolute
+        path and store that.
+    '''
+    candidate = os.path.abspath(raw_uri)
+    if os.path.exists(candidate):
+        return candidate
+    else:
+        return raw_uri
 
 
 def load_magic(jfile):
