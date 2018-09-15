@@ -17,7 +17,7 @@ Ah hoy!
     it points to: {uri}
 
     If you want to override it use:
-        goto update {magicword} {uri}
+        goto update {magicword} {newuri}
     """,
 
     removing_nonexisting_magicword="""
