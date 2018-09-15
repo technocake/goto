@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # code: utf-8
 'Goto - the magic project that takes you where you need to be, now.'
+import os
 import sys
 from gotomagic.handlers import *
 from gotomagic.magic import load_magic, save_magic
@@ -21,7 +22,9 @@ if __name__ == "__main__":
 
     if len(sys.argv) > 2:
         if sys.argv[2] == 'add':
-            magic[sys.argv[3]] = sys.argv[4]
+            key = sys.argv[3]
+            target = parse_uri(sys.argv[4])
+            magic[key] = target
             save_magic(jfile, magic)
             print('Added magic word %s' % sys.argv[3])
             exit(0)
