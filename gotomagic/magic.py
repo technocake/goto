@@ -36,7 +36,8 @@ class GotoMagic():
             print_text(
                 text.warning["adding_existing_magicword"],
                 magicword=magicword,
-                uri=uri
+                uri=self.magic[magicword],
+                newuri=uri
             )
         else:
             self.magic[magicword] = uri
