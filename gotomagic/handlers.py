@@ -8,6 +8,7 @@ Examples could be files, urls, visualstudio-solutions.
 import subprocess
 import webbrowser
 import os
+import sys
 
 
 def parse_magic_word(current_project, word):
@@ -37,7 +38,12 @@ def open_sublime(code):
 def open_folder(folder):
     "opens folders"
     folder = os.path.expanduser(folder)
-    subprocess.call('open "%s"' % folder, shell=True)
+    if sys.platform in ['linux', 'linux2']:
+        subprocess.call('xdg-open "%s"' % folder, shell=True)
+    elif sys.platform in ['darwin']:
+        subprocess.call('open "%s"' % folder, shell=True)
+    elif sys.platform in ['win32']:
+        subprocess.call('start "%s"' % folder, shell=True)
 
 
 def open_link(url):
