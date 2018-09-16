@@ -10,5 +10,14 @@ if [ "$1" = "cd" ]
 	path=`goto show "$2"`
 	cd "$path"
 else
+
+    if [ "$#" -eq 1 ]; then
+        path=$(python /usr/local/opt/goto/the_real_goto.py "$GOTOPATH" show "$2")
+        if [ -d "$path" ]; then
+            cd "$path"
+            exit
+        fi
+    fi
+
 	python /usr/local/opt/goto/the_real_goto.py "$GOTOPATH" "$@"
 fi
