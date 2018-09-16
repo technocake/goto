@@ -14,7 +14,7 @@ if [ -f "${HOME}/.bash_profile" ]; then
 	echo 
 	echo "Next step is required to make goto work:"
 	echo
-	read -p "Add goto startup script to .bash_profile? [yes|no]: " -n 1 -r
+	read -p "Add goto startup script to .bash_profile? [y|n]: " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
