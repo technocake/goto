@@ -20,6 +20,14 @@ sudo ./install.sh
 ```
 
 
+## Setup (Windows using gitbash)
+```
+# open git bash as Administrator
+git clone https://github.com/technocake/goto
+cd goto 
+sudo ./install.sh
+# If asked anything, say yes
+```
 Now you can test it. No need to close the terminal.
 
 ```
