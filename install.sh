@@ -8,7 +8,7 @@ function check_status {
     exit_status="$?"
     if [ $exit_status -ne 0 ]; then
         echo "ERROR: Installation step failed with exit code $exit_status"
-        if [[ "$#" -eq 2 ]]; then # pass an argument to this and we won't exit
+        if [[ "$#" -ne 2 ]]; then # pass an argument to this and we won't exit
             exit $exit_status
         else
             return $exit_status
@@ -32,24 +32,34 @@ echo Step 1: Installing goto into $INSTALL_DIR
 mkdir -p $INSTALL_DIR || check_status
 cp -r . $INSTALL_DIR  || check_status
 
-echo Step 2: Setting up magic data folder in ${HOME}/.goto
-MAGICPATH="${HOME}/.goto"
-if [[ ! -d "$MAGICPATH" ]]; then
-    mkdir ${HOME}/.goto || check_status
-    mkdir ${HOME}/.goto/projects || check_status
-    touch ${HOME}/.goto/active-project || check_status
-fi
 
 
-echo Step 3: Adding symlinks to /usr/local/bin
-ln -s "$INSTALL_DIR/bin/*" /usr/local/bin/ || check_status noexit
+echo Step 2: Adding symlinks to /usr/local/bin
+ln -s $INSTALL_DIR/bin/* /usr/local/bin/ || check_status noexit
 if [[ "$?" -ne 0 ]]; then
     echo "Failed to symlink to /usr/local/bin"
 
     if [[ $(prompt "want to try /usr/bin instead? [y|n]") ]]; then
         echo "Adding symlinks to /usr/bin"
-        ln -s "$INSTALL_DIR/bin/*" /usr/bin/ || check_status
+        ln -s $INSTALL_DIR/bin/* /usr/bin/ || check_status
     fi
+fi
+
+# Step 2.5 - if running sudo, get original users home
+if [ -n "$SUDO_USER" ]; then
+        HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
+fi
+
+USER=$(logname)
+
+
+echo Step 3: Setting up magic data folder in ${HOME}/.goto
+MAGICPATH="${HOME}/.goto"
+if [[ ! -d "$MAGICPATH" ]]; then
+    mkdir ${HOME}/.goto || check_status
+    mkdir ${HOME}/.goto/projects || check_status
+    touch ${HOME}/.goto/active-project || check_status
+    chown -R $USER:$USER "${HOME}/.goto" || check_status
 fi
 
 # add init_script to.bash_profile:
@@ -74,6 +84,9 @@ else
     echo "         source start_goto"
     echo
     echo "into one of these (.bashrc | .profile | .bash_profile)"
+    if [[ $(prompt "Want to append to .bashrc? [y|n]: ") ]]; then
+    echo "source start_goto" >> ${HOME}/.bashrc || check_status
+    fi
 
 fi
 
