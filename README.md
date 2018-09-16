@@ -14,9 +14,9 @@ For eksempel:
 ## Setup (OS-X/linux)
 
 ```
-git clone https://github.com/technocake/goto /usr/local/opt/goto
-bash /usr/local/opt/goto/install_goto.sh
-
+git clone https://github.com/technocake/goto
+cd goto 
+sudo ./install.sh
 ```
 
 
