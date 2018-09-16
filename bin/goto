@@ -12,10 +12,9 @@ if [ "$1" = "cd" ]
 else
     if [ "$#" -eq 1 ]; then
 
-        path=$(python /usr/local/opt/goto/the_real_goto.py "$GOTOPATH" show "$1")
+        path=$(goto show "$1")
         if [ -d "$path" ]; then
             cd "$path"
-            echo "cding"
             return 0
         fi
 
