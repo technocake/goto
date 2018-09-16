@@ -59,7 +59,11 @@ if [[ ! -d "$MAGICPATH" ]]; then
     mkdir ${HOME}/.goto || check_status
     mkdir ${HOME}/.goto/projects || check_status
     touch ${HOME}/.goto/active-project || check_status
-    chown -R $USER:$USER "${HOME}/.goto" || check_status
+
+    # If run by sudo, chown folders from root to user
+    if [ -n "$SUDO_USER" ]; then
+    	chown -R $USER:$USER "${HOME}/.goto" || check_status
+    fi
 fi
 
 # add init_script to.bash_profile:
