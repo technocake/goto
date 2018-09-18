@@ -1,5 +1,1 @@
-pypiwin32==220
-pywinauto==0.6.3
-six==1.10.0
-virtualenv==15.1.0
-virtualenvwrapper-win==1.2.1
+pyperclip
