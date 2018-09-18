@@ -7,7 +7,6 @@ function prompt {
     # Asks a y|n question and returns true or false.
     question="$1"
     read -p "$question" REPLY
-    tput cuu1
     if [[ $REPLY =~ ^[Yy.*]$ ]]; then
         return 0
     else
