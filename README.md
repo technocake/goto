@@ -1,4 +1,4 @@
-# Magic Goto
+## goto
 
 Goto is a magic tool that takes you were you want to be, now. 
 
@@ -16,9 +16,9 @@ In example:
     goto bitbucket     -->  bitbucket repo for the current project
 ```
  
-## Setup 
+### Setup 
 
-### Mac OS-X
+#### Mac OS-X
 
 Please note no sudo
 
@@ -28,7 +28,7 @@ cd goto
 ./install.sh
 ```
 
-### Linux
+#### Linux
 Please note the added sudo
 
 ```
@@ -37,7 +37,7 @@ cd goto
 sudo ./install.sh
 ```
 
-### Windows (using gitbash)
+#### Windows (using gitbash)
 ```
 # open git bash as Administrator
 git clone https://github.com/technocake/goto
@@ -52,7 +52,7 @@ goto goto
 ```
 
 
-## Usage
+### Usage
 
 ```
 The basics
