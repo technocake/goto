@@ -63,6 +63,7 @@ fi
 
 if [ "$1" = "help" ] 
     then _usage 
+    exit 1
 fi
 
 
