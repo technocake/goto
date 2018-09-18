@@ -11,7 +11,7 @@ cp -r . $INSTALL_DIR  || check_status
 
 
 echo Step 2: Adding symlinks to /usr/local/bin
-ln -s $INSTALL_DIR/bin/* /usr/local/bin/ || check_status noexit
+ln -s $INSTALL_DIR/bin/* /usr/local/bin/ 
 if [[ "$?" -ne 0 ]]; then
     echo "Failed to symlink to /usr/local/bin"
 
