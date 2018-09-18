@@ -1,6 +1,8 @@
 #!/bin/bash
+. _gotoutils # load common utility functions
 
 STATEDIR=${HOME}/.goto
+
 
 _usage() {
     echo "Usage: project [add <projectname>] | [list]"
@@ -16,7 +18,14 @@ _addproject() {
 }
 
 _rmproject() {
-    rm "$STATEDIR/projects/$1"
+    if prompt "Are you sure you want to delete project $1? [y|n]: "; then
+        rm "$STATEDIR/projects/$1"
+        rm "$STATEDIR/projects/$1.json"
+        echo "Removed project $2"
+    else
+        echo 
+        echo "Aborting delete of project $1"
+    fi
 }
 
 _listprojects() {
@@ -67,6 +76,18 @@ if [ "$1" = "add" ]
         exit 0
     fi
 fi
+
+if [ "$1" = "rm" ] 
+    then 
+    if [ "$2" = "" ] ; then
+        _usage
+    else
+       _rmproject "$2" "$3"
+       # TODO if active project == removed what to do? _changeproject "$2"
+        exit 0
+    fi
+fi
+
 
 
 # otherwise, activate project given

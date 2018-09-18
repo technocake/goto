@@ -36,7 +36,7 @@ _project_completions()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-    if [[ ${prev} == "project" ]] ; then 
+    if [[ ${prev} == "project" || ${prev} == "rm" ]]; then 
         COMPREPLY=( $(compgen -W "$(project list)" ${cur}) )
         return 0
     fi

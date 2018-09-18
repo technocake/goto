@@ -1,0 +1,40 @@
+#!/bin/bash
+#   Common utils for goto scripts in bash
+#   
+#########################################
+
+function prompt {
+    # Asks a y|n question and returns true or false.
+    question="$1"
+    read -p "$question" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+
+function check_status {
+    # Checking exit status of prev cmd:
+    # see  https://stackoverflow.com/questions/26675681/how-to-check-the-exit-status-using-an-if-statement-using-bash
+    exit_status="$?"
+    if [ $exit_status -ne 0 ]; then
+        echo "ERROR: Installation step failed with exit code $exit_status"
+        if [[ "$#" -ne 2 ]]; then # pass an argument to this and we won't exit
+            exit $exit_status
+        else
+            return $exit_status
+        fi
+    fi
+}
+
+function test_prompt {
+    
+    if prompt "test: "; then
+        echo "True"
+    else
+        echo "False"
+    fi
+}
