@@ -139,6 +139,13 @@ def parse_uri(raw_uri):
     if os.path.exists(candidate):
         return candidate
     else:
+        # it is not a file or directory
+        # So it must be an uri.
+        # But which kind?
+        if "://" not in raw_uri:
+            # Assume it is http if no scheme is specified
+            # because that is what kids do these days
+            return "http://%s" % raw_uri
         return raw_uri
 
 
