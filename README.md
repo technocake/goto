@@ -1,6 +1,6 @@
+# Magic Goto
 
-
-# Goto is a magic tool that takes you were you want to be, now. 
+Goto is a magic tool that takes you were you want to be, now. 
 
 Projects have their own folders, important files, links to good articles or key websites. 
 The problem is that all these are spread out on different locations.
