@@ -6,9 +6,8 @@
 function prompt {
     # Asks a y|n question and returns true or false.
     question="$1"
-    read -p "$question" -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    read -p "$question" REPLY
+    if [[ $REPLY =~ ^[Yy.*]$ ]]; then
         return 0
     else
         return 1
