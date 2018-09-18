@@ -56,6 +56,8 @@ goto goto
 
 ```
 The basics
+        - Go to a shortcut:         goto <magicword>
+
         - Adding a shortcut:        goto add <magicword> <url or path>
         - Updating a shortcut:      goto update <magicword> <url or path>
         - Removing a shortcut:      goto rm <magicword>
@@ -65,18 +67,22 @@ The basics
         - Listing all shortcuts:    goto list
         - With the urls printed:    goto list -v
 
-    Working with folders and files:
+
+Working with folders and files:
+        Goto will cd to a folder    goto <magicword>
+        shortcut by default. 
+        
+        But you can be explicit
         - cd in terminal:           goto cd <magicword>
         - open folder in Finder:    goto -f <magicword>
 
-    code - A specially magic magic word:
-        If you add a shortcut
-        to a folder,and name the
-        shortcut "code";            goto add code <path to folder with code>
+
+code - A specially magic magicword:
+        If you add a shortcut to a
+        folder,and name it "code"   goto add code <path to folder with code>
         - you may then do this:     goto subl
         and it opens
         Sublime Text in your folder.
-
 ```
 
 
