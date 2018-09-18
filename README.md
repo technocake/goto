@@ -74,7 +74,8 @@ Working with folders and files:
         
         But you can be explicit
         - cd in terminal:           goto cd <magicword>
-        - open folder in Finder:    goto -f <magicword>
+        - open folder in Finder:    goto open <magicword> 
+                                    goto -o <magicword>
 
 
 code - A specially magic magicword:

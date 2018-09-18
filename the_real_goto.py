@@ -28,7 +28,8 @@ def usage():
 
     Working with folders and files:
         - cd in terminal:           goto cd <magicword>
-        - open folder in Finder:    goto -f <magicword>
+        - open folder in Finder:    goto open <magicword>
+                                    goto -o <magicword>
 
     code - A specially magic magic word:
         If you add a shortcut
@@ -107,12 +108,12 @@ if __name__ == "__main__":
                 print(text.warning["no_magicword_named_code"])
             exit(0)
 
-        if '-f' in sys.argv:
-            open_folder(magic[sys.argv[3]])
+        if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:
+            open_folder(magic.get_uri(sys.argv[3]))
             exit(0)
 
         if sys.argv[2] == 'cd':
-            open_terminal(magic[sys.argv[3]])
+            open_terminal(magic.get_uri(sys.argv[3]))
             exit(0)
         # default
         open_link(magic[sys.argv[2]])
