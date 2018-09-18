@@ -3,6 +3,7 @@
 
 INSTALL_DIR=/usr/local/opt/goto
 
+
 echo Step 1: Installing goto into $INSTALL_DIR 
 mkdir -p $INSTALL_DIR || check_status
 cp -r . $INSTALL_DIR  || check_status
@@ -15,6 +16,7 @@ if [[ "$?" -ne 0 ]]; then
     echo "Failed to symlink to /usr/local/bin"
 
     if prompt "want to try /usr/bin instead? [y|n]"; then
+
         echo "Adding symlinks to /usr/bin"
         ln -s $INSTALL_DIR/bin/* /usr/bin/ || check_status
     fi
@@ -48,6 +50,7 @@ if [ -f "${HOME}/.bash_profile" ]; then
     echo 
     echo "Next step is required to make goto work:"
     echo
+
     if prompt "Add goto startup script to .bash_profile? [y|n]: "; then
         echo
         echo "source start_goto" >> ${HOME}/.bash_profile || check_status
@@ -63,8 +66,9 @@ else
     echo "         source start_goto"
     echo
     echo "into one of these (.bashrc | .profile | .bash_profile)"
+
     if prompt "Want to append to .bashrc? [y|n]: "; then
-    echo "source start_goto" >> ${HOME}/.bashrc || check_status
+        echo "source start_goto" >> ${HOME}/.bashrc || check_status
     fi
 
 fi
