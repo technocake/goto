@@ -14,12 +14,20 @@ For eksempel:
 ## Setup (OS-X/linux)
 
 ```
-git clone https://github.com/technocake/goto /usr/local/opt/goto
-bash /usr/local/opt/goto/install_goto.sh
-
+git clone https://github.com/technocake/goto
+cd goto 
+sudo ./install.sh
 ```
 
 
+## Setup (Windows using gitbash)
+```
+# open git bash as Administrator
+git clone https://github.com/technocake/goto
+cd goto 
+sudo ./install.sh
+# If asked anything, say yes
+```
 Now you can test it. No need to close the terminal.
 
 ```
@@ -71,6 +79,7 @@ rm -rf /usr/local/opt/goto
 rm /usr/local/bin/goto
 rm /usr/local/bin/project
 rm /usr/local/bin/start_goto
+rm /usr/local/bin/_gotoutils
 
 #lastly, remove the line `source start_goto` from .bash_profile
 
