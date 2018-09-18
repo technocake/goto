@@ -1,4 +1,4 @@
-## goto
+## goto v1.0-alpha
 
 Goto is a magic tool that takes you were you want to be, now. 
 
