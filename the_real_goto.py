@@ -123,10 +123,12 @@ if __name__ == "__main__":
 
         # going to sub-url in github
         if sys.argv[2] == 'github':
-            api = GitHub(magic['github'])
+            api = GitHub(magic.get_uri('github'))
             if len(sys.argv) == 4:
                 url = api.url_for(sys.argv[3])
                 open_link(url)
+            else:
+                open_link(magic.get_uri('github'))
             exit(0)
 
         if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:
