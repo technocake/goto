@@ -3,7 +3,7 @@
 'Goto - the magic project that takes you where you need to be, now.'
 import sys
 from gotomagic.handlers import *
-from gotomagic.magic import GotoMagic
+from gotomagic.magic import GotoMagic, is_file
 import gotomagic.text as text
 from gotomagic.text import print_text
 
@@ -115,5 +115,10 @@ if __name__ == "__main__":
         if sys.argv[2] == 'cd':
             open_terminal(magic.get_uri(sys.argv[3]))
             exit(0)
+
         # default
-        open_link(magic[sys.argv[2]])
+        url = magic.get_uri(sys.argv[2])
+        if is_file(url):
+            open_folder(url)
+        else:
+            open_link(magic[sys.argv[2]])
