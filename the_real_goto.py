@@ -118,7 +118,8 @@ if __name__ == "__main__":
 
         # default
         url = magic.get_uri(sys.argv[2])
-        if is_file(url):
-            open_folder(url)
-        else:
-            open_link(magic[sys.argv[2]])
+        if url is not None:
+            if is_file(url):
+                open_folder(url)
+            else:
+                open_link(magic[sys.argv[2]])
