@@ -113,9 +113,12 @@ if __name__ == "__main__":
         # used by start_goto
         if sys.argv[2] == '--github-list':
             api = GitHub(magic['github'])
+            query = ""
             if len(sys.argv) == 4:
-                keys = api.search_for_url(sys.argv[3], return_keys=True)
-                print("\n".join(keys))
+                query = sys.argv[3]
+            keys = api.search_for_url(query, return_keys=True)
+            print("\n".join(keys))
+
             exit(0)
 
         # going to sub-url in github
