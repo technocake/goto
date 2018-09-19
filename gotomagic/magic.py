@@ -76,6 +76,7 @@ class GotoMagic():
                 text.warning["magicword_does_not_exist"],
                 magicword=magicword
             )
+            return None
 
     def list_shortcuts(self, verbose=False):
         """ Lists all magicwords.

@@ -112,14 +112,16 @@ if __name__ == "__main__":
         # Generating dynamic auto completion list
         # used by start_goto
         if sys.argv[2] == '--github-list':
-            api = GitHub(magic['github'])
-            query = ""
-            if len(sys.argv) == 4:
-                query = sys.argv[3]
-            keys = api.search_for_url(query, return_keys=True)
-            print("\n".join(keys))
-
-            exit(0)
+            try:
+                api = GitHub(magic['github'])
+                query = ""
+                if len(sys.argv) == 4:
+                    query = sys.argv[3]
+                keys = api.search_for_url(query, return_keys=True)
+                print("\n".join(keys))
+                exit(0)
+            except KeyError:
+                exit(1)
 
         # going to sub-url in github
         if sys.argv[2] == 'github':
