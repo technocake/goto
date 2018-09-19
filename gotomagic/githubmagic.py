@@ -13,7 +13,7 @@ class GitHub():
     def __init__(self, url):
         self.user, self.repo = self.parse_github_url(url)
 
-    def search_for_url(self, word, return_keys=False):
+    def search_for_urls(self, word, return_keys=False):
         path = self.repoinfo.format(user=self.user, repo=self.repo)
         r = requests.get(self.BASE_URL + path)
 
@@ -50,19 +50,19 @@ def test_parse_github_url():
     assert api.repo == "goto", "repo is not correct"
 
 
-def test_search_for_url():
+def test_search_for_urls():
     url = "https://github.com/technocake/goto"
     api = GitHub(url)
-    url = api.search_for_url("issues")
+    url = api.search_for_urls("issues")
     print(url)
-    url = api.search_for_url("pu")
+    url = api.search_for_urls("pu")
     print(url)
-    url = api.search_for_url("c")
+    url = api.search_for_urls("c")
     print(url)
-    url = api.search_for_url("Å")
+    url = api.search_for_urls("Å")
     print(url)
 
 
 if __name__ == '__main__':
     test_parse_github_url()
-    test_search_for_url()
+    test_search_for_urls()

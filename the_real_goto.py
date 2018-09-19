@@ -117,7 +117,7 @@ if __name__ == "__main__":
                 query = ""
                 if len(sys.argv) == 4:
                     query = sys.argv[3]
-                keys = api.search_for_url(query, return_keys=True)
+                keys = api.search_for_urls(query, return_keys=True)
                 print("\n".join(keys))
                 exit(0)
             except KeyError:
@@ -127,7 +127,7 @@ if __name__ == "__main__":
         if sys.argv[2] == 'github':
             api = GitHub(magic.get_uri('github'))
             if len(sys.argv) == 4:
-                url = api.url_for(sys.argv[3])
+                url = api.url_for(endpoint=sys.argv[3])
                 open_link(url)
             else:
                 open_link(magic.get_uri('github'))
