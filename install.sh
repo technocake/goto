@@ -3,6 +3,14 @@
 
 INSTALL_DIR=/usr/local/opt/goto
 
+function chmod_goto_folder {
+    # If run by sudo, chown folders from root to user
+    USER=$(logname)
+    if [ -n "$SUDO_USER" ]; then
+        chown -R $USER:$USER "${HOME}/.goto" || check_status
+    fi
+}
+
 
 echo Step 1: Installing goto into $INSTALL_DIR 
 mkdir -p $INSTALL_DIR || check_status
@@ -27,20 +35,18 @@ if [ -n "$SUDO_USER" ]; then
         HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
 fi
 
-USER=$(logname)
+
 
 
 echo Step 3: Setting up magic data folder in ${HOME}/.goto
 MAGICPATH="${HOME}/.goto"
 if [[ ! -d "$MAGICPATH" ]]; then
-    mkdir ${HOME}/.goto || check_status
-    mkdir ${HOME}/.goto/projects || check_status
-    touch ${HOME}/.goto/active-project || check_status
+    mkdir "${HOME}/.goto" || check_status
+    mkdir "${HOME}/.goto/projects" || check_status
+    touch "${HOME}/.goto/active-project" || check_status
 
     # If run by sudo, chown folders from root to user
-    if [ -n "$SUDO_USER" ]; then
-    	chown -R $USER:$USER "${HOME}/.goto" || check_status
-    fi
+    chmod_goto_folder
 fi
 
 # add init_script to.bash_profile:
@@ -53,7 +59,7 @@ if [ -f "${HOME}/.bash_profile" ]; then
 
     if prompt "Add goto startup script to .bash_profile? [y|n]: "; then
         echo
-        echo "source start_goto" >> ${HOME}/.bash_profile || check_status
+        echo "source start_goto" >> "${HOME}/.bash_profile" || check_status
     else
     echo   
     echo "If you want to do this manually add the line 'source start_goto' to your .bash_profile"
@@ -68,7 +74,7 @@ else
     echo "into one of these (.bashrc | .profile | .bash_profile)"
 
     if prompt "Want to append to .bashrc? [y|n]: "; then
-        echo "source start_goto" >> ${HOME}/.bashrc || check_status
+        echo "source start_goto" >> "${HOME}/.bashrc" || check_status
     fi
 
 fi
@@ -87,5 +93,8 @@ project goto
 goto add code "$INSTALL_DIR" || check_status
 goto add goto https://github.com/technocake/goto
 goto add github https://github.com/technocake/goto
+
+# If run by sudo, chown folders from root to user
+chmod_goto_folder 
 
 echo Installation Succesful!
