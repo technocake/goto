@@ -1,7 +1,18 @@
 #!/bin/bash
 . bin/_gotoutils # load common utils 
-
+     
 INSTALL_DIR=/usr/local/opt/goto
+
+function should_be_sudo {
+    if [[ "$(uname)" == "Linux" && -z $SUDO_USER ]]; then
+        echo "On linux this install script needs to run with sudo"
+        echo "Run again like this:" 
+        echo
+        echo "  sudo ./install.sh"
+        exit 1
+    fi
+}
+
 
 function chmod_goto_folder {
     # If run by sudo, chown folders from root to user
@@ -11,6 +22,8 @@ function chmod_goto_folder {
     fi
 }
 
+# Step 0: on linux, be sudo
+should_be_sudo
 
 echo Step 1: Installing goto into $INSTALL_DIR 
 mkdir -p $INSTALL_DIR || check_status
