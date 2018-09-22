@@ -84,11 +84,12 @@ class GotoMagic():
             if verbose = True.
         """
         if verbose:
-            for k, v in self.magic.items():
-                print("%16s --> %s" % (k, v))
+            for key in sorted(self.magic.keys()):
+                value = self.magic[key]
+                print("%16s --> %s" % (key, value))
         else:
-            for k in self.magic.keys():
-                print(k)
+            for key in sorted(self.magic.keys()):
+                print(key)
 
     def __getitem__(self, key):
         """
