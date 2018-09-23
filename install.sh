@@ -16,7 +16,7 @@ function should_be_sudo_on_linux {
 
 
 function should_be_admin_on_windows {
-    # Detect admin in windows
+    # Detect missing admin in windows
     if [[ ! -z $(env | grep SESSIONNAME) ]]; then
         echo "On windows using git bash, install must be run as admin"
         echo "Right click git bash and start in admin mode to try again"
@@ -67,7 +67,6 @@ fi
 
 
 
-
 echo Step 3: Setting up magic data folder in ${HOME}/.goto
 MAGICPATH="${HOME}/.goto"
 if [[ ! -d "$MAGICPATH" ]]; then
@@ -79,9 +78,8 @@ if [[ ! -d "$MAGICPATH" ]]; then
     chmod_goto_folder
 fi
 
-# add init_script to.bash_profile:
 
-
+echo Step 4: add goto startup script to bash config file
 if [ -f "${HOME}/.bash_profile" ]; then
     echo 
     echo "Next step is required to make goto work:"
