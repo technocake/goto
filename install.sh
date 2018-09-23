@@ -1,7 +1,29 @@
 #!/bin/bash
 . bin/_gotoutils # load common utils 
-
+     
 INSTALL_DIR=/usr/local/opt/goto
+
+
+function should_be_sudo_on_linux {
+    if [[ "$(uname)" == "Linux" && -z $SUDO_USER ]]; then
+        echo "On linux this install script needs to run with sudo"
+        echo "Run again like this:" 
+        echo
+        echo "  sudo ./install.sh"
+        exit 1
+    fi
+}
+
+
+function should_be_admin_on_windows {
+    # Detect missing admin in windows
+    if [[ ! -z $(env | grep SESSIONNAME) ]]; then
+        echo "On windows using git bash, install must be run as admin"
+        echo "Right click git bash and start in admin mode to try again"
+        exit 1
+    fi
+}
+
 
 function chmod_goto_folder {
     # If run by sudo, chown folders from root to user
@@ -10,6 +32,14 @@ function chmod_goto_folder {
         chown -R $USER:$USER "${HOME}/.goto" || check_status
     fi
 }
+
+# Step 0: on linux, be sudo. on windows be admin.
+PLATFORM=$(uname -s)
+case "$PLATFORM" in
+    Linux*)   should_be_sudo_on_linux;;
+    CYGWIN*)  should_be_admin_on_windows;;
+    MINGW*)  should_be_admin_on_windows;;
+esac
 
 
 echo Step 1: Installing goto into $INSTALL_DIR 
@@ -37,7 +67,6 @@ fi
 
 
 
-
 echo Step 3: Setting up magic data folder in ${HOME}/.goto
 MAGICPATH="${HOME}/.goto"
 if [[ ! -d "$MAGICPATH" ]]; then
@@ -49,9 +78,8 @@ if [[ ! -d "$MAGICPATH" ]]; then
     chmod_goto_folder
 fi
 
-# add init_script to.bash_profile:
 
-
+echo Step 4: add goto startup script to bash config file
 if [ -f "${HOME}/.bash_profile" ]; then
     echo 
     echo "Next step is required to make goto work:"

@@ -20,38 +20,16 @@ In example:
  
 ### Setup 
 
-#### Mac OS-X
-
-Please note no sudo
-
+#### Mac OS-X / Linux
 ```
 git clone https://github.com/technocake/goto
 cd goto 
 ./install.sh
 ```
-
-#### Linux
-Please note the added sudo
-
-```
-git clone https://github.com/technocake/goto
-cd goto 
-sudo ./install.sh
-```
+After install, close and reopen your terminal.
 
 #### Windows (using gitbash)
-```
-# open git bash as Administrator
-git clone https://github.com/technocake/goto
-cd goto 
-./install.sh
-# If asked anything, say yes
-```
-Now you can test it. No need to close the terminal.
-
-```
-goto goto
-```
+Do the same as above, but **open git bash as Administrator**
 
 
 ### Usage
