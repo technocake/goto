@@ -36,34 +36,25 @@ Do the same as above, but **open git bash as Administrator**
 
 ```
 The basics
-        - Go to a shortcut:         goto <magicword>
+    goto <magicword>                        Go to shortcut
+    goto add    <magicword> <url or path>   Add shortcut      
+    goto update <magicword> <url or path>   Update shortcut
+    goto rm     <magicword>                 Remove shortcut
+    goto show   <magicword>                 Show url of shortcut
+    goto list                               List all shortcuts  
+    goto list -v                            With the urls printed
 
-        - Adding a shortcut:        goto add <magicword> <url or path>
-        - Updating a shortcut:      goto update <magicword> <url or path>
-        - Removing a shortcut:      goto rm <magicword>
+Working with folders and files
+    goto <magicword>              Goto will cd to a folder shortcut by default. 
+    goto cd   <magicword>         cd in terminal
+    goto open <magicword>         open in finder/file explorer
+    goto -o   <magicword>                                    
 
-        - Show url of shortcut:     goto show <magicword>
-
-        - Listing all shortcuts:    goto list
-        - With the urls printed:    goto list -v
-
-
-Working with folders and files:
-        Goto will cd to a folder    goto <magicword>
-        shortcut by default. 
-        
-        But you can be explicit
-        - cd in terminal:           goto cd <magicword>
-        - open folder in Finder:    goto open <magicword> 
-                                    goto -o <magicword>
-
-
-code - A specially magic magicword:
-        If you add a shortcut to a
-        folder,and name it "code"   goto add code <path to folder with code>
-        - you may then do this:     goto subl
-        and it opens
-        Sublime Text in your folder.
+If you add a shortcut to a folder, and name it "code"...
+    goto add code <path to folder with code>
+    
+...this command will open folder with Sublime Text
+    goto subl                                
 ```
 
 
