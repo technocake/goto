@@ -3,6 +3,7 @@
 Magic is stored here.
 """
 import json
+import codecs
 import os
 import gotomagic.text as text
 from gotomagic.text import print_text
@@ -144,10 +145,6 @@ def parse_uri(raw_uri):
         # it is not a file or directory
         # So it must be an uri.
         # But which kind?
-        if "://" not in raw_uri:
-            # Assume it is http if no scheme is specified
-            # because that is what kids do these days
-            return "http://%s" % raw_uri
         return raw_uri
 
 
@@ -160,8 +157,8 @@ def is_file(raw_uri):
 def load_magic(jfile):
     "Loads the magic shortcuts from a json file object"
     if os.path.isfile(jfile) and os.path.getsize(jfile) > 0:
-        with open(jfile, 'r') as f:
-            magic = json.load(f)
+        with codecs.open(jfile, 'r', encoding="utf-8") as f:
+            magic = json.loads(f.read())
     else:
         magic = {}
     return magic
@@ -169,5 +166,12 @@ def load_magic(jfile):
 
 def save_magic(jfile, magic):
     "saves the magic shortcuts as json into a file"
-    with open(jfile, 'w+') as f:
-        json.dump(magic, f, sort_keys=True, indent=4)
+    with codecs.open(jfile, 'w+', encoding='utf-8') as f:
+        try:
+            data = json.dumps(magic, sort_keys=True, indent=4, ensure_ascii=False)
+            f.write(data)
+        except Exception as e:
+            print_text(
+                text.error["magic_could_not_be_saved"],
+                message=e.message
+            )

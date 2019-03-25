@@ -2,10 +2,16 @@
 # code: utf-8
 'Goto - the magic project that takes you where you need to be, now.'
 import sys
+import codecs
 from gotomagic.handlers import *
 from gotomagic.magic import GotoMagic, is_file
 import gotomagic.text as text
 from gotomagic.text import print_text
+
+
+# make sure we print in utf-8
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
 
 
 def usage():

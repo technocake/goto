@@ -77,3 +77,21 @@ Ah hoy!
         goto add website http://example.org
     """
 )
+
+
+error = dict(
+    magic_could_not_be_saved="""
+Oh noes...!
+
+    - Something clogged up the magic, and the magicwords could not be saved.
+
+    Computer says: {message}
+
+    If you want us to fix it - please tell us about this on github here:
+
+        https://github.com/technocake/goto/issues
+
+    Feel free to create a new issue if one does not already exist.
+
+    """
+)
