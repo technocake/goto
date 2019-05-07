@@ -15,6 +15,7 @@ class TestMagic(TestCase):
         """ Adding shortcuts through the gotomagic module"""
         self.magic.add_shortcut('test', 'http://example.com')
         self.magic.save()
+
         self.assertTrue(os.path.exists(tmpgotofile),
                         'Adding shortcut on empty project'
                         ' did not create magic file')
