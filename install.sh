@@ -114,9 +114,6 @@ source start_goto || check_status
 # add your first project
 project add goto || check_status
 
-# set the context to this project
-project goto
-
 # add your first shortcuts
 goto add code "$INSTALL_DIR" || check_status
 goto add goto https://github.com/technocake/goto
