@@ -42,6 +42,8 @@ def usage():
     ...this command will open folder with Sublime Text
         goto subl                                
 
+    ...this command will open folder with Visual Studio Code Text
+        goto vscode           
     """
 
 
@@ -107,6 +109,13 @@ if __name__ == "__main__":
         if sys.argv[2] == 'subl':
             try:
                 open_sublime(magic['code'])
+            except KeyError:
+                print(text.warning["no_magicword_named_code"])
+            exit(0)
+
+        if sys.argv[2] == 'vscode':
+            try:
+                open_vscode(magic['code'])
             except KeyError:
                 print(text.warning["no_magicword_named_code"])
             exit(0)
