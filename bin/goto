@@ -2,7 +2,7 @@
 
 PROJECT=$(cat ${HOME}/.goto/active-project)
 PROJECTFILE="${HOME}/.goto/projects/${PROJECT}.json"
-GOTO="/usr/local/opt/goto/the_real_goto.py"
+GOTO="/usr/local/opt/goto/goto/the_real_goto.py"
 
 # Special case 1 (goto cd <magicword>)
 if [ "$1" = "cd" ]; then
