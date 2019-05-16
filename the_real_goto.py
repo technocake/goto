@@ -7,6 +7,7 @@ from gotomagic.handlers import *
 from gotomagic.magic import GotoMagic, is_file
 import gotomagic.text as text
 from gotomagic.text import print_text
+from gotomagic.githubmagic import GitHub
 
 
 # make sure we print in utf-8
@@ -109,6 +110,30 @@ if __name__ == "__main__":
                 open_sublime(magic['code'])
             except KeyError:
                 print(text.warning["no_magicword_named_code"])
+            exit(0)
+
+        # Generating dynamic auto completion list
+        # used by start_goto
+        if sys.argv[2] == '--github-list':
+            try:
+                api = GitHub(magic['github'])
+                query = ""
+                if len(sys.argv) == 4:
+                    query = sys.argv[3]
+                keys = api.search_for_urls(query, return_keys=True)
+                print("\n".join(keys))
+                exit(0)
+            except KeyError:
+                exit(1)
+
+        # going to sub-url in github
+        if sys.argv[2] == 'github':
+            api = GitHub(magic.get_uri('github'))
+            if len(sys.argv) == 4:
+                url = api.url_for(endpoint=sys.argv[3])
+                open_link(url)
+            else:
+                open_link(magic.get_uri('github'))
             exit(0)
 
         if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:

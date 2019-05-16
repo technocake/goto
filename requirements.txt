@@ -1,1 +1,3 @@
 pyperclip
+requests
+requests-cache

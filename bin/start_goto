@@ -25,6 +25,12 @@ _goto_completions()
             COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
         return 0
     fi
+
+    if [[ ${prev} == "github" ]]; then 
+        COMPREPLY=( $(compgen -W "$(goto --github-list $cur)" ${cur}) )
+        return 0
+    fi   
+
 }
 complete -o default -F _goto_completions goto
 

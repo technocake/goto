@@ -4,5 +4,6 @@
 active-project
 
 *.pyc
+*.sqlite
 
 .DS_Store
