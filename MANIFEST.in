@@ -1,3 +1,3 @@
 include README.md
+include POST_INSTALL_INSTRUCTIONS.txt
 include goto/*.py
-include bin

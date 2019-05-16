@@ -3,6 +3,10 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+with open("POST_INSTALL_INSTRUCTIONS.txt", "r") as fh:
+    post_install_instructions = fh.read()
+
+
 setuptools.setup(
     name="goto",
     version="1.3.0",
@@ -18,6 +22,7 @@ setuptools.setup(
         'bin/project',
         'bin/_gotoutils',
         'bin/start_goto',
+        'bin/install_goto',
     ],
     entry_points={
         'console_scripts': ['the_real_goto.py=goto.the_real_goto:main']
@@ -29,3 +34,4 @@ setuptools.setup(
     ],
 )
    
+print(post_install_instructions)
