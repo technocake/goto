@@ -5,8 +5,9 @@ Magic is stored here.
 import json
 import codecs
 import os
-import gotomagic.text as text
-from gotomagic.text import print_text
+
+from . import text
+from .text import print_text
 
 
 class GotoMagic():
