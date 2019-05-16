@@ -13,7 +13,15 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://gotogoto.ninja",
     packages=['goto'],
-    scripts=['bin/goto', 'bin/project']
+    scripts=[
+        'bin/goto',
+        'bin/project',
+        'bin/_gotoutils',
+        'bin/start_goto',
+    ],
+    entry_points={
+        'console_scripts': ['the_real_goto.py=goto.the_real_goto:main']
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
