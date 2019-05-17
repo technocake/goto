@@ -9,7 +9,7 @@ with open("POST_INSTALL_INSTRUCTIONS.txt", "r") as fh:
 
 setuptools.setup(
     name="goto",
-    version="1.3.0",
+    version="1.3.1",
     author="Robin Aaberg",
     author_email="robin.garen@gmail.com",
     description="Magic goto - goto where you need to be, right now.",

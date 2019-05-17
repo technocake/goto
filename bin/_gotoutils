@@ -3,6 +3,7 @@
 #   
 #########################################
 
+
 function prompt {
     # Asks a y|n question and returns true or false.
     question="$1"
@@ -29,11 +30,5 @@ function check_status {
     fi
 }
 
-function test_prompt {
-    
-    if prompt "test: "; then
-        echo "True"
-    else
-        echo "False"
-    fi
-}
+
+
