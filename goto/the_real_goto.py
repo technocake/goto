@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # code: utf-8
 'Goto - the magic project that takes you where you need to be, now.'
+from __future__ import absolute_import
+
 import sys
 import codecs
 
