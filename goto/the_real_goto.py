@@ -11,8 +11,11 @@ from .gotomagic.text import print_text
 
 
 # make sure we print in utf-8
-if sys.stdout.encoding != 'utf-8':
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+try:
+    if sys.stdout.encoding != 'utf-8':
+        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+except:
+    pass # TODO: implement utf-8 encoding of py2.7
 
 
 def usage():
