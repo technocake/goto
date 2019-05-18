@@ -1,0 +1,7 @@
+include README.md
+include POST_INSTALL_INSTRUCTIONS.txt
+# Add all in goto folder
+graft goto
+# Exclude all cache everywhere
+global-exclude __pycache__
+global-exclude *.py[co]

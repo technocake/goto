@@ -1,8 +1,25 @@
 #!/bin/bash
 
+# Checking if we are sourced
+# see: https://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced
+([[ -n $ZSH_EVAL_CONTEXT && $ZSH_EVAL_CONTEXT =~ :file$ ]] || 
+[[ -n $BASH_VERSION ]] && (return 0 2>/dev/null)) && sourced=0 || sourced=1
+
+# If goto is not run in sourced mode, it is not setup properly yet
+if [[ $sourced -eq 1 ]]; then
+    echo "Ah Hoy!"
+    echo 
+    echo "In order to make goto work properly, run this command now:"
+    echo
+    echo "       install_goto"
+    echo
+    exit 1
+fi
+
+
+
 PROJECT=$(cat ${HOME}/.goto/active-project)
 PROJECTFILE="${HOME}/.goto/projects/${PROJECT}.json"
-GOTO="/usr/local/opt/goto/the_real_goto.py"
 
 # Special case 1 (goto cd <magicword>)
 if [ "$1" = "cd" ]; then
@@ -32,4 +49,4 @@ if [ "$#" -eq 1 ]; then
 fi
 
 # General case
-python "$GOTO" "$PROJECTFILE" "$@"
+the_real_goto.py "$PROJECTFILE" "$@"
