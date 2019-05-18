@@ -1,4 +1,6 @@
 import setuptools
+from setuptools import find_packages
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -16,7 +18,11 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gotogoto.ninja",
-    packages=['goto'],
+    include_package_data=True,
+    package_dir={
+        '': 'goto'
+    },
+    packages=find_packages(where='goto'),
     scripts=[
         'bin/goto',
         'bin/project',
@@ -25,7 +31,7 @@ setuptools.setup(
         'bin/install_goto',
     ],
     entry_points={
-        'console_scripts': ['the_real_goto.py=goto.the_real_goto:main']
+        'console_scripts': ['the_real_goto.py=the_real_goto:main']
     },
     classifiers=[
         "Programming Language :: Python :: 3",
