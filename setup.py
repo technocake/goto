@@ -11,7 +11,7 @@ with open("POST_INSTALL_INSTRUCTIONS.txt", "r") as fh:
 
 setuptools.setup(
     name="magicgoto",
-    version="1.3.3",
+    version="1.3.14",
     author="Robin Aaberg",
     author_email="robin.garen@gmail.com",
     description="Magic goto - goto where you need to be, right now.",
@@ -20,9 +20,9 @@ setuptools.setup(
     url="https://gotogoto.ninja",
     include_package_data=True,
     package_dir={
-        '': 'goto'
+        '': '.'
     },
-    packages=find_packages(where='goto'),
+    packages=find_packages(where='.'),
     scripts=[
         'bin/goto',
         'bin/project',
@@ -31,7 +31,7 @@ setuptools.setup(
         'bin/install_goto',
     ],
     entry_points={
-        'console_scripts': ['the_real_goto.py=the_real_goto:main']
+        'console_scripts': ['the_real_goto.py=goto.the_real_goto:main']
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -40,4 +40,3 @@ setuptools.setup(
     ],
 )
    
-print(post_install_instructions)
