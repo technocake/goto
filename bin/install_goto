@@ -40,6 +40,8 @@ else
 
 fi
 
+echo "Close and reopen your terminal, and goto will now work it's magic."
+
 
 # make goto ready -- now.
 source start_goto || check_status
