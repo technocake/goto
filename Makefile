@@ -21,6 +21,11 @@ clean:
 upload:
 	twine upload --repository testpypi dist/*
 
+publish:
+	make clean
+	make compile
+	twine upload dist/*
+
 install:
 	pip install --no-cache-dir --upgrade --force-reinstall --index-url https://test.pypi.org/simple/ magicgoto
 
