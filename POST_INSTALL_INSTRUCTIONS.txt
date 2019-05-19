@@ -1,0 +1,10 @@
+Congratulations - you got goto! 
+
+Now there is one last step to let it do it's magic, always.
+
+
+run this command:
+    install_goto
+    
+
+(Or you could manually add this to your .rc file:  source start_goto)

@@ -34,6 +34,9 @@ def open_sublime(code):
     "hack"
     subprocess.call('subl "%s"' % code, shell=True)
 
+def open_vscode(code):
+    "hack"
+    subprocess.call('code "%s"' % code, shell=True)
 
 def open_folder(folder):
     "opens folders"

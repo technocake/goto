@@ -1,0 +1,60 @@
+#!/bin/bash
+. _gotoutils # load common utils 
+     
+
+
+echo Step 1: Setting up magic data folder in ${HOME}/.goto
+MAGICPATH="${HOME}/.goto"
+if [[ ! -d "$MAGICPATH" ]]; then
+    mkdir "${HOME}/.goto" || check_status
+    mkdir "${HOME}/.goto/projects" || check_status
+    touch "${HOME}/.goto/active-project" || check_status
+fi
+
+
+echo Step 2: add goto startup script to bash config file
+if [ -f "${HOME}/.bash_profile" ]; then
+    echo 
+    echo "Next step is required to make goto work:"
+    echo
+
+    if prompt "Add goto startup script to .bash_profile? [y|n]: "; then
+        echo
+        echo "source start_goto" >> "${HOME}/.bash_profile" || check_status
+    else
+    echo   
+    echo "If you want to do this manually add the line 'source start_goto' to your .bash_profile"
+    fi
+else
+    echo "~/.bash_profile does not exist"
+    echo 
+    echo "To make goto function properly, add this line to your bash config file: "
+    echo
+    echo "         source start_goto"
+    echo
+    echo "into one of these (.bashrc | .profile | .bash_profile)"
+
+    if prompt "Want to append to .bashrc? [y|n]: "; then
+        echo "source start_goto" >> "${HOME}/.bashrc" || check_status
+    fi
+
+fi
+
+echo "Close and reopen your terminal, and goto will now work it's magic."
+
+
+# make goto ready -- now.
+source start_goto || check_status
+
+# add your first project
+project add goto || check_status
+
+# set the context to this project
+project goto || check_status
+
+# add your first shortcuts
+goto add goto https://github.com/technocake/goto || check_status
+goto add github https://github.com/technocake/goto || check_status
+
+
+echo Installation Succesful!
