@@ -17,9 +17,27 @@ if [[ $sourced -eq 1 ]]; then
 fi
 
 
-
 PROJECT=$(cat ${HOME}/.goto/active-project)
 PROJECTFILE="${HOME}/.goto/projects/${PROJECT}.json"
+
+# Catching deactivated state
+if [ -z "$PROJECT" ]; then
+    echo "Ah Hoy!"
+    echo
+    echo "Error: Goto has no active project selected currently. "
+    echo
+    echo
+    echo "To activate a project type:"
+    echo
+    echo "       project <project-name>"
+    echo
+    echo
+    echo "For more help about projects in goto, type:"
+    echo
+    echo "      project help"
+    echo
+    return 1
+fi
 
 # Special case 1 (goto cd <magicword>)
 if [ "$1" = "cd" ]; then
