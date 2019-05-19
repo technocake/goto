@@ -1,17 +1,23 @@
 #!/usr/bin/env python
 # code: utf-8
 'Goto - the magic project that takes you where you need to be, now.'
+from __future__ import absolute_import
+
 import sys
 import codecs
-from gotomagic.handlers import *
-from gotomagic.magic import GotoMagic, is_file
-import gotomagic.text as text
-from gotomagic.text import print_text
+
+from .gotomagic.handlers import *
+from .gotomagic.magic import GotoMagic, is_file
+from .gotomagic import text
+from .gotomagic.text import print_text
 
 
 # make sure we print in utf-8
-if sys.stdout.encoding != 'utf-8':
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+try:
+    if sys.stdout.encoding != 'utf-8':
+        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+except:
+    pass # TODO: implement utf-8 encoding of py2.7
 
 
 def usage():
@@ -46,8 +52,7 @@ def usage():
         goto vscode           
     """
 
-
-if __name__ == "__main__":
+def main():
     jfile = sys.argv[1]
     magic = GotoMagic(jfile)
 
@@ -134,3 +139,6 @@ if __name__ == "__main__":
                 open_folder(url)
             else:
                 open_link(magic[sys.argv[2]])
+
+if __name__ == '__main__':
+    main()
