@@ -10,6 +10,7 @@ _usage() {
     echo "     add <projectname> - adds a new project and makes it the active project."
     echo "     rm  <projectname> - removes the project"
     echo "     list              - lists all projects"
+    echo "     deactivate        - deactivates goto project"
     echo "     help              - if you want to read this one more time."
 }
 
@@ -30,6 +31,10 @@ _rmproject() {
 
 _listprojects() {
     ls "$STATEDIR/projects" | grep -v .json
+}
+
+_deactivate_project() {
+    echo "" > "$STATEDIR/active-project"
 }
 
 _changeproject() {
@@ -85,11 +90,15 @@ if [ "$1" = "rm" ]
     else
        _rmproject "$2" "$3"
        # TODO if active project == removed what to do? _changeproject "$2"
+       _deactivate_project
         exit 0
     fi
 fi
 
-
+if [ "$1" = "deactivate" ]; then
+    _deactivate_project
+    exit 1
+fi
 
 # otherwise, activate project given
 _changeproject "$1"
