@@ -16,13 +16,19 @@ if [[ $sourced -eq 1 ]]; then
     exit 1
 fi
 
+# GOTOPATH may be set from environment, 
+# if not default to ~/.goto
+if [[ -z "$GOTOPATH" ]]; then
+    GOTOPATH="${HOME}/.goto"
+fi
 
-PROJECT=$(cat ${HOME}/.goto/active-project)
-PROJECTFILE="${HOME}/.goto/projects/${PROJECT}.json"
+
+PROJECT=$(cat "${GOTOPATH}/active-project")
+PROJECTFILE="${GOTOPATH}/projects/${PROJECT}.json"
 
 # Catching deactivated state
 if [ -z "$PROJECT" ]; then
-    echo "Ah Hoy!"
+    echo "Ah hoy!"
     echo
     echo "Error: Goto has no active project selected currently. "
     echo
