@@ -10,6 +10,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
+
 function set_up {
     if [[ -z "$GOTOPATH" ]]; then
         echo "GOTOPATH not set in environment."
@@ -28,6 +29,7 @@ function _fail_test {
     echo -e "${RED}Test failed - $message${NC}"
     echo "OUTPUT: $(cat "$OUTPUTFILE")"
     _display_projectfile
+    echo "Test failed - $message"
     tear_down
     exit 1
 }
@@ -153,6 +155,7 @@ function discover_and_run_tests {
 
     echo -e "${GREEN}All tests passed!${NC}"
     echo "ran $DISCOVERED_TESTS tests successfully!"
+
 }
 
 
