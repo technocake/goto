@@ -64,6 +64,15 @@ Ah hoy!
                 goto add {magicword} <uri>
     """,
 
+    show_missing_magicword="""
+Ah hoy!
+    Error: missing magic word.
+
+    Try again by adding the magicword you want to show:
+
+                goto show <magicword>
+    """,
+
     missing_magicword_and_uri="""
 Ah hoy!
     - Remember, a shortcut has a name and a target uri (or path).

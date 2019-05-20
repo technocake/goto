@@ -30,5 +30,25 @@ function check_status {
     fi
 }
 
+function load_gotopath {
+    if [[ -z "$GOTOPATH" ]]; then
+        GOTOPATH="${HOME}/.goto"
+    fi
+}
+
+function create_goto_folders {
+    FOLDER="$1"
+
+    if [[ -z "$FOLDER" ]]; then
+        echo "Fatal error: GOTOPATH is empty (install directory)"
+        exit 1
+    fi
+
+    if [[ ! -d "$FOLDER" ]]; then
+        mkdir "${FOLDER}" || check_status
+        mkdir "${FOLDER}/projects" || check_status
+        touch "${FOLDER}/active-project" || check_status
+    fi
+}
 
 
