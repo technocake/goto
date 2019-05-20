@@ -1,7 +1,7 @@
 from unittest import TestCase
 import os
 
-from .magic import GotoMagic
+from ..gotomagic.magic import GotoMagic
 
 tmpgotofile = 'testgotofile.json'
 
