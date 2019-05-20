@@ -48,6 +48,7 @@ function create_goto_folders {
         mkdir "${FOLDER}" || check_status
         mkdir "${FOLDER}/projects" || check_status
         touch "${FOLDER}/active-project" || check_status
+        echo "Created goto folder in '${FOLDER}'"
     fi
 }
 

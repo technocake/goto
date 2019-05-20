@@ -78,6 +78,7 @@ def main():
                         text.warning["missing_uri"],
                         magicword=sys.argv[3]
                     )
+                    exit(1)
                 else:
                     print_text(
                         text.warning["missing_magicword_and_uri"]

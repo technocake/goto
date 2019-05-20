@@ -41,6 +41,7 @@ class GotoMagic():
                 uri=self.magic[magicword],
                 newuri=uri
             )
+            exit(1)
         else:
             self.magic[magicword] = uri
 
@@ -68,6 +69,7 @@ class GotoMagic():
                 text.warning["magicword_does_not_exist"],
                 magicword=magicword
             )
+            exit(1)
 
     def get_uri(self, magicword):
         """ returns the uri from the shortcut of name <magicword> """
