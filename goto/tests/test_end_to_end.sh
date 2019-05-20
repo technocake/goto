@@ -139,6 +139,8 @@ function tear_down {
     if [[ -n "$GOTOPATH" && -d "$GOTOPATH" ]]; then
         rm -rf "$GOTOPATH"
     fi
+
+    rm "$OUTPUTFILE"
 }
 
 function discover_and_run_tests {
