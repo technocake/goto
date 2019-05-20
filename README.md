@@ -22,9 +22,7 @@ In example:
 
 #### Mac OS-X / Linux
 ```
-git clone https://github.com/technocake/goto
-cd goto 
-./install.sh
+pip install magicgoto
 ```
 After install, close and reopen your terminal.
 
