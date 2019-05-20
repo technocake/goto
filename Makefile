@@ -15,6 +15,7 @@ compile:
 	python setup.py sdist
 
 clean:
+	python setup.py clean
 	rm dist/* || echo Nothing to clean
 	rm -rf **/*.egg-info
 

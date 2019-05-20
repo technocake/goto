@@ -1,7 +1,8 @@
 #!/bin/bash
 . _gotoutils # load common utility functions
+load_gotopath
 
-STATEDIR=${HOME}/.goto
+STATEDIR="$GOTOPATH"
 
 
 _usage() {
@@ -46,11 +47,12 @@ _changeproject() {
         echo "If you want to create it use the command:"
         echo
         echo "  project add $1"
+        exit 1
     fi
 }
 
 _showactiveproject() {
-    cat "$STATEDIR/active-project" 
+        cat "$STATEDIR/active-project" 
 }
 
 # ---------------------------
@@ -76,6 +78,7 @@ if [ "$1" = "add" ]
     then 
     if [ "$2" = "" ] ; then
         _usage
+        exit 1
     else
 	   _addproject "$2"
        _changeproject "$2"

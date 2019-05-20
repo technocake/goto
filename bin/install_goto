@@ -1,18 +1,13 @@
 #!/bin/bash
 . _gotoutils # load common utils 
-     
+load_gotopath
 
 
-echo Step 1: Setting up magic data folder in ${HOME}/.goto
-MAGICPATH="${HOME}/.goto"
-if [[ ! -d "$MAGICPATH" ]]; then
-    mkdir "${HOME}/.goto" || check_status
-    mkdir "${HOME}/.goto/projects" || check_status
-    touch "${HOME}/.goto/active-project" || check_status
-fi
+echo "Step 1: Setting up magic data folder in $GOTOPATH"
+create_goto_folders "$GOTOPATH"
 
 
-echo Step 2: add goto startup script to bash config file
+echo "Step 2: add goto startup script to bash config file"
 if [ -f "${HOME}/.bash_profile" ]; then
     echo 
     echo "Next step is required to make goto work:"
