@@ -60,13 +60,15 @@ jobs:
 
   test:
     machine:
-      image: circleci/classic:201808-01
+      image: circleci/classic
       working_directory: ~/repo
     steps:
       - checkout
       - run:
           name: "probe system"
-          command: cat $RCFILE
+          command: |
+            cat ~/.bashrc
+            pyenv install --list
       - run:
           name: "install python versions"
           command: |
