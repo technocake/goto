@@ -95,7 +95,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            python3 -m venv venv
+            python -m venv venv
             . venv/bin/activate
             pip install -r requirements_dev.txt
 
@@ -104,18 +104,24 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements_dev.txt" }}
 
-
-
-
-
       - run:
           name: "Switch to Python v3.7"
           command: |
             pyenv versions
             pyenv global 3.5.2
+
+      - run:
+          name: install goto
+          command: |
+            . venv/bin/activate
+            pip install -e .
+
+      
       - run:
           name: "run goto tests"
           command: |
+            eval "$(pyenv init -)"
+            source start_goto
             make test
 workflows:
   version: 2
