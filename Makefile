@@ -6,7 +6,7 @@ everything:
 	make clean
 	make compile
 	make test
-	make upload
+	make testpublish
 	make uninstall
 	make install
 	make install
@@ -30,7 +30,7 @@ unittest:
 endtoendtest:
 	GOTOPATH=/tmp/.goto goto/tests/test_end_to_end.sh 
 	
-upload:
+testpublish:
 	twine upload --repository testpypi dist/*
 
 publish:

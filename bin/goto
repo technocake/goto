@@ -75,6 +75,5 @@ else
     echo
     echo "       install_goto"
     echo
-    return 1 2>/dev/null  # Signaling that this command did not succeed, 
-        # do not use exit, pyenv messes it up: 
+    # do not use exiti 1, pyenv messes it up: see issue #57 on github
 fi
