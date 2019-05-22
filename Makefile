@@ -58,3 +58,10 @@ testcircleci:
 	# https://circleci.com/docs/2.0/local-cli/
 	circleci config validate
 	circleci local execute
+
+
+
+installpyenv:
+	brew install pyenv
+	pyenv install 3.7.2 
+	pyenvinstall 3.6.8

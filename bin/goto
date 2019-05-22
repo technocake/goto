@@ -5,72 +5,76 @@
 ([[ -n $ZSH_EVAL_CONTEXT && $ZSH_EVAL_CONTEXT =~ :file$ ]] || 
 [[ -n $BASH_VERSION ]] && (return 0 2>/dev/null)) && sourced=0 || sourced=1
 
-# If goto is not run in sourced mode, it is not setup properly yet
-if [[ $sourced -eq 1 ]]; then
+# If goto is  run in sourced mode, contiune.
+# Else: print warning. NO EXIT statement.
+if [[ $sourced -eq 0 ]]; then
+
+    # GOTOPATH may be set from environment, 
+    # if not default to ~/.goto
+    if [[ -z "$GOTOPATH" ]]; then
+        GOTOPATH="${HOME}/.goto"
+    fi
+
+
+    PROJECT=$(cat "${GOTOPATH}/active-project")
+    PROJECTFILE="${GOTOPATH}/projects/${PROJECT}.json"
+
+    # Catching deactivated state
+    if [ -z "$PROJECT" ]; then
+        echo "Ah hoy!"
+        echo
+        echo "Error: Goto has no active project selected currently. "
+        echo
+        echo
+        echo "To activate a project type:"
+        echo
+        echo "       project <project-name>"
+        echo
+        echo
+        echo "For more help about projects in goto, type:"
+        echo
+        echo "      project help"
+        echo
+        return 1
+    fi
+
+    # Special case 1 (goto cd <magicword>)
+    if [ "$1" = "cd" ]; then
+            # hack to cd in this shell to the ouput of goto show <magicword>
+            path=$(goto show "$2")
+            cd "$path"
+        return 0
+    fi
+
+
+    # Special case 2  (goto <magicword>)
+    if [ "$#" -eq 1 ]; then
+
+        # if run like: goto <magicword> 
+        path=$(goto show "$1")
+
+        # if path is folder, cd to folder
+        if [ -d "$path" ]; then
+            cd "$path"
+            return 0
+
+        # if path is file, open file
+        elif [ -f "$path" ]; then
+            goto open "$1"
+            return 0
+        fi
+    fi
+
+    # General case
+    the_real_goto.py "$PROJECTFILE" "$@"
+
+else
     echo "Ah Hoy!"
     echo 
     echo "In order to make goto work properly, run this command now:"
     echo
     echo "       install_goto"
     echo
-    exit 1
+    return 1 2>/dev/null  # Signaling that this command did not succeed, 
+        # do not use exit, pyenv messes it up: 
 fi
-
-# GOTOPATH may be set from environment, 
-# if not default to ~/.goto
-if [[ -z "$GOTOPATH" ]]; then
-    GOTOPATH="${HOME}/.goto"
-fi
-
-
-PROJECT=$(cat "${GOTOPATH}/active-project")
-PROJECTFILE="${GOTOPATH}/projects/${PROJECT}.json"
-
-# Catching deactivated state
-if [ -z "$PROJECT" ]; then
-    echo "Ah hoy!"
-    echo
-    echo "Error: Goto has no active project selected currently. "
-    echo
-    echo
-    echo "To activate a project type:"
-    echo
-    echo "       project <project-name>"
-    echo
-    echo
-    echo "For more help about projects in goto, type:"
-    echo
-    echo "      project help"
-    echo
-    return 1
-fi
-
-# Special case 1 (goto cd <magicword>)
-if [ "$1" = "cd" ]; then
-	# hack to cd in this shell to the ouput of goto show <magicword>
-	path=$(goto show "$2")
-	cd "$path"
-    return 0
-fi
-
-
-# Special case 2  (goto <magicword>)
-if [ "$#" -eq 1 ]; then
-
-    # if run like: goto <magicword> 
-    path=$(goto show "$1")
-
-    # if path is folder, cd to folder
-    if [ -d "$path" ]; then
-        cd "$path"
-        return 0
-
-    # if path is file, open file
-    elif [ -f "$path" ]; then
-        goto open "$1"
-        return 0
-    fi
-fi
-
-# General case
-the_real_goto.py "$PROJECTFILE" "$@"
