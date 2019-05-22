@@ -123,6 +123,7 @@ jobs:
       - run:
           name: "run goto tests"
           command: |
+            . venv/bin/activate
             eval "$(pyenv init -)"
             source start_goto
             make test
