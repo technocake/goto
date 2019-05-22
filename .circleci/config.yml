@@ -78,7 +78,7 @@ jobs:
           name: "Switch to Python v3.7"
           command: |
             pyenv versions
-            pyenv global 3.7.0
+            pyenv global 3.5.2
       - run:
           name: "run goto tests"
           command: |
