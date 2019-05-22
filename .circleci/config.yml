@@ -57,3 +57,22 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+  integrationtest:
+    machine:
+      image: circleci/classic:201808-01
+      working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: "probe system"
+          command: cat $RCFILE
+      - run:
+          name: "install python versions"
+          command: |
+            pyenv install 3.6.8
+      - run:
+          name: "Switch to Python v3.7"
+          command: |
+            pyenv versions
+            pyenv global 3.7.0
