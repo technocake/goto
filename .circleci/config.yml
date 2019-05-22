@@ -84,6 +84,13 @@ jobs:
       #     paths:
       #       - /opt/circleci/.pyenv/
       #     key: v1-versions-3.6.3
+      
+      - run:
+          name: "Switch to Python v3.5.2"
+          command: |
+            pyenv versions
+            pyenv global 3.5.2
+
 
       # Download and cache dependencies
       - restore_cache:
@@ -104,11 +111,7 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements_dev.txt" }}
 
-      - run:
-          name: "Switch to Python v3.5.2"
-          command: |
-            pyenv versions
-            pyenv global 3.5.2
+      
 
       - run:
           name: install goto
