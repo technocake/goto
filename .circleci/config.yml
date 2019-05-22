@@ -69,11 +69,45 @@ jobs:
           command: |
             cat ~/.bashrc
             pyenv install --list
+
+      - restore_cache:
+          keys:
+            - v1-versions-3.6.3
+            # fallback to using the latest cache if no exact match is found
+            - v1-versions-
       - run:
           name: "install python versions"
-          enabled: false
           command: |
             pyenv install 3.6.3
+
+      - save_cache:
+          paths:
+            - /opt/circleci/.pyenv/
+          key: v1-versions-3.6.3
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements_dev.txt" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements_dev.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements_dev.txt" }}
+
+
+
+
+
       - run:
           name: "Switch to Python v3.7"
           command: |
