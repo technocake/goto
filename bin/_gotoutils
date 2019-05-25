@@ -1,4 +1,5 @@
-#!/bin/bash
+
+#
 #   Common utils for goto scripts in bash
 #   
 #########################################
@@ -6,7 +7,9 @@
 
 function prompt {
     # Asks a y|n question and returns true or false.
-    question="$1"
+    local question="$1"
+    local REPLY
+
     read -p "$question" REPLY
     if [[ $REPLY =~ ^[Yy.*]$ ]]; then
         return 0
@@ -19,7 +22,7 @@ function prompt {
 function check_status {
     # Checking exit status of prev cmd:
     # see  https://stackoverflow.com/questions/26675681/how-to-check-the-exit-status-using-an-if-statement-using-bash
-    exit_status="$?"
+    local exit_status="$?"
     if [ $exit_status -ne 0 ]; then
         echo "ERROR: Installation step failed with exit code $exit_status"
         if [[ "$#" -ne 2 ]]; then # pass an argument to this and we won't exit
@@ -31,16 +34,70 @@ function check_status {
 }
 
 function load_gotopath {
+    # GOTOPATH is global
     if [[ -z "$GOTOPATH" ]]; then
         GOTOPATH="${HOME}/.goto"
     fi
 }
 
+function find_rc_file {
+    local RCFILE
+
+    # supports ~/.bashrc ~/.bash_profile and ~/.zshrc
+    if [ -n "$ZSH_VERSION" ]; then
+        RCFILE="${HOME}/.zshrc"
+
+    elif [ -n "$BASH_VERSION" ]; then
+
+        if [ -f "${HOME}/.bash_profile" ]; then
+            RCFILE="${HOME}/.bash_profile"
+        elif [ -f "${HOME}/.bashrc" ]; then
+            RCFILE="${HOME}/.bashrc"
+        else
+            echo "Ah hoy! Failed to determine rcfile. please install manually" >&2
+            return 1
+        fi
+    else
+        echo "Error: only supporting ZSH and BASH" >&2
+        return 1
+    fi
+
+    echo "$RCFILE"
+}
+
+
+function write_init_command_to_rcfile {
+    # Handles writing the right thing to rcfile
+    local RCFILE
+
+    RCFILE=$(find_rc_file)
+    if [ -z "$RCFILE" ]; then
+        echo "Error finding RCfile" >&2 && exit 1
+    fi
+
+    if prompt "Add goto startup script to $RCFILE? [y|n]: "; then
+        echo
+        echo -e "# GOTO" >> "$RCFILE" || check_status
+        echo -e "if start_goto 2>/dev/null; then" >> "$RCFILE" || check_status
+        echo -e "  source start_goto" >> "$RCFILE" || check_status
+        echo -e "fi" >> "$RCFILE" || check_status
+    else
+        echo   
+        echo "If you want to do this manually add this to your $RCFILE:" >&2
+        echo "  if start_goto 2> /dev/null; then" >&2
+        echo "      source start_goto" >&2
+        echo "  fi" >&2
+        exit 1
+    fi
+
+}
+
+
 function create_goto_folders {
-    FOLDER="$1"
+    local FOLDER="$1"
 
     if [[ -z "$FOLDER" ]]; then
-        echo "Fatal error: GOTOPATH is empty (install directory)"
+        echo "Fatal error: GOTOPATH is empty (install directory)" >&2
         exit 1
     fi
 

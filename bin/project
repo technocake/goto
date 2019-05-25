@@ -1,4 +1,4 @@
-#!/bin/bash
+
 . _gotoutils # load common utility functions
 load_gotopath
 
