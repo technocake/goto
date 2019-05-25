@@ -13,7 +13,7 @@ everything:
 
 compile:
 	python setup.py build
-	python setup.py sdist
+	python setup.py sdist bdist_wheel
 
 clean:
 	python setup.py clean
@@ -31,6 +31,9 @@ endtoendtest:
 	GOTOPATH=/tmp/.goto goto/tests/test_end_to_end.sh 
 	
 testpublish:
+	make clean
+	make compile
+	make test
 	twine upload --repository testpypi dist/*
 
 publish:
