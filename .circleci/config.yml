@@ -57,3 +57,79 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+  test:
+    machine:
+      image: circleci/classic
+      working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: "probe system"
+          command: |
+            cat ~/.bashrc
+            pyenv install --list
+
+      # - restore_cache:
+      #     keys:
+      #       - v1-versions-3.6.3
+      #       # fallback to using the latest cache if no exact match is found
+      #       - v1-versions-
+      # - run:
+      #     name: "install python versions"
+      #     command: |
+      #       pyenv install 3.6.3
+
+      # - save_cache:
+      #     paths:
+      #       - /opt/circleci/.pyenv/
+      #     key: v1-versions-3.6.3
+      
+      - run:
+          name: "Switch to Python v3.5.2"
+          command: |
+            pyenv versions
+            pyenv global 3.5.2
+
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements_dev.txt" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements_dev.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements_dev.txt" }}
+
+      
+
+      - run:
+          name: install goto
+          command: |
+            . venv/bin/activate
+            pip install -e .
+
+      
+      - run:
+          name: "run goto tests"
+          command: |
+            . venv/bin/activate
+            eval "$(pyenv init -)"
+            source start_goto
+            make endtoendtest
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test

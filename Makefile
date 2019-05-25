@@ -6,14 +6,14 @@ everything:
 	make clean
 	make compile
 	make test
-	make upload
+	make testpublish
 	make uninstall
 	make install
 	make install
 
 compile:
 	python setup.py build
-	python setup.py sdist
+	python setup.py sdist bdist_wheel
 
 clean:
 	python setup.py clean
@@ -30,7 +30,10 @@ unittest:
 endtoendtest:
 	GOTOPATH=/tmp/.goto goto/tests/test_end_to_end.sh 
 	
-upload:
+testpublish:
+	make clean
+	make compile
+	make test
 	twine upload --repository testpypi dist/*
 
 publish:
@@ -58,3 +61,10 @@ testcircleci:
 	# https://circleci.com/docs/2.0/local-cli/
 	circleci config validate
 	circleci local execute
+
+
+
+installpyenv:
+	brew install pyenv
+	pyenv install 3.7.2 
+	pyenvinstall 3.6.8

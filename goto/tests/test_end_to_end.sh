@@ -1,7 +1,7 @@
 #!/bin/bash
 # load common goto utils
 source _gotoutils
-source start_goto
+
 
 TESTPROJECT=testproject
 OUTPUTFILE=/tmp/.gototest-cmd-output
@@ -89,16 +89,59 @@ function _display_projectfile {
 }
 
 
-function test_00_deactivate_project {
+function test_01_not_initialized_should_fail {
+    echo "... not initialized and deactived"
+    _cmd_should_fail "goto"
+
+    echo "... activating a project"
+    _cmd_should_succeed "project add testgotoinit"
+    _cmd_should_succeed "project testgotoinit"
+    _cmd_should_fail "goto list"
+    _cmd_should_fail "goto help"
+
+    # source detection should kick in here
+    _failing_cmd_should_give_human_message "goto"
+    _failing_cmd_should_give_human_message "goto list"
+    _failing_cmd_should_give_human_message "goto add test test"
+    _failing_cmd_should_give_human_message "goto show test"
+    _failing_cmd_should_give_human_message "goto rm test"
+    _failing_cmd_should_give_human_message "goto copy test"
+    _failing_cmd_should_give_human_message "goto help"
+
+}
+
+function test_02_initialization_should_work {
+    local testcdpath=/tmp
+    _cmd_should_succeed "source start_goto"
+    
+
+    source start_goto
+    echo "... start_goto is now sourced for the rest of the remaining tests"
+    
+    _cmd_should_succeed "goto"
+
+    # When goto is inititalized, cd should work
+    _cmd_should_succeed "goto add testcd ${testcdpath}"
+    _cmd_should_succeed "goto testcd"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+
+    _cmd_should_succeed "goto cd testcd"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+}
+
+
+function test_03_deactivate_project {
     _cmd_should_succeed "project deactivate"
 }
 
-function test_01_switch_to_nonexistent_project {
+
+function test_04_switch_to_nonexistent_project {
     _cmd_should_fail "project $TESTPROJECT"
     _cmd_should_fail "goto list"
 }
 
-function test_02_add_project {
+
+function test_05_add_project {
     _cmd_should_succeed "project add $TESTPROJECT"
     if [ ! -f "${GOTOPATH}/projects/${TESTPROJECT}" ]; then
         _fail_test "project file not created"
@@ -107,7 +150,7 @@ function test_02_add_project {
 }
 
 
-function test_03_goto_add {
+function test_06_goto_add {
     magicword="test_add"
     uri="http://example.com"
 
@@ -117,7 +160,7 @@ function test_03_goto_add {
 }
 
 
-function test_04_goto_show {
+function test_07_goto_show {
     existing_magicword="test_show"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
