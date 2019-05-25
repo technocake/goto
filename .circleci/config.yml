@@ -126,7 +126,7 @@ jobs:
             . venv/bin/activate
             eval "$(pyenv init -)"
             source start_goto
-            make test
+            make endtoendtest
 workflows:
   version: 2
   build_and_test:
