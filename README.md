@@ -33,6 +33,15 @@ After install, close and reopen your terminal.
 #### Windows (using gitbash)
 Do the same as above, but **open git bash as Administrator**
 
+
+#### Linux - User Site install
+On linux, the recommended way to install goto is by `pip install --user magicgoto`
+
+This requires that you have your User site bin  in your path.
+Usually this is `~/.local/bin`. So adding `PATH="${HOME}/.local/bin:$PATH"` to
+your rcfile should do the trick in most cases. 
+
+
 ### Commands
 
 ##### goto
@@ -81,8 +90,6 @@ Usage: project [add <projectname>] | [list]
 
 
 
-
-
 #### How does Goto know which project is the active one?
 
 You tell goto with this command:  `project <project-name>`
@@ -113,6 +120,7 @@ You tell Goto with the command:
      project add <project-name>
 
  
+
 
 #### How does Goto know which shortcuts there are in the project?
 
