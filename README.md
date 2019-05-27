@@ -9,7 +9,7 @@ By adding shortcuts to goto, so called magic words, you can jump to them.
 The shortcuts are associated with a project name. And you can switch the project context
 any time.
 
-###Usage
+### Usage
 
 ```bash
 $ project your-project
@@ -35,11 +35,12 @@ Do the same as above, but **open git bash as Administrator**
 
 #### Linux - User Site install
 On linux, the recommended way to install goto is by `pip install --user magicgoto`
+
 This requires that you have your User site bin  in your path.
-Usually this is `~/.local/bin`. So adding `PATH="${HOME}/.local/bin:$PATH" to
+Usually this is `~/.local/bin`. So adding `PATH="${HOME}/.local/bin:$PATH"` to
 your rcfile should do the trick in most cases. 
 
-###Commands
+### Commands
 
 ##### goto
 
@@ -87,8 +88,6 @@ Usage: project [add <projectname>] | [list]
 
 
 
-
-
 #### How does Goto know which project is the active one?
 
 You tell goto with this command:  `project <project-name>`
@@ -120,6 +119,7 @@ You tell Goto with the command:
 
  
 
+
 #### How does Goto know which shortcuts there are in the project?
 
 Define them once, and use them a thousand times. By this command:
@@ -129,7 +129,7 @@ Define them once, and use them a thousand times. By this command:
 A **magic-word** is the name of your shortcut. 
 The **URI** is the target of your shortcut. It could be a file, a directory, a web-url.
 
-#####Examples:
+##### Examples:
 
 * `goto add github https://github.com/technocake/goto`
 * `goto add music ~/the/sound/of/music`  
