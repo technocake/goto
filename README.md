@@ -9,7 +9,7 @@ By adding shortcuts to goto, so called magic words, you can jump to them.
 The shortcuts are associated with a project name. And you can switch the project context
 any time.
 
-###Usage
+### Usage
 
 ```bash
 $ project your-project
@@ -33,7 +33,7 @@ After install, close and reopen your terminal.
 #### Windows (using gitbash)
 Do the same as above, but **open git bash as Administrator**
 
-###Commands
+### Commands
 
 ##### goto
 
@@ -123,7 +123,7 @@ Define them once, and use them a thousand times. By this command:
 A **magic-word** is the name of your shortcut. 
 The **URI** is the target of your shortcut. It could be a file, a directory, a web-url.
 
-#####Examples:
+##### Examples:
 
 * `goto add github https://github.com/technocake/goto`
 * `goto add music ~/the/sound/of/music`  
