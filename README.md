@@ -1,23 +1,27 @@
-## goto 
-v1.0-alpha
+## Goto 
+v1.4.3
 
-Goto is a magic tool that takes you were you want to be, now. 
+*Goto is a magic tool that takes you were you want to be, now.* 
 
+When you are involved in different projects,  they all  have their own folders, important files, links to good articles or key websites. The problem is that all these are spread out on different locations.
 
-Projects have their own folders, important files, links to good articles or key websites. 
-The problem is that all these are spread out on different locations.
 By adding shortcuts to goto, so called magic words, you can jump to them.
-The shortcuts are assciated with a project name. And you can switch the project
+The shortcuts are associated with a project name. And you can switch the project context
 any time.
 
-In example:
+###Usage
 
+```bash
+$ project your-project
+active project is now: your-project
+
+$ goto add github https://github.com/user/your-project
+Added magic word github
+
+$ goto github
+# opens https://github.com/user/your-project in your browser 
 ```
-    goto visualstudio  -->  Opens the solutionfile for the vs solutions file of the current project
-    goto jira          -->  Opens a jira board for the current project
-    goto bitbucket     -->  bitbucket repo for the current project
-```
- 
+
 ### Setup 
 
 #### Mac OS-X / Linux
@@ -29,8 +33,11 @@ After install, close and reopen your terminal.
 #### Windows (using gitbash)
 Do the same as above, but **open git bash as Administrator**
 
+###Commands
 
-### Usage
+##### goto
+
+*Used to add and jump to shortcuts.*
 
 ```
 The basics
@@ -52,8 +59,26 @@ If you add a shortcut to a folder, and name it "code"...
     goto add code <path to folder with code>
     
 ...this command will open folder with Sublime Text
-    goto subl                                
+    goto subl                               
 ```
+
+
+
+**project**
+
+*Used to add and switch project contexts.*
+
+```
+Usage: project [add <projectname>] | [list]
+   other commands:
+     add <projectname> - adds a new project and makes it the active project.
+     rm  <projectname> - removes the project
+     list              - lists all projects
+     deactivate        - deactivates goto project
+     help              - if you want to read this one more time.
+```
+
+
 
 
 
@@ -62,29 +87,47 @@ If you add a shortcut to a folder, and name it "code"...
 
 You tell goto with this command:  `project <project-name>`
 
-Examples: project django-blog  | project website  |  project goto
+Examples: `project django-blog`  | `project website`  |  `project goto`
+
+``````bash
+$ project goto
+active project is now: goto
+``````
+
+
+
+Running `project` with no arguments, will show you the current active project.
+
+```bash
+$ project
+goto
+```
+
+
 
 
 #### How does Goto know which projects exists?
 
 You tell Goto with the command:
 
-     `project add <project-name>`
+     project add <project-name>
 
  
+
 #### How does Goto know which shortcuts there are in the project?
 
 Define them once, and use them a thousand times. By this command:
 
-     `goto add <magic-word> <URI>`
+     goto add <magic-word> <URI>
 
-A magic-word is the name of your shortcut. 
+A **magic-word** is the name of your shortcut. 
+The **URI** is the target of your shortcut. It could be a file, a directory, a web-url.
 
-Examples:
+#####Examples:
 
-`goto add github https://github.com/technocake/goto`
-`goto add music ~/the/sound/of/music`  
-`goto add jira http://jira.com/project/X`
+* `goto add github https://github.com/technocake/goto`
+* `goto add music ~/the/sound/of/music`  
+* `goto add jira http://jira.com/project/X`
 
 First one adds a url to a repo on github relevant to the project.
 The second one adds a folder path.
@@ -99,18 +142,11 @@ Examples:
 
 
 
-## Uninstall (OS-X)
+## Uninstall
 
-```
-rm -rf /usr/local/opt/goto
-
-# remove symbolic links
-rm /usr/local/bin/goto
-rm /usr/local/bin/project
-rm /usr/local/bin/start_goto
-rm /usr/local/bin/_gotoutils
-
-#lastly, remove the line `source start_goto` from .bash_profile
-
+```bash
+pip uninstall magicgoto
+# remove source start_goto from your ~/.bash_profile | ~/.bashrc | ~/.zshrc
+# project data is kept intact in ~/.goto
 ```
 
