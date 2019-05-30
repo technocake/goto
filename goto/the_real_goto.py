@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 import sys
 import codecs
+import subprocess
 
 from .gotomagic.handlers import *
 from .gotomagic.magic import GotoMagic, is_file
@@ -48,8 +49,8 @@ def usage():
     ...this command will open folder with Sublime Text
         goto subl
 
-    ...this command will open folder with Visual Studio Code Text
-        goto vscode
+    Other editors supported:
+    Visual Studio Code: goto vscode | IntelliJ: goto idea    
     """  # noqa
 
 
@@ -122,6 +123,10 @@ def main():
                 open_sublime(magic['code'])
             except KeyError:
                 print(text.warning["no_magicword_named_code"])
+                exit(1)
+            except subprocess.CalledProcessError:
+                print(text.error["subl_launch_failed"])
+                exit(1)
             exit(0)
 
         if sys.argv[2] == 'vscode':
@@ -129,6 +134,21 @@ def main():
                 open_vscode(magic['code'])
             except KeyError:
                 print(text.warning["no_magicword_named_code"])
+                exit(1)
+            except subprocess.CalledProcessError:
+                print(text.error["vscode_launch_failed"])
+                exit(1)
+            exit(0)
+
+        if sys.argv[2] in ['intellij', 'idea']:
+            try:
+                open_intellij(magic['code'])
+            except KeyError:
+                print(text.warning["no_magicword_named_code"])
+                exit(1)
+            except subprocess.CalledProcessError:
+                print(text.error["intellij_launch_failed"])
+                exit(1)
             exit(0)
 
         if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:

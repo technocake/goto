@@ -66,7 +66,9 @@ If you add a shortcut to a folder, and name it "code"...
     goto add code <path to folder with code>
     
 ...this command will open folder with Sublime Text
-    goto subl                               
+    goto subl
+
+...IntelliJ:  goto idea,  VSCode: goto vscode                               
 ```
 
 
