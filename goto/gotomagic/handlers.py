@@ -10,6 +10,8 @@ import webbrowser
 import os
 import sys
 
+from .utils import detect_platform
+
 
 def parse_magic_word(current_project, word):
     """ parses words in format of either:
@@ -31,21 +33,50 @@ def copy_to_clipboard(url):
 
 
 def open_sublime(code):
-    "hack"
-    subprocess.call('subl "%s"' % code, shell=True)
+    """
+        Launches Sublime Text in the code folder via the subl cli-command.
+
+        throws
+            subprocess.CalledProcessError if not able to run the subl command.
+    """
+    subprocess.check_call('subl "%s"' % code, shell=True)
+
 
 def open_vscode(code):
-    "hack"
-    subprocess.call('code "%s"' % code, shell=True)
+    """
+        Launches Visual Studio Code in the code folder via cli.
+
+        throws
+            subprocess.CalledProcessError if not able to run the code command.
+    """
+    subprocess.check_call('code "%s"' % code, shell=True)
+
+
+def open_intellij(code):
+    """
+        Launches IntelliJ from command line and opens it in the code folder.
+
+        throws
+            subprocess.CalledProcessError if not able to run the idea command.
+    """
+    platform = detect_platform()
+
+    if platform in ['osx', 'linux']:
+        cmd = "idea"
+    elif platform == 'win':
+        cmd = "idea.exe"
+    subprocess.check_call('%s "%s"' % (cmd, code), shell=True)
+
 
 def open_folder(folder):
     "opens folders"
     folder = os.path.expanduser(folder)
-    if sys.platform in ['linux', 'linux2']:
+    platform = detect_platform()
+    if platform == 'linux':
         subprocess.call('xdg-open "%s"' % folder, shell=True)
-    elif sys.platform in ['darwin']:
+    elif platform == 'osx':
         subprocess.call('open "%s"' % folder, shell=True)
-    elif sys.platform in ['win32']:
+    elif platform == 'win':
         subprocess.call('start "%s"' % folder, shell=True)
 
 
