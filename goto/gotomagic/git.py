@@ -118,6 +118,10 @@ class GitMagic():
         """ returns number of magicwords. """
         return len(self.magic)
 
+    def keys(self):
+        return self.magic.keys()
+
+
 
 def is_git_repo(path):
     try:

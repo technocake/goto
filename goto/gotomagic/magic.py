@@ -126,6 +126,9 @@ class GotoMagic():
         """ returns number of magicwords. """
         return len(self.magic.keys())
 
+    def keys(self):
+        return self.magic.keys()
+
 
 def parse_uri(raw_uri):
     ''' Main goal right now: distinguish filesystem paths

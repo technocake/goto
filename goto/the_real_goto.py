@@ -188,13 +188,17 @@ def main():
             exit(0)
 
         # default
-        url = magic.get_uri(sys.argv[2])
+        magicword = sys.argv[2]
+        if magicword not in magic.keys():
+            url = shared_magic.get_uri(magicword)
+        else:
+            url = magic.get_uri(magicword)
 
         if url is not None:
             if is_file(url):
                 open_folder(url)
             else:
-                open_link(magic[sys.argv[2]])
+                open_link(url)
 
 
 if __name__ == '__main__':
