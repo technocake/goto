@@ -25,6 +25,10 @@ class GotoMagic():
         self.jfile = jfile
         self.magic = load_magic(jfile)
 
+    def reload(self):
+        """ reload the magic """
+        self.__init__(self.jfile)
+
     def save(self):
         """ Saves the magic to jsonfile jfile """
         save_magic(self.jfile, self.magic)

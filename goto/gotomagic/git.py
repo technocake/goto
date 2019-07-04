@@ -40,6 +40,10 @@ class GitMagic():
         shared_magic = GotoMagic(shared_file)
         self.magic = shared_magic
 
+    def reload(self):
+        """ reload the underlaying magic """
+        self.magic.reload()
+
     def share(self):
         """
         Interpreting a share as to push to a remote.
