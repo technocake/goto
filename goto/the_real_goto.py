@@ -3,6 +3,7 @@
 'Goto - the magic project that takes you where you need to be, now.'
 from __future__ import absolute_import
 
+import os
 import sys
 import codecs
 import subprocess
@@ -11,6 +12,7 @@ from .gotomagic.handlers import *
 from .gotomagic.magic import GotoMagic, is_file
 from .gotomagic import text
 from .gotomagic.text import print_text
+from .gotomagic.git import GitMagic
 
 
 # make sure we print in utf-8
@@ -58,6 +60,15 @@ def main():
     jfile = sys.argv[1]
     magic = GotoMagic(jfile)
 
+    # begin hack
+    project = os.path.split(jfile)[1].split('.json')[0]
+    shared_magic = GitMagic(project)
+
+    if '--shared' in sys.argv or '-s' in sys.argv:
+        magic = shared_magic
+
+    # end hack
+
     if len(sys.argv) == 2:
         print(usage())
         exit(0)
@@ -65,6 +76,11 @@ def main():
     if len(sys.argv) > 2:
         if sys.argv[2] in ['help', '-h', '/?', '--help']:
             print(usage())
+            exit(0)
+
+        if sys.argv[2] == 'share':
+            shared_magic.share()
+            print('Shared {} magicwords'.format(len(shared_magic)))
             exit(0)
 
         if sys.argv[2] == 'add':
@@ -158,8 +174,10 @@ def main():
         if sys.argv[2] == 'cd':
             open_terminal(magic.get_uri(sys.argv[3]))
             exit(0)
+
         # default
         url = magic.get_uri(sys.argv[2])
+
         if url is not None:
             if is_file(url):
                 open_folder(url)
