@@ -106,10 +106,12 @@ class GitMagic():
 
     def __setitem__(self, key, value):
         """ sets a magicword. Brutal style """
+        self.message = "set magicword {}".format(key)
         self.magic[key] = value
 
     def __delitem__(self, key):
         """ removes a magicword. Brutal style """
+        self.message = "rm magicword {}".format(key)
         self.magic.__delitem__(key)
 
     def __len__(self):

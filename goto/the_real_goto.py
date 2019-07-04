@@ -79,12 +79,21 @@ def main():
             exit(0)
 
         if sys.argv[2] == 'share':
-            shared_magic.share()
-            before_pull = len(shared_magic)
-            shared_magic.reload()
-            after_pull = len(shared_magic)
-            print('Shared {} magicwords - received {} magicwords'.format(before_pull, (after_pull-before_pull)))
-            exit(0)
+
+            if len(sys.argv) == 3:
+                shared_magic.share()
+                before_pull = len(shared_magic)
+                shared_magic.reload()
+                after_pull = len(shared_magic)
+                print('Shared {} magicwords - received {} magicwords'.format(before_pull, (after_pull-before_pull)))
+                exit(0)
+            else:
+                magicword = sys.argv[3]
+                shared_magic[magicword] = magic[magicword]
+                shared_magic.save()
+                shared_magic.share()
+                print('Shared magicword {} (total shared magicwords: {})'.format(magicword, len(shared_magic)))
+                exit(0)
 
         if sys.argv[2] == 'add':
             try:
