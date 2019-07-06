@@ -15,7 +15,8 @@ from .gotomagic.text import print_text
 from .commands import\
     usage,\
     add,\
-    update
+    update,\
+    rm
 
 
 # make sure we print in utf-8
@@ -43,14 +44,7 @@ def main():
         return update(magic)
 
     if command == 'rm':
-        try:
-            magic.remove_shortcut(sys.argv[3])
-            magic.save()
-            print('Removed magic word %s' % sys.argv[3])
-            exit(0)
-        except Exception:
-            print('Failed to remove magic word %s' % sys.argv[3])
-            exit(1)
+        return rm(magic)
 
     if command == 'show':
         try:

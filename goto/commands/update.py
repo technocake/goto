@@ -5,6 +5,3 @@ def run(magic):
     magic.save()
     print('Updated magic word %s' % sys.argv[3])
     return 0
-
-if __name__ == "__main__":
-    run()

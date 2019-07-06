@@ -20,7 +20,3 @@ def run(magic):
                 text.warning["missing_magicword_and_uri"]
             )
         return 1
-
-
-if __name__ == "__main__":
-    run()
