@@ -34,8 +34,7 @@ def main():
     if  command in ['help', '-h', '/?', '--help']:
         return usage()
 
-
-    if sys.argv[2] == 'add':
+    if command == 'add':
         try:
             magic.add_shortcut(sys.argv[3], sys.argv[4])
             magic.save()
@@ -54,13 +53,13 @@ def main():
                 )
             exit(1)
 
-    if sys.argv[2] == 'update':
+    if command == 'update':
         magic.update_shortcut(sys.argv[3], sys.argv[4])
         magic.save()
         print('Updated magic word %s' % sys.argv[3])
         exit(0)
 
-    if sys.argv[2] == 'rm':
+    if command == 'rm':
         try:
             magic.remove_shortcut(sys.argv[3])
             magic.save()
@@ -70,7 +69,7 @@ def main():
             print('Failed to remove magic word %s' % sys.argv[3])
             exit(1)
 
-    if sys.argv[2] == 'show':
+    if command == 'show':
         try:
             magic.show_shortcut(sys.argv[3])
             exit(0)
@@ -78,15 +77,15 @@ def main():
             print_text(text.warning["show_missing_magicword"])
             exit(1)
 
-    if sys.argv[2] == 'copy':
+    if command == 'copy':
         copy_to_clipboard(str(magic.get_uri(sys.argv[3])))
         exit(0)
 
-    if sys.argv[2] == 'list':
+    if command == 'list':
         magic.list_shortcuts(verbose=('-v' in sys.argv))
         exit(0)
 
-    if sys.argv[2] == 'subl':
+    if command == 'subl':
         try:
             open_sublime(magic['code'])
         except KeyError:
@@ -97,7 +96,7 @@ def main():
             exit(1)
         exit(0)
 
-    if sys.argv[2] == 'vscode':
+    if command == 'vscode':
         try:
             open_vscode(magic['code'])
         except KeyError:
@@ -108,7 +107,7 @@ def main():
             exit(1)
         exit(0)
 
-    if sys.argv[2] in ['intellij', 'idea']:
+    if command in ['intellij', 'idea']:
         try:
             open_intellij(magic['code'])
         except KeyError:
@@ -123,16 +122,16 @@ def main():
         open_folder(magic.get_uri(sys.argv[3]))
         exit(0)
 
-    if sys.argv[2] == 'cd':
+    if command == 'cd':
         open_terminal(magic.get_uri(sys.argv[3]))
         exit(0)
     # default
-    url = magic.get_uri(sys.argv[2])
+    url = magic.get_uri(command)
     if url is not None:
         if is_file(url):
             open_folder(url)
         else:
-            open_link(magic[sys.argv[2]])
+            open_link(magic[command])
 
 
 if __name__ == '__main__':
