@@ -24,7 +24,7 @@ setuptools.setup(
     },
     packages=find_packages(where='.'),
     install_requires=[
-        'pyperclip'
+        'pyperclip',
     ],
     scripts=[
         'bin/goto',
@@ -32,6 +32,7 @@ setuptools.setup(
         'bin/_gotoutils',
         'bin/start_goto',
         'bin/install_goto',
+        'bin/_install_goto',
     ],
     entry_points={
         'console_scripts': ['the_real_goto.py=goto.the_real_goto:main']

@@ -50,8 +50,9 @@ class GitMagic():
         For now.
         """
         gotohub = self.repo.remotes.gotohub
-        gotohub.pull()
-        gotohub.push()
+        # may raise git.exc.GitCommandError
+        gotohub.pull('master')
+        gotohub.push('master')
 
 
     def save(self):
@@ -64,7 +65,6 @@ class GitMagic():
         """ Adds a magic shortcut if it does not exist yet.
             If it exists, it warns the user.
         """
-        print('(shared modus) ', end='', file=sys.stderr)
         self.magic.add_shortcut(magicword, uri)
         self.message = "add magicword {}".format(magicword)
 
