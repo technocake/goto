@@ -6,7 +6,7 @@ from .magic import GotoMagic
 
 
 # HACK HACK
-GOTOPATH = os.environ.get('GOTOPATH', os.path.expanduser('~/.goto/projects'))
+GOTOPATH = os.environ.get('GOTOPATH', os.path.expanduser('~/.goto'))
 
 
 
@@ -26,7 +26,7 @@ class GitMagic():
     def __init__(self, project):
         """ Loads json from jfile """
         shared_file = os.path.join(
-            GOTOPATH, 'shared', project, '{}.json'.format(project)
+            GOTOPATH, 'projects', 'shared', project, '{}.json'.format(project)
         )
 
         shared_folder = os.path.dirname(shared_file)
