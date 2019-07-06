@@ -12,8 +12,10 @@ from .gotomagic.magic import GotoMagic, is_file
 from .gotomagic import text
 from .gotomagic.text import print_text
 
-from .commands import \
-    usage \
+from .commands import\
+    usage,\
+    add,\
+    update
 
 
 # make sure we print in utf-8
@@ -24,7 +26,7 @@ except:
     pass  # TODO: implement utf-8 encoding of py2.7
 
 def main():
-    if len(sys.argv) == 2:
+    if len(sys.argv) < 3:
         return usage()
 
     jfile = sys.argv[1]
@@ -35,29 +37,10 @@ def main():
         return usage()
 
     if command == 'add':
-        try:
-            magic.add_shortcut(sys.argv[3], sys.argv[4])
-            magic.save()
-            print('Added magic word %s' % sys.argv[3])
-            exit(0)
-        except IndexError:
-            if len(sys.argv) > 3:
-                print_text(
-                    text.warning["missing_uri"],
-                    magicword=sys.argv[3]
-                )
-                exit(1)
-            else:
-                print_text(
-                    text.warning["missing_magicword_and_uri"]
-                )
-            exit(1)
+        return add(magic)
 
     if command == 'update':
-        magic.update_shortcut(sys.argv[3], sys.argv[4])
-        magic.save()
-        print('Updated magic word %s' % sys.argv[3])
-        exit(0)
+        return update(magic)
 
     if command == 'rm':
         try:
