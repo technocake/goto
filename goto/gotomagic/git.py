@@ -6,7 +6,8 @@ from .magic import GotoMagic
 
 
 # HACK HACK
-GOTOPATH = os.path.expanduser('~/.goto/projects')
+GOTOPATH = os.environ.get('GOTOPATH', os.path.expanduser('~/.goto/projects'))
+
 
 
 class GitMagic():
