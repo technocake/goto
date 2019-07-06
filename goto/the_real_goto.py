@@ -38,13 +38,13 @@ def main():
         return usage()
 
     if command == 'add':
-        return add(magic)
+        return add(magic, sys.argv, print_text, text)
 
     if command == 'update':
-        return update(magic)
+        return update(magic, sys.argv)
 
     if command == 'rm':
-        return rm(magic)
+        return rm(magic, sys.argv)
 
     if command == 'show':
         try:

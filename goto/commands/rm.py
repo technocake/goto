@@ -1,11 +1,10 @@
-import sys
 
-def run(magic):
+def run(magic, argv):
     try:
-        magic.remove_shortcut(sys.argv[3])
+        magic.remove_shortcut(argv[3])
         magic.save()
-        print('Removed magic word %s' % sys.argv[3])
+        print('Removed magic word %s' % argv[3])
         return 0
     except Exception:
-        print('Failed to remove magic word %s' % sys.argv[3])
+        print('Failed to remove magic word %s' % argv[3])
         return 1

@@ -1,3 +1,4 @@
+
 def run():
     return """
     Goto - the magic traveler, how may I help you?

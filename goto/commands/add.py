@@ -1,18 +1,15 @@
-import sys
-from ..gotomagic.text import print_text
-from ..gotomagic import text
 
-def run(magic):
+def run(magic, argv, print_text, text):
     try:
-        magic.add_shortcut(sys.argv[3], sys.argv[4])
+        magic.add_shortcut(argv[3], argv[4])
         magic.save()
-        print('Added magic word %s' % sys.argv[3])
+        print('Added magic word %s' % argv[3])
         return 0
     except IndexError:
         if len(sys.argv) > 3:
             print_text(
                 text.warning["missing_uri"],
-                magicword=sys.argv[3]
+                magicword = argv[3]
             )
             return 1
         else:
