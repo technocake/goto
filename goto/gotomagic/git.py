@@ -31,7 +31,7 @@ class GitMagic():
 
         shared_folder = os.path.dirname(shared_file)
         if not os.path.exists(shared_folder):
-            os.mkdir(shared_folder)
+            os.makedirs(shared_folder)
 
         if not is_git_repo(shared_folder):
             self.repo = git.Repo.init(shared_folder)
