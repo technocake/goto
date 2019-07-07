@@ -46,8 +46,10 @@ def main():
     output, err = run_command(magic, command, args)
     if err:
         print(err.message())
+        return 1
     if output:
         print(output)
+        return 0
 
 
 def run_command(magic, command, args):
