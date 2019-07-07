@@ -5,9 +5,8 @@ from __future__ import absolute_import
 
 import sys
 import codecs
-import subprocess
 
-from .gotomagic.handlers import *
+from .gotomagic.handlers import open_folder, open_link
 from .gotomagic.magic import GotoMagic, is_file
 from .gotomagic import text
 from .gotomagic.text import print_text
@@ -25,7 +24,6 @@ from .commands import\
     intellij,\
     open,\
     cd
-
 
 # make sure we print in utf-8
 try:
