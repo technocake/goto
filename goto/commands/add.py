@@ -1,5 +1,8 @@
-
 def add(magic, args):
+    """
+    Add magicword
+    """
+
     if (len(args) == 0):
         return None, "missing_magicword_and_uri"
 
@@ -11,4 +14,5 @@ def add(magic, args):
 
     magic.add_shortcut(word, uri)
     magic.save()
-    return 'Added magic word %s' % word
+
+    return 'Added magic word %s' % word, None

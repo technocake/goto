@@ -1,8 +1,17 @@
-from ..gotomagic.handlers import copy_to_clipboard
+import pyperclip
+
 
 def copy(magic, args):
+    """
+    Copy uri to clipboard
+    """
+
     if (len(args) == 0):
         return None, "missing_magicword"
 
     word = args[0]
-    copy_to_clipboard(str(magic.get_uri(word)))
+    url = str(magic.get_uri(word))
+
+    pyperclip.copy(url)
+
+    return None, None

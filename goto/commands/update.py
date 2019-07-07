@@ -1,5 +1,8 @@
-
 def update(magic, args):
+    """
+    Update magicword
+    """
+
     if (len(args) == 0):
         return None, "missing_magicword_and_uri"
 
@@ -11,4 +14,5 @@ def update(magic, args):
 
     magic.update_shortcut(word, uri)
     magic.save()
-    return 'Updated magic word %s' % word
+
+    return 'Updated magic word %s' % word, None

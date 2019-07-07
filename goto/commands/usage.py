@@ -1,5 +1,8 @@
-
 def usage():
+    """
+    Get information about usage
+    """
+
     return """
     Goto - the magic traveler, how may I help you?
 
@@ -29,4 +32,4 @@ def usage():
 
     Other editors supported:
     Visual Studio Code: goto vscode | IntelliJ: goto idea
-    """  # noqa
+    """, None # noqa

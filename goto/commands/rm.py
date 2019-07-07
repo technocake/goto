@@ -1,5 +1,8 @@
-
 def rm(magic, args):
+    """
+    Remove magicword
+    """
+
     if (len(args) == 0):
         return None, "missing_magicword"
 
@@ -7,4 +10,5 @@ def rm(magic, args):
 
     magic.remove_shortcut(word)
     magic.save()
-    return 'Removed magic word %s' % word
+    return 'Removed magic word %s' % word, None
+

@@ -32,6 +32,7 @@ try:
 except:
     pass  # TODO: implement utf-8 encoding of py2.7
 
+
 def main():
     if len(sys.argv) < 3:
         return usage()
@@ -41,6 +42,17 @@ def main():
     command = sys.argv[2]
     args = sys.argv[3:]
 
+    output, err = run_command(magic, command, args)
+
+    if err:
+        error_text = text.warning.get(err, err);
+        print_text(error_text)
+
+    if output:
+        print(output)
+
+
+def run_command(magic, command, args):
     if command in ['help', '-h', '/?', '--help']:
         return usage()
 
@@ -79,10 +91,7 @@ def main():
 
     return default(magic, command)
 
-if __name__ == '__main__':
-    output, err = main()
 
-    if err:
-        print_text(text.warning[err])
-    else:
-        print(output)
+if __name__ == '__main__':
+    main()
+

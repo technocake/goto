@@ -1,13 +1,20 @@
-from ..gotomagic.handlers import open_folder, open_link
-from ..gotomagic.magic import is_file
+from ..gotomagic.utils import is_file
+import webbrowser
+from open import open
 
-def default(magic, command):
-    # default
-    url = magic.get_uri(command)
+
+def default(magic, magicword):
+    """
+    Default behaviour when no commands are found in the first argument
+    """
+
+    url = magic.get_uri(magicword)
     if url is None:
-        return
+        return None, 'magicword_not_found'
 
     if is_file(url):
-        open_folder(url)
+        return open(magic, [magicword])
     else:
-        open_link(magic[command])
+        webbrowser.open(magic[magicword])
+
+    return None, None

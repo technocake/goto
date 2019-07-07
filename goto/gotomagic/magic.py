@@ -151,11 +151,6 @@ def parse_uri(raw_uri):
         return raw_uri
 
 
-def is_file(raw_uri):
-    ''' checks if the file or folder exist and returns True if so '''
-    candidate = os.path.abspath(raw_uri)
-    return os.path.exists(candidate)
-
 
 def load_magic(jfile):
     "Loads the magic shortcuts from a json file object"
