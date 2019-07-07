@@ -247,7 +247,6 @@ function test_10_only_one_ah_hoy_at_the_time_please {
         _cmd_should_fail "goto $command $nonexisting_magicword"
         _failing_cmd_should_give_human_message "goto $command $nonexisting_magicword"
         _failing_cmd_should_not_print_ah_hoy_twice "goto $command $nonexisting_magicword"
-
     done
 }
 
