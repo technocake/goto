@@ -5,4 +5,3 @@ def show(magic, args):
 
     word = args[0]
     magic.show_shortcut(word)
-
