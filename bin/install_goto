@@ -2,7 +2,6 @@
 
 # Get cmd of parent pid to determine shell
 INVOKING_SHELL=$(ps -o command= -p $PPID)
-echo $INVOKING_SHELL
 
 . _gotoutils # load common utils 
 load_gotopath
