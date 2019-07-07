@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # Get cmd of parent pid to determine shell
-INVOKING_SHELL=$(ps -ef $(ps -ef $$ | awk '{ print $3}' | sed -n 2p) | awk '{ print $8}' | sed -n 2p)
+INVOKING_SHELL=$(ps -o command= -p $PPID)
+echo $INVOKING_SHELL
 
 . _gotoutils # load common utils 
 load_gotopath
