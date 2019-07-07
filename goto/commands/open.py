@@ -1,8 +1,8 @@
 import os
-import sys
 import subprocess
 from ..gotomagic.utils import detect_platform
-from ..gotomagic.text import Error
+from ..gotomagic.text import GotoError, GotoWarning
+
 
 def open(magic, args):
     """
@@ -10,7 +10,7 @@ def open(magic, args):
     """
 
     if (len(args) == 0):
-        return None, Error("show_missing_magicword")
+        return None, GotoWarning("missing_magicword", command='open')
 
     magicword = args[0]
     url = magic.get_uri(magicword)
@@ -25,7 +25,7 @@ def open(magic, args):
         elif platform == 'win':
             subprocess.call('start "%s"' % url, shell=True)
 
-    except subprocess.CalledProcessError:
-        return None, Error("open_failed")
+    except subprocess.CalledProcessError as e:
+        return None, GotoError("open_failed", message=e.message)
 
     return None, None

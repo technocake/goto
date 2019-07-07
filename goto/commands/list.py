@@ -2,7 +2,7 @@ def list(magic, args):
     """
     List commands
     """
-
-    magic.list_shortcuts(verbose=('-v' in args))
+    verbose = '-v' in args or '--verbose' in args
+    magic.list_shortcuts(verbose=verbose)
 
     return None, None

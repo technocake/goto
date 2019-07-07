@@ -9,20 +9,7 @@ import codecs
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 
-from .commands import\
-    usage,\
-    add,\
-    update,\
-    rm,\
-    show,\
-    copy,\
-    list,\
-    subl,\
-    vscode,\
-    intellij,\
-    open,\
-    cd,\
-    default
+from . import commands
 
 # make sure we print in utf-8
 try:
@@ -34,9 +21,9 @@ except:
 
 def main():
     if len(sys.argv) < 3:
-        output, _ = usage()
+        output, _ = commands.usage()
         print(output)
-        return
+        exit(0)
 
     jfile = sys.argv[1]
     magic = GotoMagic(jfile)
@@ -45,51 +32,51 @@ def main():
 
     output, err = run_command(magic, command, args)
     if err:
-        print(err.message())
-        return 1
+        print(err.message)
+        exit(1)
     if output:
         print(output)
-        return 0
+        exit(0)
 
 
 def run_command(magic, command, args):
     if command in ['help', '-h', '/?', '--help']:
-        return usage()
+        return commands.usage()
 
     if command == 'add':
-        return add(magic, args)
+        return commands.add(magic, args)
 
     if command == 'update':
-        return update(magic, args)
+        return commands.update(magic, args)
 
     if command == 'rm':
-        return rm(magic, args)
+        return commands.rm(magic, args)
 
     if command == 'show':
-        return show(magic, args)
+        return commands.show(magic, args)
 
     if command == 'copy':
-        return copy(magic, args)
+        return commands.copy(magic, args)
 
     if command == 'list':
-        return list(magic, args)
+        return commands.list(magic, args)
 
     if command == 'subl':
-        return subl(magic, args)
+        return commands.subl(magic, args)
 
     if command == 'vscode':
-        return vscode(magic, args)
+        return commands.vscode(magic, args)
 
     if command in ['intellij', 'idea']:
-        return intellij(magic, args)
+        return commands.intellij(magic, args)
 
     if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:
-        return open(magic, args)
+        return commands.open(magic, args)
 
     if command == 'cd':
-        return cd(magic, args)
+        return commands.cd(magic, args)
 
-    return default(magic, command)
+    return commands.default(magic, command)
 
 
 if __name__ == '__main__':
