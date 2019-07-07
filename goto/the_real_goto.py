@@ -20,7 +20,8 @@ from .commands import\
     show,\
     copy,\
     index,\
-    subl
+    subl,\
+    vscode
 
 
 # make sure we print in utf-8
@@ -64,15 +65,7 @@ def main():
         return subl(magic, args)
 
     if command == 'vscode':
-        try:
-            open_vscode(magic['code'])
-        except KeyError:
-            print(text.warning["no_magicword_named_code"])
-            exit(1)
-        except subprocess.CalledProcessError:
-            print(text.error["vscode_launch_failed"])
-            exit(1)
-        exit(0)
+        return vscode(magic, args)
 
     if command in ['intellij', 'idea']:
         try:

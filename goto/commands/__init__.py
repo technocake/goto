@@ -6,4 +6,5 @@ from show import show
 from copy import copy
 from index import index
 from subl import subl
+from vscode import vscode
 
