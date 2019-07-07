@@ -4,11 +4,11 @@
 """
 
 class Error:
-    def __init__(self, name, kwargs):
+    def __init__(self, name, **kwargs):
         self.name = name
         self.kwargs = kwargs
 
-    def message():
+    def message(self):
         global warning
         text = warning.get(self.name, self.name)
         return text.format(**self.kwargs)
