@@ -1,4 +1,5 @@
 from ..gotomagic.handlers import open_folder, open_link
+from ..gotomagic.magic import is_file
 
 def default(magic, command):
     # default

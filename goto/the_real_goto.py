@@ -6,9 +6,9 @@ from __future__ import absolute_import
 import sys
 import codecs
 
-from .gotomagic.magic import GotoMagic, is_file
 from .gotomagic import text
 from .gotomagic.text import print_text
+from .gotomagic.magic import GotoMagic
 
 from .commands import\
     usage,\
@@ -42,7 +42,7 @@ def main():
     args = sys.argv[3:]
 
     if command in ['help', '-h', '/?', '--help']:
-        return usage(magic, args)
+        return usage()
 
     if command == 'add':
         return add(magic, args)
@@ -79,12 +79,10 @@ def main():
 
     return default(magic, command)
 
-
 if __name__ == '__main__':
     output, err = main()
+
     if err:
         print_text(text.warning[err])
     else:
         print(output)
-
-
