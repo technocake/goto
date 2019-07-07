@@ -152,11 +152,21 @@ function test_05_add_project {
 
 function test_06_goto_add {
     magicword="test_add"
+    nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
 
     _cmd_should_succeed "goto add $magicword $uri"
     # Adding magicword that already exist
     _cmd_should_fail "goto add $magicword $uri"
+    _failing_cmd_should_give_human_message "goto add $magicword $uri"
+
+    # Invoking without any magic words
+    _cmd_should_fail "goto add"
+    _failing_cmd_should_give_human_message "goto add"
+
+    # Invoking without any uri
+    _cmd_should_fail "goto add test_add_no_uri"
+    _failing_cmd_should_give_human_message "goto add test_add_no_uri"
 }
 
 
