@@ -9,4 +9,5 @@ from subl import subl
 from vscode import vscode
 from intellij import intellij
 from open import open
+from cd import cd
 

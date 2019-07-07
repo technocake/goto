@@ -23,7 +23,8 @@ from .commands import\
     subl,\
     vscode,\
     intellij,\
-    open
+    open,\
+    cd
 
 
 # make sure we print in utf-8
@@ -76,8 +77,7 @@ def main():
         return open(magic, args)
 
     if command == 'cd':
-        open_terminal(magic.get_uri(sys.argv[3]))
-        exit(0)
+        return cd(magic, args)
     # default
     url = magic.get_uri(command)
     if url is not None:
