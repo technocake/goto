@@ -6,7 +6,6 @@ from __future__ import absolute_import
 import sys
 import codecs
 
-from .gotomagic.handlers import open_folder, open_link
 from .gotomagic.magic import GotoMagic, is_file
 from .gotomagic import text
 from .gotomagic.text import print_text
@@ -18,12 +17,13 @@ from .commands import\
     rm,\
     show,\
     copy,\
-    index,\
+    list,\
     subl,\
     vscode,\
     intellij,\
     open,\
-    cd
+    cd,\
+    default
 
 # make sure we print in utf-8
 try:
@@ -60,7 +60,7 @@ def main():
         return copy(magic, args)
 
     if command == 'list':
-        return index(magic, args)
+        return list(magic, args)
 
     if command == 'subl':
         return subl(magic, args)
@@ -77,15 +77,7 @@ def main():
     if command == 'cd':
         return cd(magic, args)
 
-    # default
-    url = magic.get_uri(command)
-    if url is None:
-        return
-
-    if is_file(url):
-        open_folder(url)
-    else:
-        open_link(magic[command])
+    return default(magic, command)
 
 
 if __name__ == '__main__':
