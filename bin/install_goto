@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-local INVOKING_SHELL
 # Get cmd of parent pid to determine shell
 INVOKING_SHELL=$(ps -ef $(ps -ef $$ | awk '{ print $3}' | sed -n 2p) | awk '{ print $8}' | sed -n 2p)
 
