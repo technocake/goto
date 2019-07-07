@@ -177,6 +177,45 @@ function test_07_goto_show {
     _failing_cmd_should_give_human_message "goto show $nonexisting_magicword"
 }
 
+function test_08_goto_rm {
+    existing_magicword="test_rm"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+    _cmd_should_succeed "goto rm $existing_magicword"
+
+    # Invoking rm without any magic words
+    _cmd_should_fail "goto rm"
+    _failing_cmd_should_give_human_message "goto rm"
+
+    _cmd_should_fail "goto rm $nonexisting_magicword"
+    _failing_cmd_should_give_human_message "goto rm $nonexisting_magicword"
+
+    # adding it again should also work,
+    # and is necessary for the rest of the tests.
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+}
+
+function test_09_goto_update {
+    existing_magicword="test_update"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
+    new_uri="https://example.com/secure"
+
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+    _cmd_should_succeed "goto update $existing_magicword $new_uri"
+
+    # Invoking rm without any magic words
+    _cmd_should_fail "goto update"
+    _failing_cmd_should_give_human_message "goto update"
+
+    _cmd_should_fail "goto update $existing_magicword"
+    _failing_cmd_should_give_human_message "goto update $existing_magicword"
+
+    _cmd_should_fail "goto update $nonexisting_magicword $new_uri"
+    _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
+}
+
 
 function tear_down {
     if [[ -n "$GOTOPATH" && -d "$GOTOPATH" ]]; then

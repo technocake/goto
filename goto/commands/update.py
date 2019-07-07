@@ -1,4 +1,4 @@
-from ..gotomagic.text import GotoError
+from ..gotomagic.text import GotoError, GotoWarning
 
 
 def update(magic, args):
@@ -7,10 +7,10 @@ def update(magic, args):
     """
 
     if (len(args) == 0):
-        return None, GotoError("missing_magicword_and_uri")
+        return None, GotoWarning("missing_magicword_and_uri")
 
     if (len(args) == 1):
-        return None, GotoError("missing_uri")
+        return None, GotoWarning("missing_uri", magicword=args[0])
 
     word = args[0]
     uri = args[1]

@@ -26,6 +26,19 @@ Ah hoy!
     to see all shortcuts in this project.
     """,
 
+    updating_nonexisting_magicword="""
+Ah hoy!
+
+    - Attempt to update non-existing shortcut with name {magicword}
+
+    Are you sure it exists in the project you are in now?
+    Type:
+
+        goto list
+
+    to see all shortcuts in this project.
+    """,
+
     magicword_does_not_exist="""
 Ah hoy!
 
@@ -64,6 +77,15 @@ Ah hoy!
     Try again by adding the magicword you want to show:
 
                 goto show <magicword>
+    """,
+
+    missing_magicword="""
+Ah hoy!
+    Error: missing magic word.
+
+    Try again by adding the magicword you want to {command}:
+
+                goto {command} <magicword>
     """,
 
     open_missing_magicword="""

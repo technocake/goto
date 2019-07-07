@@ -48,7 +48,14 @@ class GotoMagic():
     def update_shortcut(self, magicword, uri):
         """ Simply overwrites the content of the magicword """
         uri = parse_uri(uri)
-        self.magic[magicword] = uri
+        if magicword in self.magic.keys():
+            self.magic[magicword] = uri
+        else:
+            print_text(
+                text.warning.messages["updating_nonexisting_magicword"],
+                magicword=magicword
+            )
+            exit(1)
 
     def remove_shortcut(self, magicword):
         """ Simply removes a shortcut """
@@ -59,6 +66,7 @@ class GotoMagic():
                 text.warning.messages["removing_nonexisting_magicword"],
                 magicword=magicword
             )
+            exit(1)
 
     def show_shortcut(self, magicword):
         """ shows a shortcut """
