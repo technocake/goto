@@ -76,7 +76,7 @@ def run_command(magic, command, args):
     if command == 'cd':
         return commands.cd(magic, args)
 
-    return commands.default(magic, command)
+    return commands.default(magic, sys.argv[2:])
 
 
 if __name__ == '__main__':

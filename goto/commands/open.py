@@ -28,4 +28,4 @@ def open(magic, args):
     except subprocess.CalledProcessError as e:
         return None, GotoError("open_failed", message=e.message)
 
-    return None, None
+    return "Opened folder: %s" % url, None
