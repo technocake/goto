@@ -1,3 +1,4 @@
+
 def cd(magic, args):
     if (len(args) == 0):
         return None, "show_missing_magicword"
