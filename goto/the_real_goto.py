@@ -34,7 +34,9 @@ except:
 
 def main():
     if len(sys.argv) < 3:
-        return usage()
+        output, _ = usage()
+        print(output)
+        return
 
     jfile = sys.argv[1]
     magic = GotoMagic(jfile)
