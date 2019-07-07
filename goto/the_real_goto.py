@@ -22,7 +22,8 @@ from .commands import\
     index,\
     subl,\
     vscode,\
-    intellij
+    intellij,\
+    open
 
 
 # make sure we print in utf-8
@@ -72,8 +73,7 @@ def main():
         return intellij(magic, args)
 
     if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:
-        open_folder(magic.get_uri(sys.argv[3]))
-        exit(0)
+        return open(magic, args)
 
     if command == 'cd':
         open_terminal(magic.get_uri(sys.argv[3]))
