@@ -78,13 +78,16 @@ def main():
 
     if command == 'cd':
         return cd(magic, args)
+
     # default
     url = magic.get_uri(command)
-    if url is not None:
-        if is_file(url):
-            open_folder(url)
-        else:
-            open_link(magic[command])
+    if url is None:
+        return
+
+    if is_file(url):
+        open_folder(url)
+    else:
+        open_link(magic[command])
 
 
 if __name__ == '__main__':
