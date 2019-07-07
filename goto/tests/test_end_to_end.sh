@@ -216,6 +216,20 @@ function test_09_goto_update {
     _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
 }
 
+function TODO_test_10_goto_copy {
+    # By using the python pyperclip module,
+    # It would be possible to inspect the content of the clipboard:
+    
+    # >>> import pyperclip
+    # >>> pyperclip.copy('The text to be copied to the clipboard.')
+    # >>> pyperclip.paste()
+    # 'The text to be copied to the clipboard.'
+    # 
+    # To get this content from a shell script it could be done 
+    # like so:
+    # 
+    CLIPBOARD_DATA=$(python -c 'import pyperclip; print(pyperclip.paste())')
+}
 
 function tear_down {
     if [[ -n "$GOTOPATH" && -d "$GOTOPATH" ]]; then
