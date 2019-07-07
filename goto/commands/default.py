@@ -22,7 +22,7 @@ def default(magic, magicwords):
         else:
             try:
                 webbrowser.open_new_tab(url)
-                output += "Opened new browser tab: %s\n" % url
+                output += "Opening browser tab %s\n" % url
             except webbrowser.Error:
                 return None, GotoError('open_browser_tab_error')
 
