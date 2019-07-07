@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 from ..gotomagic.utils import detect_platform
+from ..gotomagic.text import Error
 
 def open(magic, args):
     """
@@ -9,7 +10,7 @@ def open(magic, args):
     """
 
     if (len(args) == 0):
-        return None, "show_missing_magicword"
+        return None, Error("show_missing_magicword")
 
     magicword = args[0]
     url = magic.get_uri(magicword)
@@ -25,6 +26,6 @@ def open(magic, args):
             subprocess.call('start "%s"' % url, shell=True)
 
     except subprocess.CalledProcessError:
-        return None, "open_failed"
+        return None, Error("open_failed")
 
     return None, None

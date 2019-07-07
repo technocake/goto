@@ -1,4 +1,5 @@
 import pyperclip
+from ..gotomagic.text import Error
 
 
 def copy(magic, args):
@@ -7,7 +8,7 @@ def copy(magic, args):
     """
 
     if (len(args) == 0):
-        return None, "missing_magicword"
+        return None, Error("missing_magicword")
 
     word = args[0]
     url = str(magic.get_uri(word))

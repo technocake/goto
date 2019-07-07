@@ -3,6 +3,15 @@
     Text used by GOTO to do UX.
 """
 
+class Error:
+    def __init__(self, name, kwargs):
+        self.name = name
+        self.kwargs = kwargs
+
+    def message():
+        global warning
+        text = warning.get(self.name, self.name)
+        return text.format(**self.kwargs)
 
 def print_text(text, **kwargs):
     print(text.format(**kwargs))

@@ -1,10 +1,13 @@
+from ..gotomagic.text import Error
+
+
 def rm(magic, args):
     """
     Remove magicword
     """
 
     if (len(args) == 0):
-        return None, "missing_magicword"
+        return None, Error("missing_magicword")
 
     word = args[0]
 

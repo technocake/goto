@@ -7,7 +7,6 @@ import sys
 import codecs
 
 from .gotomagic import text
-from .gotomagic.text import print_text
 from .gotomagic.magic import GotoMagic
 
 from .commands import\
@@ -43,11 +42,8 @@ def main():
     args = sys.argv[3:]
 
     output, err = run_command(magic, command, args)
-
     if err:
-        error_text = text.warning.get(err, err);
-        print_text(error_text)
-
+        print(err.message())
     if output:
         print(output)
 
@@ -94,4 +90,3 @@ def run_command(magic, command, args):
 
 if __name__ == '__main__':
     main()
-
