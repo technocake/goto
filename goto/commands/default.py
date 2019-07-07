@@ -1,7 +1,7 @@
 import webbrowser
 from ..gotomagic.utils import is_file
 from ..gotomagic.text import Error
-from open import open
+from .open import open
 
 
 def default(magic, magicword):
