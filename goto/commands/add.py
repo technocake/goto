@@ -1,5 +1,6 @@
 from ..gotomagic.text import GotoError, GotoWarning
 
+
 def add(magic, args):
     """
     Add magicword
