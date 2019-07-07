@@ -27,3 +27,5 @@ class TestMagic(TestCase):
             with open(tmpgotofile) as f:
                 print(f.read())
             os.remove(tmpgotofile)
+
+

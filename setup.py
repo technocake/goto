@@ -11,7 +11,7 @@ with open("POST_INSTALL_INSTRUCTIONS.txt", "r") as fh:
 
 setuptools.setup(
     name="magicgoto",
-    version="1.4.4",
+    version="1.5.0",
     author="Robin Aaberg",
     author_email="robin.garen@gmail.com",
     description="Magic goto - goto where you need to be, right now.",
@@ -24,7 +24,8 @@ setuptools.setup(
     },
     packages=find_packages(where='.'),
     install_requires=[
-        'pyperclip'
+        'pyperclip',
+        'gitpython',
     ],
     scripts=[
         'bin/goto',

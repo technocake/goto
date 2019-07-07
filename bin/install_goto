@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+# Get cmd of parent pid to determine shell
+INVOKING_SHELL=$(ps -o command= -p $PPID)
 
 . _gotoutils # load common utils 
 load_gotopath
@@ -8,22 +12,27 @@ create_goto_folders "$GOTOPATH" || check_status
 
 
 echo "Step 2: add goto startup script to bash config file"
-write_init_command_to_rcfile
+write_init_command_to_rcfile "$INVOKING_SHELL"
 echo "Close and reopen your terminal, and goto will now work it's magic."
 
 
 # make goto ready -- now.
 source start_goto || check_status
 
-# add your first project
-project add goto || check_status
 
-# set the context to this project
-project goto || check_status
+# Set up goto project if it is not present already.
+if [ ! -f "$GOTOPATH/projects/goto.json" ]; then
+    # add your first project
+    project add goto || check_status
 
-# add your first shortcuts
-goto add goto https://github.com/technocake/goto || check_status
-goto add github https://github.com/technocake/goto || check_status
+    # set the context to this project
+    project goto || check_status
 
+    # add your first shortcuts
+    goto add goto https://github.com/technocake/goto || check_status
+    goto add github https://github.com/technocake/goto || check_status
+fi
+
+project deactivate
 
 echo Installation Succesful!

@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash
 #
 #   Common utils for goto scripts in bash
 #   
@@ -41,10 +41,12 @@ function load_gotopath {
 }
 
 function find_rc_file {
+    local INVOKING_SHELL
     local RCFILE
+    INVOKING_SHELL="$1"
 
     # supports ~/.bashrc ~/.bash_profile and ~/.zshrc
-    if [ -n "$ZSH_VERSION" ]; then
+    if [[ "$INVOKING_SHELL" == *zsh* ]]; then
         RCFILE="${HOME}/.zshrc"
 
     elif [ -n "$BASH_VERSION" ]; then
@@ -68,9 +70,11 @@ function find_rc_file {
 
 function write_init_command_to_rcfile {
     # Handles writing the right thing to rcfile
+    local INVOKING_SHELL
     local RCFILE
+    INVOKING_SHELL="$1"
+    RCFILE=$(find_rc_file "$INVOKING_SHELL")
 
-    RCFILE=$(find_rc_file)
     if [ -z "$RCFILE" ]; then
         echo "Error finding RCfile" >&2 && exit 1
     fi

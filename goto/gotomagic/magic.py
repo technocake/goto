@@ -25,6 +25,10 @@ class GotoMagic():
         self.jfile = jfile
         self.magic = load_magic(jfile)
 
+    def reload(self):
+        """ reload the magic """
+        self.__init__(self.jfile)
+
     def save(self):
         """ Saves the magic to jsonfile jfile """
         save_magic(self.jfile, self.magic)
@@ -36,7 +40,7 @@ class GotoMagic():
         uri = parse_uri(uri)
         if magicword in self.magic.keys():
             print_text(
-                text.warning["adding_existing_magicword"],
+                text.warning.messages["adding_existing_magicword"],
                 magicword=magicword,
                 uri=self.magic[magicword],
                 newuri=uri
@@ -48,7 +52,14 @@ class GotoMagic():
     def update_shortcut(self, magicword, uri):
         """ Simply overwrites the content of the magicword """
         uri = parse_uri(uri)
-        self.magic[magicword] = uri
+        if magicword in self.magic.keys():
+            self.magic[magicword] = uri
+        else:
+            print_text(
+                text.warning.messages["updating_nonexisting_magicword"],
+                magicword=magicword
+            )
+            exit(1)
 
     def remove_shortcut(self, magicword):
         """ Simply removes a shortcut """
@@ -56,9 +67,10 @@ class GotoMagic():
             self.magic.pop(magicword)
         except KeyError:
             print_text(
-                text.warning["removing_nonexisting_magicword"],
+                text.warning.messages["removing_nonexisting_magicword"],
                 magicword=magicword
             )
+            exit(1)
 
     def show_shortcut(self, magicword):
         """ shows a shortcut """
@@ -66,7 +78,7 @@ class GotoMagic():
             print(self.magic[magicword])
         except KeyError:
             print_text(
-                text.warning["magicword_does_not_exist"],
+                text.warning.messages["magicword_does_not_exist"],
                 magicword=magicword
             )
             exit(1)
@@ -77,7 +89,7 @@ class GotoMagic():
             return self.magic[magicword]
         except KeyError:
             print_text(
-                text.warning["magicword_does_not_exist"],
+                text.warning.messages["magicword_does_not_exist"],
                 magicword=magicword
             )
             return None
@@ -106,7 +118,7 @@ class GotoMagic():
             ux when magicword is missing
         """
         print_text(
-            text.warning["magicword_does_not_exist"],
+            text.warning.messages["magicword_does_not_exist"],
             magicword=key
         )
 
@@ -121,6 +133,9 @@ class GotoMagic():
     def __len__(self):
         """ returns number of magicwords. """
         return len(self.magic.keys())
+
+    def keys(self):
+        return self.magic.keys()
 
 
 def parse_uri(raw_uri):
@@ -151,11 +166,6 @@ def parse_uri(raw_uri):
         return raw_uri
 
 
-def is_file(raw_uri):
-    ''' checks if the file or folder exist and returns True if so '''
-    candidate = os.path.abspath(raw_uri)
-    return os.path.exists(candidate)
-
 
 def load_magic(jfile):
     "Loads the magic shortcuts from a json file object"
@@ -175,6 +185,6 @@ def save_magic(jfile, magic):
             f.write(data)
         except Exception as e:
             print_text(
-                text.error["magic_could_not_be_saved"],
+                text.error.messages["magic_could_not_be_saved"],
                 message=e.message
             )
