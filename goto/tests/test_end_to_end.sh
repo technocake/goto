@@ -152,11 +152,21 @@ function test_05_add_project {
 
 function test_06_goto_add {
     magicword="test_add"
+    nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
 
     _cmd_should_succeed "goto add $magicword $uri"
     # Adding magicword that already exist
     _cmd_should_fail "goto add $magicword $uri"
+    _failing_cmd_should_give_human_message "goto add $magicword $uri"
+
+    # Invoking without any magic words
+    _cmd_should_fail "goto add"
+    _failing_cmd_should_give_human_message "goto add"
+
+    # Invoking without any uri
+    _cmd_should_fail "goto add test_add_no_uri"
+    _failing_cmd_should_give_human_message "goto add test_add_no_uri"
 }
 
 
@@ -177,6 +187,59 @@ function test_07_goto_show {
     _failing_cmd_should_give_human_message "goto show $nonexisting_magicword"
 }
 
+function test_08_goto_rm {
+    existing_magicword="test_rm"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+    _cmd_should_succeed "goto rm $existing_magicword"
+
+    # Invoking rm without any magic words
+    _cmd_should_fail "goto rm"
+    _failing_cmd_should_give_human_message "goto rm"
+
+    _cmd_should_fail "goto rm $nonexisting_magicword"
+    _failing_cmd_should_give_human_message "goto rm $nonexisting_magicword"
+
+    # adding it again should also work,
+    # and is necessary for the rest of the tests.
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+}
+
+function test_09_goto_update {
+    existing_magicword="test_update"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
+    new_uri="https://example.com/secure"
+
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+    _cmd_should_succeed "goto update $existing_magicword $new_uri"
+
+    # Invoking rm without any magic words
+    _cmd_should_fail "goto update"
+    _failing_cmd_should_give_human_message "goto update"
+
+    _cmd_should_fail "goto update $existing_magicword"
+    _failing_cmd_should_give_human_message "goto update $existing_magicword"
+
+    _cmd_should_fail "goto update $nonexisting_magicword $new_uri"
+    _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
+}
+
+function TODO_test_10_goto_copy {
+    # By using the python pyperclip module,
+    # It would be possible to inspect the content of the clipboard:
+    
+    # >>> import pyperclip
+    # >>> pyperclip.copy('The text to be copied to the clipboard.')
+    # >>> pyperclip.paste()
+    # 'The text to be copied to the clipboard.'
+    # 
+    # To get this content from a shell script it could be done 
+    # like so:
+    # 
+    CLIPBOARD_DATA=$(python -c 'import pyperclip; print(pyperclip.paste())')
+}
 
 function tear_down {
     if [[ -n "$GOTOPATH" && -d "$GOTOPATH" ]]; then
