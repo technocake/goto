@@ -1,4 +1,4 @@
-from ..gotomagic.text import Error
+from ..gotomagic.text import GotoError
 
 
 def rm(magic, args):
@@ -7,7 +7,7 @@ def rm(magic, args):
     """
 
     if (len(args) == 0):
-        return None, Error("missing_magicword")
+        return None, GotoError("missing_magicword")
 
     word = args[0]
 

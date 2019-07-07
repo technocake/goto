@@ -1,6 +1,6 @@
 import webbrowser
 from ..gotomagic.utils import is_file
-from ..gotomagic.text import Error
+from ..gotomagic.text import GotoError
 from .open import open
 
 
@@ -11,7 +11,7 @@ def default(magic, magicword):
 
     url = magic.get_uri(magicword)
     if url is None:
-        return None, Error('magicword_not_found')
+        return None, GotoError('magicword_not_found', magicword=magicword)
 
     if is_file(url):
         return open(magic, [magicword])

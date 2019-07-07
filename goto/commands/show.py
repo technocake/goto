@@ -1,4 +1,4 @@
-from ..gotomagic.text import Error
+from ..gotomagic.text import GotoError, GotoWarning
 
 
 def show(magic, args):
@@ -7,7 +7,7 @@ def show(magic, args):
     """
 
     if (len(args) == 0):
-        return None, Error("show_missing_magicword")
+        return None, GotoWarning("show_missing_magicword")
 
     word = args[0]
     magic.show_shortcut(word)

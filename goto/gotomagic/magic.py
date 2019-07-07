@@ -36,7 +36,7 @@ class GotoMagic():
         uri = parse_uri(uri)
         if magicword in self.magic.keys():
             print_text(
-                text.warning["adding_existing_magicword"],
+                text.warning.messages["adding_existing_magicword"],
                 magicword=magicword,
                 uri=self.magic[magicword],
                 newuri=uri
@@ -56,7 +56,7 @@ class GotoMagic():
             self.magic.pop(magicword)
         except KeyError:
             print_text(
-                text.warning["removing_nonexisting_magicword"],
+                text.warning.messages["removing_nonexisting_magicword"],
                 magicword=magicword
             )
 
@@ -66,7 +66,7 @@ class GotoMagic():
             print(self.magic[magicword])
         except KeyError:
             print_text(
-                text.warning["magicword_does_not_exist"],
+                text.warning.messages["magicword_does_not_exist"],
                 magicword=magicword
             )
             exit(1)
@@ -77,7 +77,7 @@ class GotoMagic():
             return self.magic[magicword]
         except KeyError:
             print_text(
-                text.warning["magicword_does_not_exist"],
+                text.warning.messages["magicword_does_not_exist"],
                 magicword=magicword
             )
             return None
@@ -106,7 +106,7 @@ class GotoMagic():
             ux when magicword is missing
         """
         print_text(
-            text.warning["magicword_does_not_exist"],
+            text.warning.messages["magicword_does_not_exist"],
             magicword=key
         )
 
@@ -170,6 +170,6 @@ def save_magic(jfile, magic):
             f.write(data)
         except Exception as e:
             print_text(
-                text.error["magic_could_not_be_saved"],
+                text.error.messages["magic_could_not_be_saved"],
                 message=e.message
             )

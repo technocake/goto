@@ -1,6 +1,6 @@
 import subprocess
 from ..gotomagic.utils import detect_platform
-from ..gotomagic.text import Error
+from ..gotomagic.text import GotoError
 
 
 def intellij(magic, _):
@@ -17,12 +17,12 @@ def intellij(magic, _):
 
     try:
         code = magic['code']
-    except KeyError:
-        return None, Error("no_magicword_named_code")
+    except KeyGotoError:
+        return None, GotoError("no_magicword_named_code")
 
     try:
         subprocess.check_call('%s "%s"' % (cmd, code), shell=True)
     except subprocess.CalledProcessError:
-        return None, Error("intellij_launch_failed")
+        return None, GotoError("intellij_launch_failed")
 
     return None, None

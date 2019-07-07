@@ -1,6 +1,6 @@
 import subprocess
 import os
-from ..gotomagic.text import Error
+from ..gotomagic.text import GotoError
 
 
 def cd(magic, args):
@@ -9,7 +9,7 @@ def cd(magic, args):
     """
 
     if (len(args) == 0):
-        return None, Error("show_missing_magicword")
+        return None, GotoError("show_missing_magicword")
 
     word = args[0]
     url = magic.get_uri(word)
