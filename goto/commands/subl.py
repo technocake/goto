@@ -1,6 +1,7 @@
+import subprocess
 from ..gotomagic.handlers import open_sublime
 
-def subl(magic, args):
+def subl(magic, _):
     try:
         open_sublime(magic['code'])
     except KeyError:

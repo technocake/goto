@@ -21,7 +21,8 @@ from .commands import\
     copy,\
     index,\
     subl,\
-    vscode
+    vscode,\
+    intellij
 
 
 # make sure we print in utf-8
@@ -41,7 +42,7 @@ def main():
     args = sys.argv[3:]
 
     if command in ['help', '-h', '/?', '--help']:
-        return usage()
+        return usage(magic, args)
 
     if command == 'add':
         return add(magic, args)
@@ -68,15 +69,7 @@ def main():
         return vscode(magic, args)
 
     if command in ['intellij', 'idea']:
-        try:
-            open_intellij(magic['code'])
-        except KeyError:
-            print(text.warning["no_magicword_named_code"])
-            exit(1)
-        except subprocess.CalledProcessError:
-            print(text.error["intellij_launch_failed"])
-            exit(1)
-        exit(0)
+        return intellij(magic, args)
 
     if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:
         open_folder(magic.get_uri(sys.argv[3]))
