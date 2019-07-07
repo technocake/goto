@@ -1,10 +1,10 @@
 
-def run(magic, argv):
-    try:
-        magic.remove_shortcut(argv[3])
-        magic.save()
-        print('Removed magic word %s' % argv[3])
-        return 0
-    except Exception:
-        print('Failed to remove magic word %s' % argv[3])
-        return 1
+def rm(magic, args):
+    if (len(args) == 0):
+        return None, "missing_magicword"
+
+    word = args[0]
+
+    magic.remove_shortcut(word)
+    magic.save()
+    return 'Removed magic word %s' % word

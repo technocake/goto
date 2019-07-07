@@ -1,4 +1,5 @@
-from add import run as add
-from usage import run as usage
-from update import run as update
-from rm import run as rm
+from add import add
+from usage import usage
+from update import update
+from rm import rm
+from show import show

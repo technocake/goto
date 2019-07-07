@@ -16,7 +16,8 @@ from .commands import\
     usage,\
     add,\
     update,\
-    rm
+    rm,\
+    show
 
 
 # make sure we print in utf-8
@@ -33,26 +34,22 @@ def main():
     jfile = sys.argv[1]
     magic = GotoMagic(jfile)
     command = sys.argv[2]
+    args = sys.argv[3:]
 
-    if  command in ['help', '-h', '/?', '--help']:
+    if command in ['help', '-h', '/?', '--help']:
         return usage()
 
     if command == 'add':
-        return add(magic, sys.argv, print_text, text)
+        return add(magic, args)
 
     if command == 'update':
-        return update(magic, sys.argv)
+        return update(magic, args)
 
     if command == 'rm':
-        return rm(magic, sys.argv)
+        return rm(magic, args)
 
     if command == 'show':
-        try:
-            magic.show_shortcut(sys.argv[3])
-            exit(0)
-        except IndexError:
-            print_text(text.warning["show_missing_magicword"])
-            exit(1)
+        return show(magic, args)
 
     if command == 'copy':
         copy_to_clipboard(str(magic.get_uri(sys.argv[3])))
@@ -112,4 +109,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    output, err = main()
+    if err:
+        print_text(text.warning[err])
+    else:
+        print(output)
+
+

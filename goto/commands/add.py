@@ -1,19 +1,14 @@
 
-def run(magic, argv, print_text, text):
-    try:
-        magic.add_shortcut(argv[3], argv[4])
-        magic.save()
-        print('Added magic word %s' % argv[3])
-        return 0
-    except IndexError:
-        if len(sys.argv) > 3:
-            print_text(
-                text.warning["missing_uri"],
-                magicword = argv[3]
-            )
-            return 1
-        else:
-            print_text(
-                text.warning["missing_magicword_and_uri"]
-            )
-        return 1
+def add(magic, args):
+    if (len(args) == 0):
+        return None, "missing_magicword_and_uri"
+
+    if (len(args) == 1):
+        return None, "missing_uri"
+
+    word = args[0]
+    uri = args[1]
+
+    magic.add_shortcut(word, uri)
+    magic.save()
+    return 'Added magic word %s' % word

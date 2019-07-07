@@ -1,5 +1,5 @@
 
-def run():
+def usage():
     return """
     Goto - the magic traveler, how may I help you?
 
@@ -30,5 +30,3 @@ def run():
     Other editors supported:
     Visual Studio Code: goto vscode | IntelliJ: goto idea
     """  # noqa
-
-    return 0
