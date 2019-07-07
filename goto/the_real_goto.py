@@ -17,7 +17,10 @@ from .commands import\
     add,\
     update,\
     rm,\
-    show
+    show,\
+    copy,\
+    index,\
+    subl
 
 
 # make sure we print in utf-8
@@ -52,23 +55,13 @@ def main():
         return show(magic, args)
 
     if command == 'copy':
-        copy_to_clipboard(str(magic.get_uri(sys.argv[3])))
-        exit(0)
+        return copy(magic, args)
 
     if command == 'list':
-        magic.list_shortcuts(verbose=('-v' in sys.argv))
-        exit(0)
+        return index(magic, args)
 
     if command == 'subl':
-        try:
-            open_sublime(magic['code'])
-        except KeyError:
-            print(text.warning["no_magicword_named_code"])
-            exit(1)
-        except subprocess.CalledProcessError:
-            print(text.error["subl_launch_failed"])
-            exit(1)
-        exit(0)
+        return subl(magic, args)
 
     if command == 'vscode':
         try:
