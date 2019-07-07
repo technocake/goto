@@ -25,6 +25,10 @@ class GotoMagic():
         self.jfile = jfile
         self.magic = load_magic(jfile)
 
+    def reload(self):
+        """ reload the magic """
+        self.__init__(self.jfile)
+
     def save(self):
         """ Saves the magic to jsonfile jfile """
         save_magic(self.jfile, self.magic)
@@ -129,6 +133,9 @@ class GotoMagic():
     def __len__(self):
         """ returns number of magicwords. """
         return len(self.magic.keys())
+
+    def keys(self):
+        return self.magic.keys()
 
 
 def parse_uri(raw_uri):
