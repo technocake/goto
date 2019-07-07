@@ -1,5 +1,5 @@
 import subprocess
-from ..gotomagic.text import GotoError
+from ..gotomagic.text import GotoError, GotoWarning
 
 
 def vscode(magic, _):
@@ -10,7 +10,7 @@ def vscode(magic, _):
     try:
         code = magic['code']
     except KeyError:
-        return None, GotoError("no_magicword_named_code")
+        return None, GotoWarning("no_magicword_named_code")
 
     try:
         subprocess.check_call('code "%s"' % code, shell=True)

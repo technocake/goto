@@ -7,7 +7,7 @@ def show(magic, args):
     """
 
     if (len(args) == 0):
-        return None, GotoWarning("show_missing_magicword")
+        return None, GotoWarning("missing_magicword", command='show')
 
     word = args[0]
     magic.show_shortcut(word)

@@ -67,16 +67,7 @@ Ah hoy!
     Try again by adding another argument with where the shortcut
     should go to:
 
-                goto add {magicword} <uri>
-    """,
-
-    show_missing_magicword="""
-Ah hoy!
-    Error: missing magic word.
-
-    Try again by adding the magicword you want to show:
-
-                goto show <magicword>
+                goto {command} {magicword} <uri>
     """,
 
     missing_magicword="""
@@ -88,15 +79,6 @@ Ah hoy!
                 goto {command} <magicword>
     """,
 
-    open_missing_magicword="""
-Ah hoy!
-    Error: missing magic word.
-
-    Try again by adding the magicword you want to open:
-
-                goto <magicword>
-    """,
-
     missing_magicword_and_uri="""
 Ah hoy!
     - Remember, a shortcut has a name and a target uri (or path).
@@ -104,9 +86,9 @@ Ah hoy!
     Try again by adding both a name and a uri/path to where the shortcut
     should go to:
 
-                goto add <magicword> <uri>
+                goto {command} <magicword> <uri>
 
     example:
-        goto add website http://example.org
+        goto {command} website http://example.org
     """
 )

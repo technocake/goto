@@ -1,7 +1,7 @@
 import os
 import subprocess
 from ..gotomagic.utils import detect_platform
-from ..gotomagic.text import GotoError
+from ..gotomagic.text import GotoError, GotoWarning
 
 
 def open(magic, args):
@@ -10,7 +10,7 @@ def open(magic, args):
     """
 
     if (len(args) == 0):
-        return None, GotoWarning("open_missing_magicword")
+        return None, GotoWarning("missing_magicword", command='open')
 
     magicword = args[0]
     url = magic.get_uri(magicword)

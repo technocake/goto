@@ -6,10 +6,12 @@ def add(magic, args):
     """
 
     if (len(args) == 0):
-        return None, GotoWarning("missing_magicword_and_uri")
+        return None, GotoWarning("missing_magicword_and_uri", command='add')
 
     if (len(args) == 1):
-        return None, GotoWarning("missing_uri", magicword=args[0])
+        return None, GotoWarning("missing_uri",
+                                 magicword=args[0],
+                                 command='add')
 
     magicword = args[0]
     uri = args[1]

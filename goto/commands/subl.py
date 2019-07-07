@@ -1,5 +1,5 @@
 import subprocess
-from ..gotomagic.text import GotoError
+from ..gotomagic.text import GotoError, GotoWarning
 
 
 def subl(magic, _):
@@ -9,8 +9,8 @@ def subl(magic, _):
 
     try:
         code = magic['code']
-    except KeyGotoError:
-        return None, GotoError("no_magicword_named_code")
+    except KeyError:
+        return None, GotoWarning("no_magicword_named_code")
 
     try:
         subprocess.check_call('subl "%s"' % code, shell=True)

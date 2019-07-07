@@ -11,7 +11,7 @@ def default(magic, magicword):
 
     url = magic.get_uri(magicword)
     if url is None:
-        return None, GotoError('magicword_not_found', magicword=magicword)
+        return None, GotoWarning('magicword_does_not_exist', magicword=magicword)
 
     if is_file(url):
         return open(magic, [magicword])
