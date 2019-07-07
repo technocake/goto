@@ -67,6 +67,7 @@ function _cmd_should_be_empty {
     fi
 }
 
+
 function _failing_cmd_should_give_human_message {
     cmd=$1
     $cmd &> "$OUTPUTFILE"
@@ -77,6 +78,19 @@ function _failing_cmd_should_give_human_message {
         return 0
     fi
 }
+
+
+function _failing_cmd_should_not_print_ah_hoy_twice {
+    cmd=$1
+    $cmd &> "$OUTPUTFILE"
+    result="$(cat "$OUTPUTFILE" | grep -c 'Ah hoy!')"
+    if [  "$result" -ne 1 ]; then
+        _fail_test "command: '$cmd' did return the wrong number of Ah hoys ($result)"
+    else
+        return 0
+    fi
+}
+
 
 function _display_projectfile {
     projectfile="$GOTOPATH/projects/$TESTPROJECT.json"
@@ -226,7 +240,17 @@ function test_09_goto_update {
     _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
 }
 
-function TODO_test_10_goto_copy {
+function test_10_only_one_ah_hoy_at_the_time_please {
+    nonexisting_magicword="IDoNotExist"
+
+    for command in '' show add update rm; do
+        _cmd_should_fail "goto $command $nonexisting_magicword"
+        _failing_cmd_should_give_human_message "goto $command $nonexisting_magicword"
+        _failing_cmd_should_not_print_ah_hoy_twice "goto $command $nonexisting_magicword"
+    done
+}
+
+function TODO_test_11_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
     

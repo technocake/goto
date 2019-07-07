@@ -10,8 +10,8 @@ def default(magic, magicword):
     """
 
     url = magic.get_uri(magicword)
-    if url is None:
-        return None, GotoWarning('magicword_does_not_exist', magicword=magicword)
+    # for this time beeing, the get_uri is exiting and printing warning itself
+    #  TODO:  it would be better to have that kind of logic up in here.
 
     if is_file(url):
         return open(magic, [magicword])
