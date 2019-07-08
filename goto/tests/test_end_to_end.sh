@@ -5,6 +5,7 @@ source _gotoutils
 
 TESTPROJECT=testproject
 OUTPUTFILE=/tmp/.gototest-cmd-output
+# PROJECTFILE
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -12,7 +13,7 @@ NC='\033[0m' # No Color
 
 
 function set_up {
-    if [[ -z "$GOTOPATH" ]]; then
+    if [[ -z "$GOTOPATH" || "$GOTOPATH" == "${HOME}/.goto" ]]; then
         echo "GOTOPATH not set in environment."
         echo "Tests should not run on real goto state folder."
         echo "i.e use GOTOPATH=/tmp/.goto   instead"
@@ -21,6 +22,7 @@ function set_up {
     echo "setting up tests"
     create_goto_folders "$GOTOPATH"
     touch "$OUTPUTFILE"
+    PROJECTFILE="$GOTOPATH/projects/$TESTPROJECT.json"
 }
 
 
@@ -74,6 +76,8 @@ function _failing_cmd_should_give_human_message {
     result="$(cat "$OUTPUTFILE")"
     if [[ ! "$result" =~ "Ah hoy" ]]; then
         _fail_test "command: '$cmd' did not give human readable error message"
+    elif [[ "$result" =~ "Traceback" ]]; then
+        _fail_test "command: '$cmd' did contain not only human readable error message"
     else
         return 0
     fi
@@ -93,12 +97,20 @@ function _failing_cmd_should_not_print_ah_hoy_twice {
 
 
 function _display_projectfile {
-    projectfile="$GOTOPATH/projects/$TESTPROJECT.json"
-    echo "Contents of projectfile $projectfile:"
-    if [ -f "$projectfile" ]; then
-        cat "$projectfile"
+    echo "Contents of projectfile $PROJECTFILE:"
+    if [ -f "$PROJECTFILE" ]; then
+        cat "$PROJECTFILE"
     else
-        echo "projectfile $projectfile is not existing"
+        echo "projectfile $PROJECTFILE is not existing"
+    fi
+}
+
+function _projectfile_should_contain {
+    local magicword="$1"
+    if [[ $(cat $PROJECTFILE | grep $magicword | wc -l) -ne 1 ]]; then
+        _fail_test "magicword '$magicword' missing in project file"
+    else
+        return 0
     fi
 }
 
@@ -134,6 +146,7 @@ function test_02_initialization_should_work {
     
     _cmd_should_succeed "goto"
 
+    _cmd_should_succeed "project testgotoinit"
     # When goto is inititalized, cd should work
     _cmd_should_succeed "goto add testcd ${testcdpath}"
     _cmd_should_succeed "goto testcd"
@@ -170,21 +183,57 @@ function test_06_goto_add {
     uri="http://example.com"
 
     _cmd_should_succeed "goto add $magicword $uri"
+    _projectfile_should_contain "$magicword"
     # Adding magicword that already exist
     _cmd_should_fail "goto add $magicword $uri"
+    _projectfile_should_contain "$magicword"
     _failing_cmd_should_give_human_message "goto add $magicword $uri"
 
     # Invoking without any magic words
     _cmd_should_fail "goto add"
     _failing_cmd_should_give_human_message "goto add"
+    _projectfile_should_contain "$magicword"
 
     # Invoking without any uri
     _cmd_should_fail "goto add test_add_no_uri"
     _failing_cmd_should_give_human_message "goto add test_add_no_uri"
+    _projectfile_should_contain "$magicword"
+}
+
+function test_07_goto {
+    magicword="test_goto"
+    testcdpath="/tmp"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
+
+    _cmd_should_succeed "goto add $magicword $uri"
+    _cmd_should_fail "goto $nonexisting_magicword"
+    _failing_cmd_should_give_human_message "goto $nonexisting_magicword"
+    _failing_cmd_should_not_print_ah_hoy_twice "goto $nonexisting_magicword"
+
+    _cmd_should_succeed "goto add testcd2 $testcdpath"
+    _cmd_should_succeed "goto testcd2"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+
+    _cmd_should_succeed "goto cd testcd"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+
+
+    _projectfile_should_contain "$magicword"
+}
+
+function TODO_test_08_goto_add_æøå {
+    existing_magicword="test_æøå"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com/æøå"
+
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+    _projectfile_should_contain "$existing_magicword"
+
 }
 
 
-function test_07_goto_show {
+function test_09_goto_show {
     existing_magicword="test_show"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -201,7 +250,7 @@ function test_07_goto_show {
     _failing_cmd_should_give_human_message "goto show $nonexisting_magicword"
 }
 
-function test_08_goto_rm {
+function test_10_goto_rm {
     existing_magicword="test_rm"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -220,7 +269,7 @@ function test_08_goto_rm {
     _cmd_should_succeed "goto add $existing_magicword $uri"
 }
 
-function test_09_goto_update {
+function test_11_goto_update {
     existing_magicword="test_update"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -240,7 +289,7 @@ function test_09_goto_update {
     _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
 }
 
-function test_10_only_one_ah_hoy_at_the_time_please {
+function test_12_only_one_ah_hoy_at_the_time_please {
     nonexisting_magicword="IDoNotExist"
 
     for command in '' show add update rm; do
@@ -250,7 +299,9 @@ function test_10_only_one_ah_hoy_at_the_time_please {
     done
 }
 
-function TODO_test_11_goto_copy {
+
+
+function TODO_test_13_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
     
