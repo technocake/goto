@@ -200,8 +200,29 @@ function test_06_goto_add {
     _projectfile_should_contain "$magicword"
 }
 
+function test_07_goto {
+    magicword="test_goto"
+    testcdpath="/tmp"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
 
-function test_07_goto_add_æøå {
+    _cmd_should_succeed "goto add $magicword $uri"
+    _cmd_should_fail "goto $nonexisting_magicword"
+    _failing_cmd_should_give_human_message "goto $nonexisting_magicword"
+    _failing_cmd_should_not_print_ah_hoy_twice "goto $nonexisting_magicword"
+
+    _cmd_should_succeed "goto add testcd2 $testcdpath"
+    _cmd_should_succeed "goto testcd2"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+
+    _cmd_should_succeed "goto cd testcd"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+
+
+    _projectfile_should_contain "$magicword"
+}
+
+function TODO_test_08_goto_add_æøå {
     existing_magicword="test_æøå"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com/æøå"
@@ -212,7 +233,7 @@ function test_07_goto_add_æøå {
 }
 
 
-function test_08_goto_show {
+function test_09_goto_show {
     existing_magicword="test_show"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -229,7 +250,7 @@ function test_08_goto_show {
     _failing_cmd_should_give_human_message "goto show $nonexisting_magicword"
 }
 
-function test_09_goto_rm {
+function test_10_goto_rm {
     existing_magicword="test_rm"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -248,7 +269,7 @@ function test_09_goto_rm {
     _cmd_should_succeed "goto add $existing_magicword $uri"
 }
 
-function test_10_goto_update {
+function test_11_goto_update {
     existing_magicword="test_update"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -268,7 +289,7 @@ function test_10_goto_update {
     _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
 }
 
-function test_11_only_one_ah_hoy_at_the_time_please {
+function test_12_only_one_ah_hoy_at_the_time_please {
     nonexisting_magicword="IDoNotExist"
 
     for command in '' show add update rm; do
@@ -280,7 +301,7 @@ function test_11_only_one_ah_hoy_at_the_time_please {
 
 
 
-function TODO_test_12_goto_copy {
+function TODO_test_13_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
     
