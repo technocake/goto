@@ -1,18 +1,22 @@
 import webbrowser
 from ..gotomagic.utils import is_file
-from ..gotomagic.text import GotoError
+from ..gotomagic.text import GotoError, GotoWarning
 from .open import open
 
 
-def default(magic, magicwords):
+def default(magic, args):
     """
     Default behaviour when no commands are found in the first argument
     """
+
+    verbose = '-v' in args or '--verbose' in args
+    magicwords = filter(lambda word: not word.startswith('-'), args)
+
     output = ""
     for magicword in magicwords:
         url = magic.get_uri(magicword)
         if url is None:
-            return None, GotoWarning('magicword_does_not_exist', magicword=magicword)
+            return None, GotoWarning('magicword_does_not_exist', magicword=magicword)  # noqa
 
         if is_file(url):
             _output, err = open(magic, [magicword])
@@ -25,5 +29,5 @@ def default(magic, magicwords):
                 output += "Opening browser tab %s\n" % url
             except webbrowser.Error:
                 return None, GotoError('open_browser_tab_error')
-
+    output = output if verbose else None
     return output, None
