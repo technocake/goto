@@ -56,7 +56,11 @@ function _goto_main {
 
 
         # Special case 2  (goto <magicword>)
-        if [[ "$#" -eq 1 && ! "$1" =~ ^(list|help|add|rm|update|copy|subl|vscode|intelij|idea|show|cd|open)$ && ! "$1" =~ "--" && ! "$1" =~ "-"  ]]; then
+        if [[ "$#" -eq 1 \
+                && ! "$1" =~ ^(list|help|add|rm|mv|rename|update|copy|subl|vscode|intelij|idea|show|cd|open)$ \
+                && ! "$1" =~ ^"--" \
+                && ! "$1" =~ ^"-"  \
+                ]]; then
             # if run like: goto <magicword> 
             URI=$(goto show "$1")
 
