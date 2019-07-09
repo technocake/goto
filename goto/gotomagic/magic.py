@@ -66,7 +66,7 @@ class GotoMagic():
         """ Renaming a shortcut """
         if not overwrite and to_magicword in self.magic:
             uri = self.magic[to_magicword]
-            raise warnings.GotoException('adding_existing_magicword_short', magicword=to_magicword, uri=uri)  # noqa
+            return GotoWarning('adding_existing_magicword_short', magicword=to_magicword, uri=uri)  # noqa
 
         if from_magicword not in self.magic:
             raise warnings.GotoException('magicword_does_not_exist', magicword=from_magicword)  # noqa
