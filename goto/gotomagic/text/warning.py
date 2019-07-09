@@ -3,7 +3,6 @@
 
 messages = dict(
     adding_existing_magicword="""
-
 Ah hoy!
 
     - You already have a magic word named {magicword},
@@ -14,7 +13,6 @@ Ah hoy!
     """,
 
     adding_existing_magicword_short="""
-
 Ah hoy!
 
     - You already have a magic word named {magicword},
