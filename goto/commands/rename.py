@@ -15,7 +15,9 @@ def rename(magic, command, args):
     to_magicword = args[1]
     overwrite = '-f' in args or '--force' in args
 
-    try:
+err = magic.rename_shortcut(from_magicword, to_magicword, overwrite)
+if err:
+    return None, err
         magic.rename_shortcut(from_magicword, to_magicword, overwrite)
         magic.save()
     except warnings.GotoException as warning:
