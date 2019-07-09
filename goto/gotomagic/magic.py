@@ -8,7 +8,7 @@ import os
 
 from . import text
 from .text import print_text
-from .exceptions import warnings
+from .text import GotoWarning
 
 
 class GotoMagic():
@@ -69,7 +69,7 @@ class GotoMagic():
             return GotoWarning('adding_existing_magicword_short', magicword=to_magicword, uri=uri)  # noqa
 
         if from_magicword not in self.magic:
-            raise warnings.GotoException('magicword_does_not_exist', magicword=from_magicword)  # noqa
+            return GotoWarning('magicword_does_not_exist', magicword=from_magicword)  # noqa
 
         from_uri = self.magic[from_magicword]
         del self.magic[from_magicword]
