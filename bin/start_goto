@@ -15,9 +15,16 @@ _goto_completions()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="--for --future --implementation"
+    opts="--verbose --force --open"
 
-    if [[ ${prev} == "goto" ]] || [[ ${prev} == "show" ]] || [[ ${prev} == "copy" ]] || [[ ${prev} == "cd" ]] || [[ ${prev} == "rm" ]] || [[ ${prev} == "-o" ]] || [[ ${prev} == "open" ]] || [[ ${prev} == "--open" ]]; then 
+    if [[ "$prev" =~ ^(goto|show|copy|cd|rm|update|mv|rename|open|-o|--open)$ ]]; then
+        COMPREPLY=( $(compgen -W "$(goto list)" ${cur}) )
+        return 0
+    fi
+
+    # autocomplete second magicwords in goto rename.
+    # only useful if the user specifies the --force or -f option/flag.
+    if [[ $COMP_CWORD -ge 3 && "${COMP_WORDS[1]}" =~ ^(mv|rename)$ ]]; then
         COMPREPLY=( $(compgen -W "$(goto list)" ${cur}) )
         return 0
     fi
