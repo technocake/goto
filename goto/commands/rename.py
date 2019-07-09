@@ -1,4 +1,5 @@
 from ..gotomagic.text import GotoWarning
+from ..gotomagic.exceptions import warnings
 
 
 def rename(magic, command, args):
@@ -8,19 +9,16 @@ def rename(magic, command, args):
     from_magicword = args[0]
 
     if len(args) == 1:
-        return None, GotoWarning("missing_to_magicword", command=command, magicword=from_magicword)
+        return None, GotoWarning("missing_to_magicword",
+                                 command=command, magicword=from_magicword)
 
     to_magicword = args[1]
+    overwrite = '-f' in args or '--force' in args
 
-    if from_magicword not in magic.magic:
-        return None, GotoWarning("magicword_does_not_exist", magicword=from_magicword)
+    try:
+        magic.rename_shortcut(from_magicword, to_magicword, overwrite)
+        magic.save()
+    except warnings.GotoException as warning:
+        return None, warning
 
-    if to_magicword in magic.magic:
-        return None, GotoWarning("adding_existing_magicword_short", magicword=to_magicword, uri=magic[to_uri])
-
-    from_uri = magic[from_magicword]
-    del magic[from_magicword]
-    magic[to_magicword] = from_uri
-    magic.save()
-
-    return "Renamed %s to %s" % (from_magicword, to_magicword), None
+    return "Renamed {} to {}".format(from_magicword, to_magicword), None

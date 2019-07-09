@@ -114,6 +114,15 @@ function _projectfile_should_contain {
     fi
 }
 
+function _projectfile_should_not_contain {
+    local magicword="$1"
+    if [[ $(cat $PROJECTFILE | grep $magicword | wc -l) -ne 0 ]]; then
+        _fail_test "magicword '$magicword' should not be in project file"
+    else
+        return 0
+    fi   
+}
+
 
 function test_01_not_initialized_should_fail {
     echo "... not initialized and deactived"
@@ -300,7 +309,7 @@ function test_11_goto_update {
 function test_12_only_one_ah_hoy_at_the_time_please {
     nonexisting_magicword="IDoNotExist"
 
-    for command in '' show add update rm; do
+    for command in '' show add update rm rename mv; do
         _cmd_should_fail "goto $command $nonexisting_magicword"
         _failing_cmd_should_give_human_message "goto $command $nonexisting_magicword"
         _failing_cmd_should_not_print_ah_hoy_twice "goto $command $nonexisting_magicword"
@@ -308,8 +317,65 @@ function test_12_only_one_ah_hoy_at_the_time_please {
 }
 
 
+function test_13_goto_rename {
+    existing_magicword1="test_1"
+    existing_magicword2="test_2"
+    new_magicword="test_3"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
 
-function TODO_test_13_goto_copy {
+    _cmd_should_succeed "goto add $existing_magicword1 $uri"
+    _cmd_should_succeed "goto add $existing_magicword2 $uri"
+
+    # Invoking rename without any magic words
+    _cmd_should_fail "goto rename"
+    _failing_cmd_should_give_human_message "goto rename"
+
+    _projectfile_should_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2
+
+
+    # Invoking rename with one magicword
+    _cmd_should_fail "goto rename $existing_magicword1"
+    _failing_cmd_should_give_human_message "goto rename $existing_magicword1"
+
+    _projectfile_should_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2
+
+
+    # Invoking rename with both magicwords
+    _cmd_should_succeed "goto rename $existing_magicword1 $new_magicword"
+    _cmd_should_fail "goto rename $existing_magicword1 $new_magicword"
+    _failing_cmd_should_give_human_message "goto rename $existing_magicword1 $new_magicword"
+
+    _projectfile_should_not_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2
+    _projectfile_should_contain $new_magicword
+
+
+    # re add existing_magicword1
+    _cmd_should_succeed "goto add $existing_magicword1 $uri"
+
+
+    # Invoking rename targeting existing magicword
+    _cmd_should_fail "goto rename $existing_magicword1 $existing_magicword2"
+    _failing_cmd_should_give_human_message "goto rename $existing_magicword1 $existing_magicword2"
+
+    _projectfile_should_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2    
+    _projectfile_should_contain $new_magicword
+
+
+    # Invoking rename targeting existing magicword and setting force flag to true
+    _cmd_should_succeed "goto rename $existing_magicword1 $existing_magicword2 --force"
+    
+    _projectfile_should_not_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2    
+    _projectfile_should_contain $new_magicword
+}
+
+
+function TODO_test_14_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
     
