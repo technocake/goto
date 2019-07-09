@@ -90,5 +90,24 @@ Ah hoy!
 
     example:
         goto {command} website http://example.org
-    """
+    """,
+
+    unescaped_ampersand_url_detected="""
+Ah hoy!
+    - Detected an ampersand (&) in the uri.
+
+    Since goto is ran in a shell, unescaped &'s will make
+    goto run in the background, with only half of the uri
+    you intended to give it.
+    This is expected behaviour in bash/zsh.
+
+    Effectively, chopping your url in half.
+
+    Example: http://example.com?query=param&query2=param
+    would loose everything after the & character.
+
+    Try again, but this time wrap the url with "":
+
+        goto {command} {magicword} "http://your-url?a=1&b=2"
+    """,
 )
