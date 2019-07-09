@@ -198,6 +198,14 @@ function test_06_goto_add {
     _cmd_should_fail "goto add test_add_no_uri"
     _failing_cmd_should_give_human_message "goto add test_add_no_uri"
     _projectfile_should_contain "$magicword"
+
+    # Invoking with & in uri, unescaped
+    # TODO: turns out to be hard to test actually, due to the fact that commands tested are always wrapped in quotes.
+    # _cmd_should_fail "goto add test_unescaped_ampersand_in_url http://lol?haha=hehe&hihi=hoho"
+    # _failing_cmd_should_give_human_message "goto add test_unescaped_ampersand_in_url http://lol?haha=hehe&hihi=hoho"
+    # TODO: add _projectfile_should_not_contain test_unescaped_ampersand_in_url check here
+    _cmd_should_succeed "goto add test_escaped_ampersand_in_url 'http://lol?haha=hehe&hihi=hoho'"
+    _projectfile_should_contain "test_escaped_ampersand_in_url"
 }
 
 function test_07_goto {
