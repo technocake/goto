@@ -12,3 +12,4 @@ from .open import open
 from .cd import cd
 from .default import default
 from .rename import rename
+from .use import use

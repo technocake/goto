@@ -117,6 +117,15 @@ Ah hoy!
         goto {command} website http://example.org
     """,
 
+    missing_project_name="""
+Ah hoy!
+    Error: missing project name.
+
+    Try again by adding the project name you want to {command}:
+
+                goto {command} <project name>
+    """,
+
     unescaped_ampersand_url_detected="""
 Ah hoy!
     - Detected an ampersand (&) in the uri.

@@ -56,4 +56,33 @@ Error: could not launch vscode
 
         https://code.visualstudio.com/docs/editor/command-line
     """,
+
+    project_not_changed="""
+Error: Could not change project
+    Project: {Project}
+    File {file}
+
+If you want us to fix it - please tell us about this on github here:
+
+    https://github.com/technocake/goto/issues
+    """,
+
+    project_not_saved="""
+Error: Could not create new project
+    Project {Project}
+    File {file}
+
+If you want us to fix it - please tell us about this on github here:
+
+    https://github.com/technocake/goto/issues
+    """,
+
+    no_such_file="""
+Error: A file that goto needs to function properly is missing
+    File {file}
+
+If you want us to fix it - please tell us about this on github here:
+
+    https://github.com/technocake/goto/issues
+    """
 )

@@ -86,6 +86,9 @@ def run_command(magic, command, args):
     if command in ['mv', 'rename']:
         return commands.rename(magic, command, args)
 
+    if command == 'use':
+        return commands.use(magic, command, args)
+
     return commands.default(magic, command)
 
 
