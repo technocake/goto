@@ -27,17 +27,13 @@ def use(magic, command, args):
         try:
             with codecs.open(project_file, 'w+', encoding='utf-8') as f:
                 try:
-                    f.write('')
-                    try:
-                        with codecs.open(active_project_file, 'w+', encoding='utf-8') as f:
-                            try:
-                                f.write(project_name)
-                                return u"Using new project %s" % project_name, None
-                            except Exception as e:
-                                return None, GotoError("project_not_changed", project=project_name, file=active_project_file)
-                    except Exception as e:
-                        return None, GotoError('no_such_file', file=active_project_file)
+                    with codecs.open(active_project_file, 'w+', encoding='utf-8') as f:
+                        try:
+                            f.write(project_name)
+                            return u"Using new project %s" % project_name, None
+                        except Exception as e:
+                            return None, GotoError("project_not_changed", project=project_name, file=active_project_file)
                 except Exception as e:
-                    return None, GotoError('project_not_saved', project=project_name, file=project_file)
+                    return None, GotoError('no_such_file', file=active_project_file)
         except Exception as e:
             return None, GotoError('no_such_file', file=project_file)
