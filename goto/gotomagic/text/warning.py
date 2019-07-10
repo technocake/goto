@@ -3,7 +3,6 @@
 
 messages = dict(
     adding_existing_magicword="""
-
 Ah hoy!
 
     - You already have a magic word named {magicword},
@@ -11,6 +10,13 @@ Ah hoy!
 
     If you want to override it use:
         goto update {magicword} {newuri}
+    """,
+
+    adding_existing_magicword_short="""
+Ah hoy!
+
+    - You already have a magic word named {magicword},
+    it points to: {uri}
     """,
 
     removing_nonexisting_magicword="""
@@ -77,6 +83,25 @@ Ah hoy!
     Try again by adding the magicword you want to {command}:
 
                 goto {command} <magicword>
+    """,
+
+    missing_both_magicwords="""
+Ah hoy!
+    Error: missing both magicwords
+
+    Try again by adding the magicword you want to {command}
+    and the magicword you want to {command} to:
+
+                goto {command} <from> <to>
+    """,
+
+    missing_to_magicword="""
+Ah hoy!
+    Error: missing second magic word.
+
+    Try again by adding the magicword you want to {command} to:
+
+                goto {command} {magicword} <to>
     """,
 
     missing_magicword_and_uri="""
