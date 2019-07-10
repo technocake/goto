@@ -10,6 +10,7 @@ import codecs
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck
+from .gotomagic.text import GotoWarning
 
 from . import commands
 
@@ -88,6 +89,18 @@ def run_command(magic, command, args):
 
     if command == 'use':
         return commands.use(magic, command, args)
+
+    if command == 'project:rm':
+        return None, GotoWarning('not_implemented')
+
+    if command == 'project:list':
+        return None, GotoWarning('not_implemented')
+
+    if command == 'project:deactivate':
+        return None, GotoWarning('not_implemented')
+
+    if command == 'project:help':
+        return None, GotoWarning('not_implemented')
 
     return commands.default(magic, command)
 

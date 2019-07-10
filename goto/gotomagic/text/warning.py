@@ -144,4 +144,9 @@ Ah hoy!
 
         goto {command} {magicword} "http://your-url?a=1&b=2"
     """,
+
+    not_implemented="""
+Ah hoy!
+    - Not implemented
+    """,
 )
