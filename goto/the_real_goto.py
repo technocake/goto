@@ -3,11 +3,13 @@
 'Goto - the magic project that takes you where you need to be, now.'
 from __future__ import absolute_import, unicode_literals
 
+import os
 import sys
 import codecs
 
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
+from .gotomagic.utils import healthcheck
 
 from . import commands
 
@@ -20,6 +22,11 @@ except:
 
 
 def main():
+    err = healthcheck()
+    if err:
+        print(err.message)
+        exit(2)
+
     if len(sys.argv) < 3:
         output, _ = commands.usage()
         print(output)
@@ -75,6 +82,9 @@ def run_command(magic, command, args):
 
     if command == 'cd':
         return commands.cd(magic, args)
+
+    if command in ['mv', 'rename']:
+        return commands.rename(magic, command, args)
 
     return commands.default(magic, command)
 

@@ -6,7 +6,6 @@
 [[ -n $BASH_VERSION ]] && (return 0 2>/dev/null)) && _GOTO_IS_SOURCED=0 || _GOTO_IS_SOURCED=1
 
 
-
 function _goto_main {
     local PROJECT PROJECTFILE URI
 
