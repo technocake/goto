@@ -90,6 +90,9 @@ def run_command(magic, command, args):
     if command == 'use':
         return commands.use(magic, command, args)
 
+    if command == 'project':
+        return None, GotoWarning('not_implemented')
+
     if command == 'project:rm':
         return None, GotoWarning('not_implemented')
 
