@@ -26,6 +26,7 @@ setuptools.setup(
     install_requires=[
         'pyperclip',
         'gitpython',
+        'future',
     ],
     scripts=[
         'bin/goto',

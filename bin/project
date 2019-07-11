@@ -2,8 +2,6 @@
 . _gotoutils # load common utility functions
 load_gotopath
 
-STATEDIR="$GOTOPATH"
-
 
 _usage() {
     echo "Usage: project [add <projectname>] | [list]"
@@ -16,14 +14,18 @@ _usage() {
 }
 
 _addproject() {
-    touch "$STATEDIR/projects/$1"
+    local PROJECT_FOLDER="$GOTOPATH/projects/$1"
+    if [[ ! -d $PROJECT_FOLDER ]]; then
+        mkdir "$PROJECT_FOLDER"
+    else
+        echo "Project $1 already exists"
+    fi
 }
 
 _rmproject() {
     if prompt "Are you sure you want to delete project $1? [y|n]: "; then
-        rm "$STATEDIR/projects/$1"
-        rm "$STATEDIR/projects/$1.json"
-        echo "Removed project $2"
+        rm -rf "$GOTOPATH/projects/$1"
+        echo "Removed project $1"
     else
         echo 
         echo "Aborting delete of project $1"
@@ -31,16 +33,16 @@ _rmproject() {
 }
 
 _listprojects() {
-    ls "$STATEDIR/projects" | grep -v .json
+    ls "$GOTOPATH/projects/"
 }
 
 _deactivate_project() {
-    echo "" > "$STATEDIR/active-project"
+    echo "" > "$GOTOPATH/active-project"
 }
 
 _changeproject() {
-    if [ -f "$STATEDIR/projects/$1" ]; then
-        echo "$1" > "$STATEDIR/active-project"
+    if [ -d "$GOTOPATH/projects/$1" ]; then
+        echo "$1" > "$GOTOPATH/active-project"
         echo "active project is now: $1"
     else
         echo "Warning - tried to change to a non existing project."
@@ -52,7 +54,7 @@ _changeproject() {
 }
 
 _showactiveproject() {
-        cat "$STATEDIR/active-project" 
+    cat "$GOTOPATH/active-project" 
 }
 
 # ---------------------------
@@ -90,9 +92,9 @@ if [ "$1" = "rm" ]
     then 
     if [ "$2" = "" ] ; then
         _usage
+        exit 1
     else
-       _rmproject "$2" "$3"
-       # TODO if active project == removed what to do? _changeproject "$2"
+       _rmproject "$2"
        _deactivate_project
         exit 0
     fi

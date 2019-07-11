@@ -2,11 +2,14 @@
 # code: utf-8
 'Goto - the magic project that takes you where you need to be, now.'
 from __future__ import absolute_import, unicode_literals
+from builtins import dict, str  # redefine dict and str to be py3-like in py2.
+# http://johnbachman.net/building-a-python-23-compatible-unicode-sandwich.html
 
 import os
 import sys
 import codecs
 
+from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck
@@ -22,18 +25,11 @@ except:
 
 
 def main():
-    err = healthcheck()
-    if err:
-        print(err.message)
-        exit(2)
+    exit_if_unhealthy()
+    exit_with_usage_if_needed()
 
-    if len(sys.argv) < 3:
-        output, _ = commands.usage()
-        print(output)
-        exit(0)
-
-    jfile = sys.argv[1]
-    magic = GotoMagic(jfile)
+    project = sys.argv[1]
+    magic = GotoMagic(project)
     command = sys.argv[2]
     args = sys.argv[3:]
 
@@ -42,6 +38,20 @@ def main():
         print(err.message)
         exit(1)
     if output:
+        print(output)
+        exit(0)
+
+
+def exit_if_unhealthy():
+    err = healthcheck()
+    if err:
+        print(err.message)
+        exit(2)
+
+
+def exit_with_usage_if_needed():
+    if len(sys.argv) < 3:
+        output, _ = commands.usage()
         print(output)
         exit(0)
 

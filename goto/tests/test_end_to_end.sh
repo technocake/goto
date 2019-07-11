@@ -22,7 +22,8 @@ function set_up {
     echo "setting up tests"
     create_goto_folders "$GOTOPATH"
     touch "$OUTPUTFILE"
-    PROJECTFILE="$GOTOPATH/projects/$TESTPROJECT.json"
+    PROJECTFOLDER="$GOTOPATH/projects/$TESTPROJECT"
+    PROJECTFILE="$PROJECTFOLDER/private/$TESTPROJECT.json"
 }
 
 
@@ -179,8 +180,8 @@ function test_04_switch_to_nonexistent_project {
 
 function test_05_add_project {
     _cmd_should_succeed "project add $TESTPROJECT"
-    if [ ! -f "${GOTOPATH}/projects/${TESTPROJECT}" ]; then
-        _fail_test "project file not created"
+    if [ ! -d "$PROJECTFOLDER" ]; then
+        _fail_test "project folder not created"
     fi
     _cmd_should_succeed "goto list"
 }
@@ -239,7 +240,7 @@ function test_07_goto {
     _projectfile_should_contain "$magicword"
 }
 
-function TODO_test_08_goto_add_æøå {
+function test_08_goto_add_æøå {
     existing_magicword="test_æøå"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com/æøå"

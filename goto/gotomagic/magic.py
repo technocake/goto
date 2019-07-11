@@ -2,6 +2,10 @@
 """
 Magic is stored here.
 """
+from __future__ import absolute_import, unicode_literals
+from builtins import dict, str  # redefine dict and str to be py3-like in py2.
+# http://johnbachman.net/building-a-python-23-compatible-unicode-sandwich.html
+
 import json
 import codecs
 import os
@@ -9,6 +13,8 @@ import os
 from . import text
 from .text import print_text
 from .text import GotoWarning
+from .. import settings
+from . import utils
 
 
 class GotoMagic():
@@ -21,10 +27,15 @@ class GotoMagic():
         tl-dr: saving magic as json.
     """
 
-    def __init__(self, jfile):
+    def __init__(self, project, degree='private', GOTOPATH=None):
         """ Loads json from jfile """
-        self.jfile = jfile
-        self.magic = load_magic(jfile)
+        if GOTOPATH is None:
+            GOTOPATH = settings.GOTOPATH
+        self.project = project
+        utils.create_project_folder(project, degree, GOTOPATH)
+        self.jfile = os.path.join(
+            GOTOPATH, 'projects', project, degree, "{}.json".format(project))
+        self.magic = load_magic(self.jfile)
 
     def reload(self):
         """ reload the magic """
@@ -195,10 +206,12 @@ def save_magic(jfile, magic):
     "saves the magic shortcuts as json into a file"
     with codecs.open(jfile, 'w+', encoding='utf-8') as f:
         try:
-            data = json.dumps(magic, sort_keys=True, indent=4, ensure_ascii=False)
+            data = str(json.dumps(magic, sort_keys=True, indent=4, ensure_ascii=False))
             f.write(data)
         except Exception as e:
             print_text(
                 text.error.messages["magic_could_not_be_saved"],
-                message=e.message
+                message=str(e)
             )
+            # TODO: handle more elegantly
+            exit(1)
