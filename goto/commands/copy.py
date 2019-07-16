@@ -2,7 +2,7 @@ import pyperclip
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def copy(magic, args):
+def copy(magic, command, args):
     """
     Copy uri to clipboard
     """

@@ -2,7 +2,7 @@ import subprocess
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def subl(magic, _):
+def subl(magic, command, args):
     """
     Launch Sublime Text in the code folder
     """

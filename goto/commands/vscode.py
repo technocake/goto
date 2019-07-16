@@ -2,7 +2,7 @@ import subprocess
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def vscode(magic, _):
+def vscode(magic, command, args):
     """
     Launch Visual Studio Code in the code folder
     """

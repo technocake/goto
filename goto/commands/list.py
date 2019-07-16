@@ -1,4 +1,4 @@
-def list(magic, args):
+def list(magic, command, args):
     """
     List commands
     """

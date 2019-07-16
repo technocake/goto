@@ -1,7 +1,7 @@
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def show(magic, args):
+def show(magic, command, args):
     """
     Show magicword.
     """

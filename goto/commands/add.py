@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
-def add(magic, args):
+def add(magic, command, args):
     """
     Add magicword
     """

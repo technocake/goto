@@ -25,7 +25,7 @@ def usage():
         goto open <magicword>         Open in finder/file explorer
 
     Launching Code editors
-        goto subl                     Opens Sublime Text in code folder* 
+        goto subl                     Opens Sublime Text in code folder*
         goto idea                     Opens IntelliJ in code folder*
         goto vscode                   Opens Visual Studio Code in code folder*
 
