@@ -34,9 +34,13 @@ def main():
     jfile = sys.argv[1]
     magic = GotoMagic(jfile)
     command = sys.argv[2]
-    args = sys.argv[3:]
+    argv = sys.argv[3:]
 
-    output, err = run_command(magic, command, args)
+    args = list(filter(lambda word: not word.startswith('-'), argv))
+    options = list(filter(lambda word: word.startswith('-'), argv))
+    verbose = '-v' in options or '--verbose' in options
+
+    output, err = run_command(magic, command, args, verbose)
     if err:
         print(err.message)
         exit(1)
@@ -47,7 +51,7 @@ def main():
     exit(0)
 
 
-def run_command(magic, command, args):
+def run_command(magic, command, args, verbose):
     if command in ['help', '-h', '/?', '--help']:
         return commands.usage()
 
@@ -79,7 +83,7 @@ def run_command(magic, command, args):
         return commands.intellij(magic, command, args)
 
     if command in ['-o', '--open', 'open']:
-        return commands.open(magic, command, args)
+        return commands.open(magic, command, args, verbose)
 
     if command == 'cd':
         return commands.cd(magic, command, args)
@@ -88,7 +92,7 @@ def run_command(magic, command, args):
         return commands.rename(magic, command, args)
 
     args = [command] + args
-    return commands.default(magic, args)
+    return commands.default(magic, args, verbose)
 
 
 if __name__ == '__main__':

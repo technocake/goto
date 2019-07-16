@@ -4,7 +4,7 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def open(magic, command, args):
+def open(magic, command, args, verbose=False):
     """
     Open folder
     """
@@ -28,4 +28,4 @@ def open(magic, command, args):
     except subprocess.CalledProcessError as e:
         return None, GotoError("open_failed", message=e.message)
 
-    return "%s" % url, None
+    return url if verbose else None, None
