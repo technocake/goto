@@ -21,7 +21,7 @@ def default(magic, command, args):
             return None, GotoWarning('magicword_does_not_exist', magicword=magicword)  # noqa
 
         if is_file(url):
-            _output, err = open(magic, [magicword])
+            _output, err = open(magic, '', [magicword])
             if err:
                 return None, err
             output += "%s\n" % _output

@@ -10,7 +10,7 @@ def open(magic, command, args):
     """
 
     if (len(args) == 0):
-        return None, GotoWarning("missing_magicword", command='open')
+        return None, GotoWarning("missing_magicword", command)
 
     magicword = args[0]
     url = magic.get_uri(magicword)
