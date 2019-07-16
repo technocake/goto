@@ -142,7 +142,6 @@ function test_01_not_initialized_should_fail {
     _failing_cmd_should_give_human_message "goto rm test"
     _failing_cmd_should_give_human_message "goto copy test"
     _failing_cmd_should_give_human_message "goto help"
-
 }
 
 function test_02_initialization_should_work {
@@ -223,16 +222,17 @@ function test_07_goto_many {
     magicwords=(
         "red"
         "blue"
-        "green"
-        "yellow"
-        "orange"
+        #"green"
+        #"yellow"
+        #"orange"
     )
     uris=(
-        "\"http://red.com\""
-        "\"mailto:jon@gmail.com\""
-        "\"spotify:green.com\""
-        "\"sftp:hallo@yellow.com\""
-        "\"goto+subl://orange.com\""
+        "http://red.com"
+        "http://blue.com"
+        #"goto+subl://orange.com"
+        #"mailto:jon@gmail.com"
+        #"spotify:green.com"
+        #"sftp:hallo@yellow.com"
     )
 
     for i in "${!magicwords[@]}"; do
