@@ -10,7 +10,7 @@ def usage():
         project help                  Consult my brother in command
 
     The basics
-        goto <magicword>                        Go to shortcut
+        goto [<magicword>...]                   Go to one or more shortcuts
         goto add    <magicword> <url or path>   Add shortcut
         goto update <magicword> <new url/path>  Update shortcut
         goto rename <magicword> <new name>      Rename shortcut
