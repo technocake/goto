@@ -8,6 +8,8 @@ def default(magic, command, args):
     """
     Default behaviour when no commands are found in the first argument
     """
+    verbose = '-v' in args or '--verbose' in args
+    args = filter(lambda word: not word.startswith('-'), args)
     magicwords = [command] + args
 
     output = ""
@@ -16,7 +18,7 @@ def default(magic, command, args):
         # for this time beeing, the get_uri is exiting and printing warning itself
         #  TODO:  it would be better to have that kind of logic up in here.
         if url is None:
-            return None, GotoWarning('magicword_does_not_exist', magicword=magicword)
+            return None, GotoWarning('magicword_does_not_exist', magicword=magicword)  # noqa
 
         if is_file(url):
             _output, err = open(magic, [magicword])
@@ -29,5 +31,5 @@ def default(magic, command, args):
                 output += "%s\n" % url
             except webbrowser.Error:
                 return None, GotoError('open_browser_tab_error')
-
+    output = output if verbose else None
     return output, None
