@@ -8,9 +8,9 @@ def default(magic, command, args):
     """
     Default behaviour when no commands are found in the first argument
     """
+    args = [command] + args
     verbose = '-v' in args or '--verbose' in args
-    args = filter(lambda word: not word.startswith('-'), args)
-    magicwords = [command] + list(args)
+    magicwords = filter(lambda word: not word.startswith('-'), args)
 
     output = ""
     for magicword in magicwords:
