@@ -10,7 +10,7 @@ def default(magic, command, args):
     """
     verbose = '-v' in args or '--verbose' in args
     args = filter(lambda word: not word.startswith('-'), args)
-    magicwords = [command] + args
+    magicwords = [command] + list(args)
 
     output = ""
     for magicword in magicwords:
