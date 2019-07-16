@@ -4,11 +4,10 @@ from ..gotomagic.text import GotoWarning
 from .open import open
 
 
-def default(magic, command, args):
+def default(magic, args):
     """
     Default behaviour when no commands are found in the first argument
     """
-    args = [command] + args
     verbose = '-v' in args or '--verbose' in args
     magicwords = filter(lambda word: not word.startswith('-'), args)
 
@@ -31,5 +30,6 @@ def default(magic, command, args):
                 output += "%s\n" % url
             except webbrowser.Error:
                 return None, GotoError('open_browser_tab_error')
+
     output = output if verbose else None
     return output, None

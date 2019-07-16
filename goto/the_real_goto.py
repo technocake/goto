@@ -10,18 +10,17 @@ import codecs
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck
-
 from . import commands
-
-# make sure we print in utf-8
-try:
-    if sys.stdout.encoding != 'utf-8':
-        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-except:
-    pass  # TODO: implement utf-8 encoding of py2.7
 
 
 def main():
+    # make sure we print in utf-8
+    try:
+        if sys.stdout.encoding != 'utf-8':
+            sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    except:
+        pass  # TODO: implement utf-8 encoding of py2.7
+
     err = healthcheck()
     if err:
         print(err.message)
@@ -44,6 +43,8 @@ def main():
     if output:
         print(output)
         exit(0)
+
+    exit(0)
 
 
 def run_command(magic, command, args):
@@ -86,7 +87,8 @@ def run_command(magic, command, args):
     if command in ['mv', 'rename']:
         return commands.rename(magic, command, args)
 
-    return commands.default(magic, command, args)
+    args = [command] + args
+    return commands.default(magic, args)
 
 
 if __name__ == '__main__':
