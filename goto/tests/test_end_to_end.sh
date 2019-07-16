@@ -51,7 +51,7 @@ function _cmd_should_succeed {
     cmd=$1
     if $cmd &> "$OUTPUTFILE"; then
         return 0
-    else 
+    else
         _fail_test "command: '$cmd' should succeed, but did not."
     fi
 }
@@ -120,7 +120,7 @@ function _projectfile_should_not_contain {
         _fail_test "magicword '$magicword' should not be in project file"
     else
         return 0
-    fi   
+    fi
 }
 
 
@@ -148,11 +148,11 @@ function test_01_not_initialized_should_fail {
 function test_02_initialization_should_work {
     local testcdpath=/tmp
     _cmd_should_succeed "source start_goto"
-    
+
 
     source start_goto
     echo "... start_goto is now sourced for the rest of the remaining tests"
-    
+
     _cmd_should_succeed "goto"
 
     _cmd_should_succeed "project testgotoinit"
@@ -217,16 +217,42 @@ function test_06_goto_add {
     _projectfile_should_contain "test_escaped_ampersand_in_url"
 }
 
-function test_07_goto {
-    magicword="test_goto"
-    testcdpath="/tmp"
-    nonexisting_magicword="IDoNotExist"
-    uri="http://example.com"
+function test_07_goto_many {
+    declare -a magicwords
+    declare -a uris
+    magicwords=(
+        "red"
+        "blue"
+        "green"
+        "yellow"
+        "orange"
+    )
+    uris=(
+        "\"http://red.com\""
+        "\"mailto:jon@gmail.com\""
+        "\"spotify:green.com\""
+        "\"sftp:hallo@yellow.com\""
+        "\"goto+subl://orange.com\""
+    )
 
-    _cmd_should_succeed "goto add $magicword $uri"
-    _cmd_should_fail "goto $nonexisting_magicword"
-    _failing_cmd_should_give_human_message "goto $nonexisting_magicword"
-    _failing_cmd_should_not_print_ah_hoy_twice "goto $nonexisting_magicword"
+    for i in "${!magicwords[@]}"; do
+        _cmd_should_succeed "goto add ${magicwords[$i]} ${uris[$i]}";
+    done
+
+    for i in "${!magicwords[@]}"; do
+        _projectfile_should_contain "${magicwords[$i]}";
+    done
+
+    for i in "${!magicwords[@]}"; do
+        _cmd_should_succeed "goto ${magicwords[$i]}";
+    done
+
+    # goto all at the same time
+    _cmd_should_succeed "goto ${magicwords[*]}"
+}
+
+function test_07_goto_cd {
+    testcdpath="/tmp"
 
     _cmd_should_succeed "goto add testcd2 $testcdpath"
     _cmd_should_succeed "goto testcd2"
@@ -234,9 +260,14 @@ function test_07_goto {
 
     _cmd_should_succeed "goto cd testcd"
     if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+}
 
+function test_07_goto_nonexisting_magicword {
+    nonexisting_magicword="IDoNotExist"
 
-    _projectfile_should_contain "$magicword"
+    _cmd_should_fail "goto $nonexisting_magicword"
+    _failing_cmd_should_give_human_message "goto $nonexisting_magicword"
+    _failing_cmd_should_not_print_ah_hoy_twice "goto $nonexisting_magicword"
 }
 
 function TODO_test_08_goto_add_æøå {
@@ -260,7 +291,7 @@ function test_09_goto_show {
     # Invoking show without any magic words
     _cmd_should_fail "goto show"
     _failing_cmd_should_give_human_message "goto show"
-    
+
     _cmd_should_succeed "goto show $existing_magicword"
 
     _cmd_should_fail "goto show $nonexisting_magicword"
@@ -362,15 +393,15 @@ function test_13_goto_rename {
     _failing_cmd_should_give_human_message "goto rename $existing_magicword1 $existing_magicword2"
 
     _projectfile_should_contain $existing_magicword1
-    _projectfile_should_contain $existing_magicword2    
+    _projectfile_should_contain $existing_magicword2
     _projectfile_should_contain $new_magicword
 
 
     # Invoking rename targeting existing magicword and setting force flag to true
     _cmd_should_succeed "goto rename $existing_magicword1 $existing_magicword2 --force"
-    
+
     _projectfile_should_not_contain $existing_magicword1
-    _projectfile_should_contain $existing_magicword2    
+    _projectfile_should_contain $existing_magicword2
     _projectfile_should_contain $new_magicword
 }
 
@@ -378,15 +409,15 @@ function test_13_goto_rename {
 function TODO_test_14_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
-    
+
     # >>> import pyperclip
     # >>> pyperclip.copy('The text to be copied to the clipboard.')
     # >>> pyperclip.paste()
     # 'The text to be copied to the clipboard.'
-    # 
-    # To get this content from a shell script it could be done 
+    #
+    # To get this content from a shell script it could be done
     # like so:
-    # 
+    #
     CLIPBOARD_DATA=$(python -c 'import pyperclip; print(pyperclip.paste())')
 }
 
@@ -402,7 +433,7 @@ function discover_and_run_tests {
     functions=$(declare -F | cut -d ' ' -f3)
     DISCOVERED_TESTS=0
     for f in $functions; do
-        
+
         if [[ "$f" == test_* ]]; then
             let DISCOVERED_TESTS=DISCOVERED_TESTS+1
             echo "$f"
