@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-## Goto
-v1.4.4
-=======
 ## Goto
 v1.5.3
->>>>>>> develop
 
 *Goto is a magic tool that takes you were you want to be, now.*
 
