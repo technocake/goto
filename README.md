@@ -50,7 +50,8 @@ your rcfile should do the trick in most cases.
 
 ```
     The basics
-        goto [<magicword>...]                   Go to one or more shortcuts
+        goto <magicword>                        Go to shortcut
+        goto [<magicword>...]                   Go to many shortcuts
         goto add    <magicword> <url or path>   Add shortcut
         goto update <magicword> <new url/path>  Update shortcut
         goto rename <magicword> <new name>      Rename shortcut
