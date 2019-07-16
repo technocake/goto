@@ -5,6 +5,7 @@ source _gotoutils
 
 TESTPROJECT=testproject
 OUTPUTFILE=/tmp/.gototest-cmd-output
+# PROJECTFILE
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -12,7 +13,7 @@ NC='\033[0m' # No Color
 
 
 function set_up {
-    if [[ -z "$GOTOPATH" ]]; then
+    if [[ -z "$GOTOPATH" || "$GOTOPATH" == "${HOME}/.goto" ]]; then
         echo "GOTOPATH not set in environment."
         echo "Tests should not run on real goto state folder."
         echo "i.e use GOTOPATH=/tmp/.goto   instead"
@@ -21,6 +22,7 @@ function set_up {
     echo "setting up tests"
     create_goto_folders "$GOTOPATH"
     touch "$OUTPUTFILE"
+    PROJECTFILE="$GOTOPATH/projects/$TESTPROJECT.json"
 }
 
 
@@ -67,25 +69,58 @@ function _cmd_should_be_empty {
     fi
 }
 
+
 function _failing_cmd_should_give_human_message {
     cmd=$1
     $cmd &> "$OUTPUTFILE"
     result="$(cat "$OUTPUTFILE")"
     if [[ ! "$result" =~ "Ah hoy" ]]; then
         _fail_test "command: '$cmd' did not give human readable error message"
+    elif [[ "$result" =~ "Traceback" ]]; then
+        _fail_test "command: '$cmd' did contain not only human readable error message"
     else
         return 0
     fi
 }
 
-function _display_projectfile {
-    projectfile="$GOTOPATH/projects/$TESTPROJECT.json"
-    echo "Contents of projectfile $projectfile:"
-    if [ -f "$projectfile" ]; then
-        cat "$projectfile"
+
+function _failing_cmd_should_not_print_ah_hoy_twice {
+    cmd=$1
+    $cmd &> "$OUTPUTFILE"
+    result="$(cat "$OUTPUTFILE" | grep -c 'Ah hoy!')"
+    if [  "$result" -ne 1 ]; then
+        _fail_test "command: '$cmd' did return the wrong number of Ah hoys ($result)"
     else
-        echo "projectfile $projectfile is not existing"
+        return 0
     fi
+}
+
+
+function _display_projectfile {
+    echo "Contents of projectfile $PROJECTFILE:"
+    if [ -f "$PROJECTFILE" ]; then
+        cat "$PROJECTFILE"
+    else
+        echo "projectfile $PROJECTFILE is not existing"
+    fi
+}
+
+function _projectfile_should_contain {
+    local magicword="$1"
+    if [[ $(cat $PROJECTFILE | grep $magicword | wc -l) -ne 1 ]]; then
+        _fail_test "magicword '$magicword' missing in project file"
+    else
+        return 0
+    fi
+}
+
+function _projectfile_should_not_contain {
+    local magicword="$1"
+    if [[ $(cat $PROJECTFILE | grep $magicword | wc -l) -ne 0 ]]; then
+        _fail_test "magicword '$magicword' should not be in project file"
+    else
+        return 0
+    fi   
 }
 
 
@@ -120,6 +155,7 @@ function test_02_initialization_should_work {
     
     _cmd_should_succeed "goto"
 
+    _cmd_should_succeed "project testgotoinit"
     # When goto is inititalized, cd should work
     _cmd_should_succeed "goto add testcd ${testcdpath}"
     _cmd_should_succeed "goto testcd"
@@ -156,21 +192,65 @@ function test_06_goto_add {
     uri="http://example.com"
 
     _cmd_should_succeed "goto add $magicword $uri"
+    _projectfile_should_contain "$magicword"
     # Adding magicword that already exist
     _cmd_should_fail "goto add $magicword $uri"
+    _projectfile_should_contain "$magicword"
     _failing_cmd_should_give_human_message "goto add $magicword $uri"
 
     # Invoking without any magic words
     _cmd_should_fail "goto add"
     _failing_cmd_should_give_human_message "goto add"
+    _projectfile_should_contain "$magicword"
 
     # Invoking without any uri
     _cmd_should_fail "goto add test_add_no_uri"
     _failing_cmd_should_give_human_message "goto add test_add_no_uri"
+    _projectfile_should_contain "$magicword"
+
+    # Invoking with & in uri, unescaped
+    # TODO: turns out to be hard to test actually, due to the fact that commands tested are always wrapped in quotes.
+    # _cmd_should_fail "goto add test_unescaped_ampersand_in_url http://lol?haha=hehe&hihi=hoho"
+    # _failing_cmd_should_give_human_message "goto add test_unescaped_ampersand_in_url http://lol?haha=hehe&hihi=hoho"
+    # TODO: add _projectfile_should_not_contain test_unescaped_ampersand_in_url check here
+    _cmd_should_succeed "goto add test_escaped_ampersand_in_url 'http://lol?haha=hehe&hihi=hoho'"
+    _projectfile_should_contain "test_escaped_ampersand_in_url"
+}
+
+function test_07_goto {
+    magicword="test_goto"
+    testcdpath="/tmp"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
+
+    _cmd_should_succeed "goto add $magicword $uri"
+    _cmd_should_fail "goto $nonexisting_magicword"
+    _failing_cmd_should_give_human_message "goto $nonexisting_magicword"
+    _failing_cmd_should_not_print_ah_hoy_twice "goto $nonexisting_magicword"
+
+    _cmd_should_succeed "goto add testcd2 $testcdpath"
+    _cmd_should_succeed "goto testcd2"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+
+    _cmd_should_succeed "goto cd testcd"
+    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
+
+
+    _projectfile_should_contain "$magicword"
+}
+
+function TODO_test_08_goto_add_æøå {
+    existing_magicword="test_æøå"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com/æøå"
+
+    _cmd_should_succeed "goto add $existing_magicword $uri"
+    _projectfile_should_contain "$existing_magicword"
+
 }
 
 
-function test_07_goto_show {
+function test_09_goto_show {
     existing_magicword="test_show"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -187,7 +267,7 @@ function test_07_goto_show {
     _failing_cmd_should_give_human_message "goto show $nonexisting_magicword"
 }
 
-function test_08_goto_rm {
+function test_10_goto_rm {
     existing_magicword="test_rm"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -206,7 +286,7 @@ function test_08_goto_rm {
     _cmd_should_succeed "goto add $existing_magicword $uri"
 }
 
-function test_09_goto_update {
+function test_11_goto_update {
     existing_magicword="test_update"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -226,7 +306,76 @@ function test_09_goto_update {
     _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
 }
 
-function TODO_test_10_goto_copy {
+function test_12_only_one_ah_hoy_at_the_time_please {
+    nonexisting_magicword="IDoNotExist"
+
+    for command in '' show add update rm rename mv; do
+        _cmd_should_fail "goto $command $nonexisting_magicword"
+        _failing_cmd_should_give_human_message "goto $command $nonexisting_magicword"
+        _failing_cmd_should_not_print_ah_hoy_twice "goto $command $nonexisting_magicword"
+    done
+}
+
+
+function test_13_goto_rename {
+    existing_magicword1="test_1"
+    existing_magicword2="test_2"
+    new_magicword="test_3"
+    nonexisting_magicword="IDoNotExist"
+    uri="http://example.com"
+
+    _cmd_should_succeed "goto add $existing_magicword1 $uri"
+    _cmd_should_succeed "goto add $existing_magicword2 $uri"
+
+    # Invoking rename without any magic words
+    _cmd_should_fail "goto rename"
+    _failing_cmd_should_give_human_message "goto rename"
+
+    _projectfile_should_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2
+
+
+    # Invoking rename with one magicword
+    _cmd_should_fail "goto rename $existing_magicword1"
+    _failing_cmd_should_give_human_message "goto rename $existing_magicword1"
+
+    _projectfile_should_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2
+
+
+    # Invoking rename with both magicwords
+    _cmd_should_succeed "goto rename $existing_magicword1 $new_magicword"
+    _cmd_should_fail "goto rename $existing_magicword1 $new_magicword"
+    _failing_cmd_should_give_human_message "goto rename $existing_magicword1 $new_magicword"
+
+    _projectfile_should_not_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2
+    _projectfile_should_contain $new_magicword
+
+
+    # re add existing_magicword1
+    _cmd_should_succeed "goto add $existing_magicword1 $uri"
+
+
+    # Invoking rename targeting existing magicword
+    _cmd_should_fail "goto rename $existing_magicword1 $existing_magicword2"
+    _failing_cmd_should_give_human_message "goto rename $existing_magicword1 $existing_magicword2"
+
+    _projectfile_should_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2    
+    _projectfile_should_contain $new_magicword
+
+
+    # Invoking rename targeting existing magicword and setting force flag to true
+    _cmd_should_succeed "goto rename $existing_magicword1 $existing_magicword2 --force"
+    
+    _projectfile_should_not_contain $existing_magicword1
+    _projectfile_should_contain $existing_magicword2    
+    _projectfile_should_contain $new_magicword
+}
+
+
+function TODO_test_14_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
     

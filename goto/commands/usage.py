@@ -12,7 +12,8 @@ def usage():
     The basics
         goto <magicword>                        Go to shortcut
         goto add    <magicword> <url or path>   Add shortcut
-        goto update <magicword> <url or path>   Update shortcut
+        goto update <magicword> <new url/path>  Update shortcut
+        goto rename <magicword> <new name>      Rename shortcut
         goto rm     <magicword>                 Remove shortcut
         goto show   <magicword>                 Show url of shortcut
         goto list                               List all shortcuts
@@ -22,14 +23,13 @@ def usage():
         goto <magicword>              Goto will cd to a folder shortcut by default.
         goto cd   <magicword>         cd in terminal
         goto open <magicword>         Open in finder/file explorer
-        goto -o   <magicword>
 
-    If you add a shortcut to a folder, and name it "code"...
+    Launching Code editors
+        goto subl                     Opens Sublime Text in code folder* 
+        goto idea                     Opens IntelliJ in code folder*
+        goto vscode                   Opens Visual Studio Code in code folder*
+
+    * requires a magicword named code pointing to a folder.
         goto add code <path to folder with code>
 
-    ...this command will open folder with Sublime Text
-        goto subl
-
-    Other editors supported:
-    Visual Studio Code: goto vscode | IntelliJ: goto idea
     """, None # noqa

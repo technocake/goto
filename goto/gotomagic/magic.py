@@ -8,6 +8,7 @@ import os
 
 from . import text
 from .text import print_text
+from .text import GotoWarning
 
 
 class GotoMagic():
@@ -61,6 +62,19 @@ class GotoMagic():
             )
             exit(1)
 
+    def rename_shortcut(self, from_magicword, to_magicword, overwrite=False):
+        """ Renaming a shortcut """
+        if not overwrite and to_magicword in self.magic:
+            uri = self.magic[to_magicword]
+            return GotoWarning('adding_existing_magicword_short', magicword=to_magicword, uri=uri)  # noqa
+
+        if from_magicword not in self.magic:
+            return GotoWarning('magicword_does_not_exist', magicword=from_magicword)  # noqa
+
+        from_uri = self.magic[from_magicword]
+        del self.magic[from_magicword]
+        self.magic[to_magicword] = from_uri
+
     def remove_shortcut(self, magicword):
         """ Simply removes a shortcut """
         try:
@@ -92,7 +106,7 @@ class GotoMagic():
                 text.warning.messages["magicword_does_not_exist"],
                 magicword=magicword
             )
-            return None
+            exit(1)
 
     def list_shortcuts(self, verbose=False):
         """ Lists all magicwords.

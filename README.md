@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 ## Goto
 v1.4.4
+=======
+## Goto 
+v1.5.3
+>>>>>>> develop
 
 *Goto is a magic tool that takes you were you want to be, now.*
 
@@ -49,6 +54,7 @@ your rcfile should do the trick in most cases.
 *Used to add and jump to shortcuts.*
 
 ```
+<<<<<<< HEAD
 The basics
     goto <magicword>                        Go to shortcut
     goto add    <magicword> <url or path>   Add shortcut
@@ -71,6 +77,31 @@ If you add a shortcut to a folder, and name it "code"...
     goto subl
 
 ...IntelliJ:  goto idea,  VSCode: goto vscode
+=======
+    The basics
+        goto <magicword>                        Go to shortcut
+        goto add    <magicword> <url or path>   Add shortcut
+        goto update <magicword> <new url/path>  Update shortcut
+        goto rename <magicword> <new name>      Rename shortcut
+        goto rm     <magicword>                 Remove shortcut
+        goto show   <magicword>                 Show url of shortcut
+        goto list                               List all shortcuts
+        goto list -v                            With the urls printed
+
+    Working with folders and files
+        goto <magicword>              Goto will cd to a folder shortcut by default.
+        goto cd   <magicword>         cd in terminal
+        goto open <magicword>         Open in finder/file explorer
+
+    Launching Code editors
+        goto subl                     Opens Sublime Text in code folder* 
+        goto idea                     Opens IntelliJ in code folder*
+        goto vscode                   Opens Visual Studio Code in code folder*
+
+    * requires a magicword named code pointing to a folder.
+        goto add code <path to folder with code>
+                       
+>>>>>>> develop
 ```
 
 

@@ -6,7 +6,6 @@
 [[ -n $BASH_VERSION ]] && (return 0 2>/dev/null)) && _GOTO_IS_SOURCED=0 || _GOTO_IS_SOURCED=1
 
 
-
 function _goto_main {
     local PROJECT PROJECTFILE URI
 
@@ -45,6 +44,7 @@ function _goto_main {
             return 1
         fi
 
+
         # Special case 1 (goto cd <magicword>)
         if [ "$1" = "cd" ]; then
                 # hack to cd in this shell to the ouput of goto show <magicword>
@@ -55,8 +55,11 @@ function _goto_main {
 
 
         # Special case 2  (goto <magicword>)
-        if [ "$#" -eq 1 ]; then
-
+        if [[ "$#" -eq 1 \
+                && ! "$1" =~ ^(list|help|add|rm|mv|rename|update|copy|subl|vscode|intelij|idea|show|cd|open)$ \
+                && ! "$1" =~ ^"--" \
+                && ! "$1" =~ ^"-"  \
+                ]]; then
             # if run like: goto <magicword> 
             URI=$(goto show "$1")
 
@@ -71,6 +74,8 @@ function _goto_main {
                 return 0
             fi
         fi
+
+
 
         # General case
         if [ -n "$(command -v the_real_goto.py)" ]; then

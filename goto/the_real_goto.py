@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # code: utf-8
 'Goto - the magic project that takes you where you need to be, now.'
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
+import os
 import sys
 import codecs
 
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
+from .gotomagic.utils import healthcheck
 
 from . import commands
 
@@ -20,6 +22,11 @@ except:
 
 
 def main():
+    err = healthcheck()
+    if err:
+        print(err.message)
+        exit(2)
+
     if len(sys.argv) < 3:
         output, _ = commands.usage()
         print(output)
@@ -44,39 +51,42 @@ def run_command(magic, command, args):
         return commands.usage()
 
     if command == 'add':
-        return commands.add(magic, args)
+        return commands.add(magic, command, args)
 
     if command == 'update':
-        return commands.update(magic, args)
+        return commands.update(magic, command, args)
 
     if command == 'rm':
-        return commands.rm(magic, args)
+        return commands.rm(magic, command, args)
 
     if command == 'show':
-        return commands.show(magic, args)
+        return commands.show(magic, command, args)
 
     if command == 'copy':
-        return commands.copy(magic, args)
+        return commands.copy(magic, command, args)
 
     if command == 'list':
-        return commands.list(magic, args)
+        return commands.list(magic, command, args)
 
     if command == 'subl':
-        return commands.subl(magic, args)
+        return commands.subl(magic, command, args)
 
     if command == 'vscode':
-        return commands.vscode(magic, args)
+        return commands.vscode(magic, command, args)
 
     if command in ['intellij', 'idea']:
-        return commands.intellij(magic, args)
+        return commands.intellij(magic, command, args)
 
-    if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:
-        return commands.open(magic, args)
+    if command in ['-o', '--open', 'open']:
+        return commands.open(magic, command, args)
 
     if command == 'cd':
-        return commands.cd(magic, args)
+        return commands.cd(magic, command, args)
 
-    return commands.default(magic, sys.argv[2:])
+    if command in ['mv', 'rename']:
+        return commands.rename(magic, command, args)
+
+    return commands.default(magic, command, args)
 
 
 if __name__ == '__main__':
