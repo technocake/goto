@@ -38,7 +38,7 @@ class GotoMagic():
         utils.create_project_folder(project, scope, GOTOPATH)
 
         self.jfile = os.path.join(
-            GOTOPATH, 'projects', project, scope, "{}.json".format(project))
+            GOTOPATH, 'projects', project, scope, "magicwords.json")
         self.magic = load_magic(self.jfile)
 
     def reload(self):

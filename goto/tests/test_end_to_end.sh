@@ -25,7 +25,7 @@ function set_up {
     create_goto_folders "$GOTOPATH"
     touch "$OUTPUTFILE"
     PROJECTFOLDER="$GOTOPATH/projects/$TESTPROJECT"
-    PROJECTFILE="$PROJECTFOLDER/private/$TESTPROJECT.json"
+    PROJECTFILE="$PROJECTFOLDER/private/magicwords.json"
 }
 
 

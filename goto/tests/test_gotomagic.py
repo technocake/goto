@@ -8,7 +8,7 @@ from ..gotomagic.magic import GotoMagic
 # Setting up a temporary gotopath.
 TMPGOTOPATH = '/tmp/.goto-unit-tests'
 project = '__testgoto__'
-tmpgotofile = os.path.join(TMPGOTOPATH, 'projects', project, 'private', '%s.json' % project)  # noqa
+tmpgotofile = os.path.join(TMPGOTOPATH, 'projects', project, 'private', 'magicwords.json')  # noqa
 
 
 class TestMagic(TestCase):
