@@ -1,23 +1,20 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 import os
 import shutil
 
 from ..gotomagic.magic import GotoMagic
 
 
+# Setting up a temporary gotopath.
 TMPGOTOPATH = '/tmp/.goto-unit-tests'
 project = '__testgoto__'
 tmpgotofile = os.path.join(TMPGOTOPATH, 'projects', project, 'private', '%s.json' % project)  # noqa
 
 
-# now, these tests would run on the real GOTOPATH.
-# Find a way to point gotopath away first.
-
-
 class TestMagic(TestCase):
     def setUp(self):
         """ Sets up goto magic to use tmp file """
-        self.magic = GotoMagic(project, degree='private', GOTOPATH=TMPGOTOPATH)
+        self.magic = GotoMagic(project, scope='private', GOTOPATH=TMPGOTOPATH)
 
     def test_adding_shortcut(self):
         """ Adding shortcuts through the gotomagic module"""

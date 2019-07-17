@@ -24,18 +24,18 @@ def is_file(raw_uri):
     return os.path.exists(candidate)
 
 
-def create_project_folder(project, degree='private', GOTOPATH=None):
+def create_project_folder(project, scope='private', GOTOPATH=None):
     '''
         Creates project folder in goto state folders,
         if not already existing.
 
-        degree can be either private, public or shared
+        scope can be either private or shared
 
     '''
     if GOTOPATH is None:
         GOTOPATH = settings.GOTOPATH
 
-    project_folder = os.path.join(GOTOPATH, 'projects', project, degree)
+    project_folder = os.path.join(GOTOPATH, 'projects', project, scope)
 
     if not os.path.exists(project_folder):
         os.makedirs(project_folder)
