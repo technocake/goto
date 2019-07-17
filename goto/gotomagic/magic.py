@@ -93,13 +93,22 @@ class GotoMagic():
             exit(1)
 
     def rename_shortcut(self, from_magicword, to_magicword, overwrite=False):
-        """ Renaming a shortcut """
+        """ Renaming a shortcut 
+            Possible errors:
+
+            from_magicword not existing -- checked first
+            to_magicword existing -- checked second
+
+            But it is allowed to overwrite to_magicword
+            if overwrite == True.
+        """
+        if from_magicword not in self.magic:
+            return GotoWarning('magicword_does_not_exist', magicword=from_magicword)  # noqa
+
         if not overwrite and to_magicword in self.magic:
             uri = self.magic[to_magicword]
             return GotoWarning('adding_existing_magicword_short', magicword=to_magicword, uri=uri)  # noqa
 
-        if from_magicword not in self.magic:
-            return GotoWarning('magicword_does_not_exist', magicword=from_magicword)  # noqa
 
         from_uri = self.magic[from_magicword]
         del self.magic[from_magicword]

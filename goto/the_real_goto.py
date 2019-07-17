@@ -25,12 +25,17 @@ try:
         sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
 except:
     pass
-    #if sys.version_info[0] == 2:
-    #    reload(sys)
-    #    sys.setdefaultencoding('utf8')
 
 
-def print_2(message):
+def print_utf8(message):
+    ''' fixes utf-8 unicode printing bugs in python 2.
+        Making sure all printed strings are of the unicode type,
+        and that they are encoded to bytes using the utf-8 encoding.
+
+        All internal strings in goto should be utf-8 encoded.
+
+        In python3 this is the default behaviour.
+    '''
     if sys.version_info[0] == 2:
         if not isinstance(message, unicode):
             message = unicode(message, 'utf-8')
@@ -60,24 +65,24 @@ def main():
 
     output, err = run_command(magic, command, args)
     if err:
-        print_2(err.message)
+        print_utf8(err.message)
         exit(1)
     if output:
-        print_2(output)
+        print_utf8(output)
         exit(0)
 
 
 def exit_if_unhealthy():
     err = healthcheck()
     if err:
-        print_2(err.message)
+        print_utf8(err.message)
         exit(2)
 
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
         output, _ = commands.usage()
-        print_2(output)
+        print_utf8(output)
         exit(0)
 
 

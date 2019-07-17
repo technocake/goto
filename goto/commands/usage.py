@@ -1,3 +1,7 @@
+# coding: utf-8
+from __future__ import unicode_literals
+
+
 def usage():
     """
     Get information about usage
