@@ -24,6 +24,10 @@ _addproject() {
 
 _rmproject() {
     if prompt "Are you sure you want to delete project $1? [y|n]: "; then
+        if [ -z "$1" ]; then
+            echo "Error - tried to remove empty project."
+            exit 2
+        fi
         rm -rf "$GOTOPATH/projects/$1"
         echo "Removed project $1"
     else
