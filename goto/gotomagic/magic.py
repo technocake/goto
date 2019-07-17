@@ -33,7 +33,10 @@ class GotoMagic():
         if GOTOPATH is None:
             GOTOPATH = settings.GOTOPATH
         self.project = project
+        
+        # Creates folder only if not exisiting
         utils.create_project_folder(project, scope, GOTOPATH)
+
         self.jfile = os.path.join(
             GOTOPATH, 'projects', project, scope, "{}.json".format(project))
         self.magic = load_magic(self.jfile)
