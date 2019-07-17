@@ -27,20 +27,25 @@ def main():
         exit(2)
 
     if len(sys.argv) < 3:
-        output, _ = commands.usage()
+        output = commands.usage()
         print(output)
         exit(0)
 
     jfile = sys.argv[1]
     magic = GotoMagic(jfile)
-    command = sys.argv[2]
-    argv = sys.argv[3:]
+    argv = sys.argv[2:]
 
-    args = list(filter(lambda word: not word.startswith('-'), argv))
     options = list(filter(lambda word: word.startswith('-'), argv))
-    verbose = '-v' in options or '--verbose' in options
+    args = list(filter(lambda word: not word.startswith('-'), argv))
 
-    output, err = run_command(magic, command, args, verbose)
+    if len(args) == 0:
+        print(commands.usage())
+        exit(0)
+
+    command = args[0]
+    args = args[1:]
+
+    output, err = run_command(magic, command, args, options)
     if err:
         print(err.message)
         exit(1)
@@ -51,48 +56,49 @@ def main():
     exit(0)
 
 
-def run_command(magic, command, args, verbose):
-    if command in ['help', '-h', '/?', '--help']:
-        return commands.usage()
+def run_command(magic, command, args, options):
+
+    if command == 'help':
+        return commands.usage(), None
 
     if command == 'add':
-        return commands.add(magic, command, args)
+        return commands.add(magic, command, args, options)
 
     if command == 'update':
-        return commands.update(magic, command, args)
+        return commands.update(magic, command, args, options)
 
     if command == 'rm':
-        return commands.rm(magic, command, args)
+        return commands.rm(magic, command, args, options)
 
     if command == 'show':
-        return commands.show(magic, command, args)
+        return commands.show(magic, command, args, options)
 
     if command == 'copy':
-        return commands.copy(magic, command, args)
+        return commands.copy(magic, command, args, options)
 
     if command == 'list':
-        return commands.list(magic, command, args)
+        return commands.list(magic, command, args, options)
 
     if command == 'subl':
-        return commands.subl(magic, command, args)
+        return commands.subl(magic, command, args, options)
 
     if command == 'vscode':
-        return commands.vscode(magic, command, args)
+        return commands.vscode(magic, command, args, options)
 
     if command in ['intellij', 'idea']:
-        return commands.intellij(magic, command, args)
+        return commands.intellij(magic, command, args, options)
 
-    if command in ['-o', '--open', 'open']:
-        return commands.open(magic, command, args, verbose)
+    if command == 'open':
+        return commands.open(magic, command, args, options)
 
     if command == 'cd':
-        return commands.cd(magic, command, args)
+        return commands.cd(magic, command, args, options)
 
     if command in ['mv', 'rename']:
-        return commands.rename(magic, command, args)
+        return commands.rename(magic, command, args, options)
 
     args = [command] + args
-    return commands.default(magic, args, verbose)
+    return commands.default(magic, args, options)
 
 
 if __name__ == '__main__':

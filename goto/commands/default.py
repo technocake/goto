@@ -4,10 +4,11 @@ from ..gotomagic.text import GotoWarning
 from .open import open
 
 
-def default(magic, args, verbose=False):
+def default(magic, args, options):
     """
     Default behaviour when no commands are found in the first argument
     """
+    verbose = '--verbose' in options or '-v' in options
 
     output = ""
     for magicword in args:

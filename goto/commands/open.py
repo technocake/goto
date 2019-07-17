@@ -4,10 +4,11 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def open(magic, command, args, verbose=False):
+def open(magic, command, args, options):
     """
     Open folder
     """
+    verbose = '-v' in options or '--verbose' in options
 
     if (len(args) == 0):
         return None, GotoWarning("missing_magicword", command)

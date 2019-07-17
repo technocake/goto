@@ -1,7 +1,7 @@
 from ..gotomagic.text import GotoWarning
 
 
-def rename(magic, command, args):
+def rename(magic, command, args, options):
     if len(args) == 0:
         return None, GotoWarning("missing_both_magicwords", command=command)
 

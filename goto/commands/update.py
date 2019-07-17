@@ -1,7 +1,7 @@
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def update(magic, command, args):
+def update(magic, command, args, options):
     """
     Update magicword
     """

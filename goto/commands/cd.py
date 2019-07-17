@@ -3,7 +3,7 @@ import os
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def cd(magic, command, args):
+def cd(magic, command, args, options):
     """
     Open a new terminal window and cd-s to the given path
     """

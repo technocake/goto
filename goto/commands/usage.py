@@ -33,4 +33,4 @@ def usage():
     * requires a magicword named code pointing to a folder.
         goto add code <path to folder with code>
 
-    """, None # noqa
+    """

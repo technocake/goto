@@ -3,7 +3,7 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def intellij(magic, command, args):
+def intellij(magic, command, args, options):
     """
     Launch IntelliJ. Open it in the code folder.
     """

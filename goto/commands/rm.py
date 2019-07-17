@@ -1,7 +1,7 @@
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def rm(magic, command, args):
+def rm(magic, command, args, options):
     """
     Remove magicword
     """
