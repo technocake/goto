@@ -99,10 +99,10 @@ def prompt_to_migrate_data():
     ''' Ask the user to migrate their project data '''
     try:
         return 'y' in input('Shall goto migrate your data now? [y|n]: ').lower()  # noqa
-    except EOFError:  # Ctrl+D
+    except (IOError, EOFError, RuntimeError, KeyboardInterrupt):
+        # In case of Ctrl+D or Ctrl+C
         return False
-    except KeyboardInterrupt:  # Ctrl+C
-        return False
+
 
 
 def migrate_data():
