@@ -7,7 +7,7 @@
 
 
 function _goto_main {
-    local PROJECT URI
+    local PROJECT PROJECTFILE URI
 
     # If goto is  run in sourced mode, contiune.
     # Else: print warning. NO EXIT statement.
@@ -22,6 +22,7 @@ function _goto_main {
 
 
         PROJECT=$(cat "${GOTOPATH}/active-project")
+        PROJECTFILE="${GOTOPATH}/projects/${PROJECT}.json"
 
         # Catching deactivated state
         # TODO: make a better way to print to stderr
@@ -58,7 +59,7 @@ function _goto_main {
                 && ! "$1" =~ ^(list|help|add|rm|mv|rename|update|copy|subl|vscode|intelij|idea|show|cd|open)$ \
                 && ! "$1" =~ ^"--" \
                 && ! "$1" =~ ^"-"  \
-            ]]; then
+                ]]; then
             # if run like: goto <magicword> 
             URI=$(goto show "$1")
 
@@ -78,7 +79,7 @@ function _goto_main {
 
         # General case
         if [ -n "$(command -v the_real_goto.py)" ]; then
-            the_real_goto.py "$PROJECT" "$@"
+            the_real_goto.py "$PROJECTFILE" "$@"
         else
             echo "Error the_real_goto.py not found" >&2
             return 1

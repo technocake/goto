@@ -3,7 +3,11 @@ import os
 import sys
 import git
 from .magic import GotoMagic
-from . import utils
+
+
+# HACK HACK
+GOTOPATH = os.environ.get('GOTOPATH', os.path.expanduser('~/.goto'))
+
 
 
 class GitMagic():
@@ -21,7 +25,13 @@ class GitMagic():
 
     def __init__(self, project):
         """ Loads json from jfile """
-        utils.create_project_folder(project, 'shared')
+        shared_file = os.path.join(
+            GOTOPATH, 'projects', 'shared', project, '{}.json'.format(project)
+        )
+
+        shared_folder = os.path.dirname(shared_file)
+        if not os.path.exists(shared_folder):
+            os.makedirs(shared_folder)
 
         if not is_git_repo(shared_folder):
             self.repo = git.Repo.init(shared_folder)
@@ -44,6 +54,7 @@ class GitMagic():
         # may raise git.exc.GitCommandError
         gotohub.pull('master')
         gotohub.push('master')
+
 
     def save(self):
         """ Saves the magic to jsonfile jfile """

@@ -1,6 +1,5 @@
 include README.md
 include POST_INSTALL_INSTRUCTIONS.txt
-include test_end_to_end.sh
 # Add all in goto folder
 graft goto
 # Exclude all cache everywhere

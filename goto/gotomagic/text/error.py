@@ -1,7 +1,3 @@
-# coding: utf-8
-from __future__ import absolute_import, unicode_literals
-from builtins import dict, str  # redefine dict and str to be py3-like in py2.
-
 
 # errors
 messages = dict(

@@ -1,6 +1,3 @@
-# coding: utf-8
-from __future__ import unicode_literals
-
 import subprocess
 from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning

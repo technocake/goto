@@ -17,14 +17,18 @@ compile:
 
 clean:
 	python setup.py clean
-	rm -rf dist build */*.egg-info *.egg-info
+	rm dist/* || echo Nothing to clean
+	rm -rf **/*.egg-info
 
 test:
+	make unittest
+	make endtoendtest
+
+unittest:
 	tox
 
-
 endtoendtest:
-	GOTOPATH=/tmp/.goto ./test_end_to_end.sh 
+	GOTOPATH=/tmp/.goto goto/tests/test_end_to_end.sh 
 	
 testpublish:
 	make clean
