@@ -1,15 +1,20 @@
 from unittest import TestCase
 import os
+import shutil
 
 from ..gotomagic.magic import GotoMagic
 
-tmpgotofile = 'testgotofile.json'
+
+# Setting up a temporary gotopath.
+TMPGOTOPATH = '/tmp/.goto-unit-tests'
+project = '__testgoto__'
+tmpgotofile = os.path.join(TMPGOTOPATH, 'projects', project, 'private', 'magicwords.json')  # noqa
 
 
 class TestMagic(TestCase):
     def setUp(self):
         """ Sets up goto magic to use tmp file """
-        self.magic = GotoMagic(tmpgotofile)
+        self.magic = GotoMagic(project, scope='private', GOTOPATH=TMPGOTOPATH)
 
     def test_adding_shortcut(self):
         """ Adding shortcuts through the gotomagic module"""
@@ -22,10 +27,8 @@ class TestMagic(TestCase):
 
     def tearDown(self):
         """ Empty testgotofile after each test """
-        if os.path.exists(tmpgotofile):
+        if os.path.exists(TMPGOTOPATH):
             # Displaying contents of testfile
             with open(tmpgotofile) as f:
                 print(f.read())
-            os.remove(tmpgotofile)
-
-
+            shutil.rmtree(TMPGOTOPATH)

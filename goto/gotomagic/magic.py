@@ -1,14 +1,21 @@
-# code: utf-8
+#  coding: utf-8
 """
 Magic is stored here.
 """
+from __future__ import absolute_import, unicode_literals
+from builtins import dict, str  # redefine dict and str to be py3-like in py2.
+# http://johnbachman.net/building-a-python-23-compatible-unicode-sandwich.html
+
 import json
 import codecs
 import os
+import sys
 
 from . import text
 from .text import print_text
 from .text import GotoWarning
+from .. import settings
+from . import utils
 
 
 class GotoMagic():
@@ -21,14 +28,39 @@ class GotoMagic():
         tl-dr: saving magic as json.
     """
 
-    def __init__(self, jfile):
+    def __init__(self, project, scope='private', GOTOPATH=None):
         """ Loads json from jfile """
-        self.jfile = jfile
-        self.magic = load_magic(jfile)
+        if GOTOPATH is None:
+            GOTOPATH = settings.GOTOPATH
+        self.project = project
+        
+        # Creates folder only if not exisiting
+        utils.create_project_folder(project, scope, GOTOPATH)
+
+        self.jfile = os.path.join(
+            GOTOPATH, 'projects', project, scope, "magicwords.json")
+        self.magic = load_magic(self.jfile)
 
     def reload(self):
         """ reload the magic """
-        self.__init__(self.jfile)
+        self.__init__(self.jfile)   
+
+    def _magic_set(self, key, value):
+        '''
+            Single point of entry for writing magicwords and uris
+            to the internal dict.
+
+            This method makes sure that it is encoded
+            as utf-8 unicode strings on python2.
+        '''
+        if sys.version_info[0] == 2:
+            if not isinstance(key, unicode):
+                key = unicode(key, encoding='utf-8')
+
+            if not isinstance(value, unicode):
+                value = unicode(value, encoding='utf-8')
+
+        self.magic[key] = value
 
     def save(self):
         """ Saves the magic to jsonfile jfile """
@@ -38,7 +70,6 @@ class GotoMagic():
         """ Adds a magic shortcut if it does not exist yet.
             If it exists, it warns the user.
         """
-        uri = parse_uri(uri)
         if magicword in self.magic.keys():
             print_text(
                 text.warning.messages["adding_existing_magicword"],
@@ -47,14 +78,16 @@ class GotoMagic():
                 newuri=uri
             )
             exit(1)
-        else:
-            self.magic[magicword] = uri
+
+        # setting the magic
+        uri = parse_uri(uri)
+        self._magic_set(magicword, uri)
 
     def update_shortcut(self, magicword, uri):
         """ Simply overwrites the content of the magicword """
         uri = parse_uri(uri)
         if magicword in self.magic.keys():
-            self.magic[magicword] = uri
+            self._magic_set(magicword, uri)
         else:
             print_text(
                 text.warning.messages["updating_nonexisting_magicword"],
@@ -63,17 +96,26 @@ class GotoMagic():
             exit(1)
 
     def rename_shortcut(self, from_magicword, to_magicword, overwrite=False):
-        """ Renaming a shortcut """
+        """ Renaming a shortcut 
+            Possible errors:
+
+            from_magicword not existing -- checked first
+            to_magicword existing -- checked second
+
+            But it is allowed to overwrite to_magicword
+            if overwrite == True.
+        """
+        if from_magicword not in self.magic:
+            return GotoWarning('magicword_does_not_exist', magicword=from_magicword)  # noqa
+
         if not overwrite and to_magicword in self.magic:
             uri = self.magic[to_magicword]
             return GotoWarning('adding_existing_magicword_short', magicword=to_magicword, uri=uri)  # noqa
 
-        if from_magicword not in self.magic:
-            return GotoWarning('magicword_does_not_exist', magicword=from_magicword)  # noqa
 
         from_uri = self.magic[from_magicword]
         del self.magic[from_magicword]
-        self.magic[to_magicword] = from_uri
+        self._magic_set(to_magicword, from_uri)
 
     def remove_shortcut(self, magicword):
         """ Simply removes a shortcut """
@@ -138,7 +180,7 @@ class GotoMagic():
 
     def __setitem__(self, key, value):
         """ sets a magicword. Brutal style """
-        self.magic[key] = value
+        self._magic_set(key, value)
 
     def __delitem__(self, key):
         """ removes a magicword. Brutal style """
@@ -185,7 +227,10 @@ def load_magic(jfile):
     "Loads the magic shortcuts from a json file object"
     if os.path.isfile(jfile) and os.path.getsize(jfile) > 0:
         with codecs.open(jfile, 'r', encoding="utf-8") as f:
-            magic = json.loads(f.read())
+            if sys.version_info[0] == 2:
+                magic = json.loads(f.read(), encoding='utf-8')
+            else:
+                magic = json.loads( f.read())
     else:
         magic = {}
     return magic
@@ -195,10 +240,17 @@ def save_magic(jfile, magic):
     "saves the magic shortcuts as json into a file"
     with codecs.open(jfile, 'w+', encoding='utf-8') as f:
         try:
-            data = json.dumps(magic, sort_keys=True, indent=4, ensure_ascii=False)
-            f.write(data)
+            if sys.version_info[0] == 2:
+                data = json.dumps(magic, sort_keys=True, indent=4, ensure_ascii=False, encoding='utf-8')
+                f.write(unicode(data))
+            else:
+                data = json.dumps(magic, sort_keys=True, indent=4, ensure_ascii=False)
+                f.write(data)
         except Exception as e:
             print_text(
                 text.error.messages["magic_could_not_be_saved"],
-                message=e.message
+                message=str(e)
             )
+            # TODO: handle more elegantly
+            raise
+            exit(1)

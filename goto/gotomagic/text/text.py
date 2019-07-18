@@ -20,6 +20,9 @@ class GotoError:
                 "Missing error message with name: {}".format(self.name))
         return text.format(**self.kwargs)
 
+    def __str__(self):
+        return self.message
+
 
 class GotoWarning:
     def __init__(self, name, **kwargs):
@@ -35,6 +38,9 @@ class GotoWarning:
             raise Exception(
                 "Missing warning message with name: {}".format(self.name))
         return text.format(**self.kwargs)
+
+    def __str__(self):
+        return self.message
 
 
 def print_text(text, **kwargs):
