@@ -1,6 +1,7 @@
 import os
 import sys
 from ..gotomagic.text import GotoWarning
+from .. import settings
 
 
 def detect_platform():
@@ -21,6 +22,23 @@ def is_file(raw_uri):
     ''' checks if the file or folder exist and returns True if so '''
     candidate = os.path.abspath(raw_uri)
     return os.path.exists(candidate)
+
+
+def create_project_folder(project, scope='private', GOTOPATH=None):
+    '''
+        Creates project folder in goto state folders,
+        if not already existing.
+
+        scope can be either private or shared
+
+    '''
+    if GOTOPATH is None:
+        GOTOPATH = settings.GOTOPATH
+
+    project_folder = os.path.join(GOTOPATH, 'projects', project, scope)
+
+    if not os.path.exists(project_folder):
+        os.makedirs(project_folder)
 
 
 def detect_unescaped_ampersand_url():
