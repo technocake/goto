@@ -15,7 +15,7 @@ import codecs
 from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
-from .gotomagic.utils import healthcheck
+from .gotomagic.utils import healthcheck, print_utf8, fix_python2
 
 from . import commands
 
@@ -25,32 +25,6 @@ try:
         sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
 except:
     pass
-
-
-def print_utf8(message):
-    ''' fixes utf-8 unicode printing bugs in python 2.
-        Making sure all printed strings are of the unicode type,
-        and that they are encoded to bytes using the utf-8 encoding.
-
-        All internal strings in goto should be utf-8 encoded.
-
-        In python3 this is the default behaviour.
-    '''
-    if sys.version_info[0] == 2:
-        if not isinstance(message, unicode):
-            message = unicode(message, 'utf-8')
-        message = message.encode('utf-8')
-
-    print(message)
-
-
-def fix_python2():
-    '''
-        Assume all input is utf-8.
-        I am sure this will cause issues
-    '''
-    if sys.version_info[0] == 2:
-        sys.argv = map(lambda arg: unicode(arg, 'utf8'), sys.argv)
 
 
 def main():
