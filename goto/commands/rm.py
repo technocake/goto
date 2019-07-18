@@ -1,5 +1,3 @@
-# coding: utf-8
-from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
 
@@ -16,3 +14,4 @@ def rm(magic, args):
     magic.remove_shortcut(word)
     magic.save()
     return 'Removed magic word %s' % word, None
+
