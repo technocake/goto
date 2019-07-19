@@ -16,6 +16,33 @@ from .gotomagic.utils import healthcheck, print_utf8, fix_python2
 from . import commands
 
 
+input_commands = {
+    '--help': 'usage',
+    '-h': 'usage',
+    'help': 'usage',
+    '/?': 'usage',
+
+    'add': 'add',
+    'update': 'update',
+    'rm': 'rm',
+    'show': 'show',
+    'copy': 'copy',
+    'list': 'list',
+    'mv': 'rename',
+    'rename': 'rename',
+
+    '--migrate': 'migrate',
+    '--check-migrate': 'migrate',
+
+    'subl': 'subl',
+    'vscode': 'vscode',
+    'intelij': 'intelij',
+    'idea': 'intelij'
+}
+
+commands = set(input_commands.values())
+
+
 def main():
     make_sure_we_print_in_utf8()
 
@@ -86,6 +113,9 @@ def make_sure_we_print_in_utf8():
             sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     except:
         pass  # TODO: implement utf-8 encoding of py2.7
+
+
+
 
 
 if __name__ == '__main__':
