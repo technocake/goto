@@ -41,10 +41,9 @@ command_map = {
 }
 
 def main():
-
+    fix_python2()
     make_sure_we_print_in_utf8()
 
-    fix_python2()
     exit_if_unhealthy()
     exit_with_usage_if_needed()
 

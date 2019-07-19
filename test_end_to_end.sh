@@ -227,7 +227,7 @@ function test_06_goto_add {
     _projectfile_should_contain "test_escaped_ampersand_in_url"
 }
 
-function test_07_goto_many {
+function TODOtest_07_goto_many {
     declare -a magicwords
     declare -a uris
     magicwords=(
@@ -325,6 +325,15 @@ function test_10_goto_rm_æøå {
     # adding it again should also work,
     # and is necessary for the rest of the tests.
     _cmd_should_succeed "goto add $existing_magicword $uri"
+}
+
+function test_99_goto_list {
+    _cmd_should_succeed "goto list"
+    _cmd_should_succeed '[ $(goto list | grep -v -\> | wc -l) -eq 0 ]'
+    
+    echo ... "goto list --verbose"
+    _cmd_should_succeed 'goto list -v'
+    _cmd_should_succeed 'goto list --verbose'
 }
 
 function test_11_goto_update {
