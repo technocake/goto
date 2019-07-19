@@ -34,7 +34,10 @@ def migrate_data():
     GOTOPATH = settings.GOTOPATH
     projects_folder = os.path.join(GOTOPATH, 'projects')
     jfiles = list_jfiles()
+
     migrations = 0
+    projects = []
+    unmigrated_projects = []
 
     output = ['Found {} projects to migrate'.format(len(jfiles))]
     warning = None
@@ -57,14 +60,16 @@ def migrate_data():
                 target
             )
             migrations += 1
-            output.append('moved {} to {}'.format(fpath, target))
+            projects += [project]
         else:
+            unmigrated_projects += [project]
             output.append('Skipping project {} (source file: {} destination file already exists: {}'.format(project, fpath, target))  # noqa
 
     output.append('{} of {} projects were migrated'.format(migrations, len(jfiles)))  # noqa
+    output.append('Migrated projects: {}'.format(" ".join(projects)))  # noqa
 
     if not migrations == len(jfiles):
-        warning = GotoWarning('not_all_projects_migrated')  # noqa
+        warning = GotoWarning('not_all_projects_migrated', projects=" ".join(unmigrated_projects))  # noqa
 
     output = '\n'.join(output)
     return output, warning

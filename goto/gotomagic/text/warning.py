@@ -165,6 +165,8 @@ Ah hoy!
 Ah hoy!
 
     Not all projects could be migrated.
-    Please check the output below and move files manually.
+    Please check the output above and move files manually.
+
+    Unmigrated projects: {projects}
 """,
 )
