@@ -32,7 +32,7 @@ command_map = {
     'rename': commands.rename,
 
     '--migrate': commands.migrate,
-    '--check-migrate': commands.migrate,
+    '--check-migrate': commands.check_migrate,
 
     'subl': commands.subl,
     'vscode': commands.vscode,

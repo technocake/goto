@@ -15,8 +15,6 @@ def migrate(magic, command, args, options):
 
     if not detect_unmigrated_data():
         return "Nothing to migrate", None
-    elif '--check-migrate' in command:
-        return None, GotoWarning('data_not_migrated')
 
     if prompt_to_migrate_data():
         return migrate_data()
