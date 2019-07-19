@@ -16,34 +16,32 @@ from .gotomagic.utils import healthcheck, print_utf8, fix_python2
 from . import commands
 
 
-input_commands = {
-    '--help': 'usage',
-    '-h': 'usage',
-    'help': 'usage',
-    '/?': 'usage',
+command_map = {
+    '--help':  commands.usage,
+    '-h':  commands.usage,
+    'help':  commands.usage,
+    '/?':  commands.usage,
 
-    'add': 'add',
-    'update': 'update',
-    'rm': 'rm',
-    'show': 'show',
-    'copy': 'copy',
-    'list': 'list',
-    'mv': 'rename',
-    'rename': 'rename',
+    'add': commands.add,
+    'update': commands.update,
+    'rm': commands.rm,
+    'show': commands.show,
+    'copy': commands.copy,
+    'list': commands.list,
+    'mv': commands.rename,
+    'rename': commands.rename,
 
-    '--migrate': 'migrate',
-    '--check-migrate': 'migrate',
+    '--migrate': commands.migrate,
+    '--check-migrate': commands.migrate,
 
-    'subl': 'subl',
-    'vscode': 'vscode',
-    'intelij': 'intelij',
-    'idea': 'intelij'
+    'subl': commands.subl,
+    'vscode': commands.vscode,
+    'intelij': commands.intellij,
+    'idea': commands.intellij,
 }
 
-commands = set(input_commands.values())
-
-
 def main():
+
     make_sure_we_print_in_utf8()
 
     fix_python2()
@@ -59,7 +57,7 @@ def main():
     options = list(filter(lambda word: word.startswith('-'), argv))
 
     if not command and len(args) == 0:
-        output, _ = commands.usage()
+        output = commands.usage()
         print_utf8(output)
         exit(0)
 
@@ -78,7 +76,7 @@ def main():
 def parse_command(argv):
 
     for arg in argv:
-        if arg in commands.map.keys():
+        if arg in command_map.keys():
             command = arg
             argv.remove(arg)
             return command, argv
@@ -88,7 +86,7 @@ def parse_command(argv):
 
 def run_command(magic, command, args, options):
     if command:
-        return commands.map[command](magic, command, args, options)
+        return command_map[command](magic, command, args, options)
     else:
         return commands.default(magic, None, args, options)
 
@@ -102,11 +100,10 @@ def exit_if_unhealthy():
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
-        output, _ = commands.usage()
+        output = commands.usage()
         print_utf8(output)
         exit(0)
 
-    exit(0)
 
 def make_sure_we_print_in_utf8():
     try:

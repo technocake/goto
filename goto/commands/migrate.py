@@ -8,7 +8,7 @@ from ..gotomagic.utils import detect_unmigrated_data, prompt_to_migrate_data, li
 from .. import settings
 
 
-def migrate(magic, command, args):
+def migrate(magic, command, args, options):
     """
     migrate magicwords.
     """

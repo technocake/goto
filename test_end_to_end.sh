@@ -33,7 +33,7 @@ function _fail_test {
     message=$1
     echo -e "${RED}Test failed - $message${NC}"
     echo "LAST RUN CMD: $LATEST_RAN_COMMAND"
-    echo 
+    echo
     echo "OUTPUT: $(cat "$OUTPUTFILE")"
     echo
     _display_projectfile
@@ -409,14 +409,9 @@ function test_13_goto_rename_æøå {
 
     echo ... Invoking rename targeting existing magicword and setting force flag to true
     _cmd_should_succeed "goto rename $existing_magicword1 $existing_magicword2 --force"
-<<<<<<< HEAD:goto/tests/test_end_to_end.sh
-
-=======
     _cmd_should_succeed "goto rename $existing_magicword2 $existing_magicword1 -f"
     _cmd_should_succeed "goto rename $existing_magicword1 $existing_magicword2 --force"
 
-    
->>>>>>> develop:test_end_to_end.sh
     _projectfile_should_not_contain $existing_magicword1
     _projectfile_should_contain $existing_magicword2
     _projectfile_should_contain $new_magicword
@@ -434,7 +429,7 @@ function test_14_unmigrated_data_detection {
     # goto should detect it and prompt the user to migrate data.
     # But running a prompting command would hault the test run forever,
     # so we give it some input.
-    
+
     # Simulating Ctrl+D by closing stdin: 0<&-
     _cmd_should_fail 'goto'
     _failing_cmd_should_give_human_message 'goto'
@@ -470,7 +465,7 @@ function test_15_migrate_data {
     fi
 
     jfiles=(`find "$GOTOPATH/projects" -maxdepth 1 -type f -name "*.json"`)
-    if [ ${#jfiles[@]} -ne 0 ]; then 
+    if [ ${#jfiles[@]} -ne 0 ]; then
         _fail_test "jfiles still present in project folder"
     fi
 
