@@ -38,19 +38,23 @@ def create_project_folder(project, scope='private', GOTOPATH=None):
         if not already existing.
 
         scope can be either private or shared
-
     '''
     if GOTOPATH is None:
         GOTOPATH = settings.GOTOPATH
 
-    project_folder = os.path.join(GOTOPATH, 'projects', project, scope)
-    try:
-        if not os.path.exists(project_folder):
-            os.makedirs(project_folder)
-    # Bug if the projects folder contains a stubfile named the same as project.
-    # This happens if goto data has not been migrated yet.
-    except OSError:
-        pass
+    project_folder = os.path.join(GOTOPATH, 'projects', project)
+    scope_folder = os.path.join(GOTOPATH, 'projects', project, scope)
+
+    # Both folders already exist
+    if os.path.exists(project_folder)\
+    and os.path.exists(scope_folder):
+        return
+
+    # project folder exist, BUT it is a file..
+    if os.path.isfile(project_folder):
+        return
+
+    os.makedirs(scope_folder)
 
 
 def detect_unescaped_ampersand_url():
