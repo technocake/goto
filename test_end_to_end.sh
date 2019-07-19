@@ -422,11 +422,12 @@ function test_15_migrate_data {
     magicword="test_migration"
 
     _cmd_should_fail 'project $project'
+    _cmd_should_succeed 'goto --migrate 0<&-'
     _cmd_should_succeed 'echo y | goto --migrate'
     _cmd_should_succeed 'project $project'
 
     if [ -f "$GOTOPATH/projects/$project.json" ]; then
-        _fail_test 'old project jfile still present in .goto/projects'
+        _fail_test 'Old project jfile still present in .goto/projects'
     fi
 
     if [ ! -d "$GOTOPATH/projects/$project/private" ]; then

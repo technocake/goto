@@ -44,9 +44,13 @@ def create_project_folder(project, scope='private', GOTOPATH=None):
         GOTOPATH = settings.GOTOPATH
 
     project_folder = os.path.join(GOTOPATH, 'projects', project, scope)
-
-    if not os.path.exists(project_folder):
-        os.makedirs(project_folder)
+    try:
+        if not os.path.exists(project_folder):
+            os.makedirs(project_folder)
+    # Bug if the projects folder contains a stubfile named the same as project.
+    # This happens if goto data has not been migrated yet.
+    except OSError:
+        pass
 
 
 def detect_unescaped_ampersand_url():
