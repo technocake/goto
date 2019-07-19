@@ -31,6 +31,10 @@ def main():
     args = list(filter(lambda word: not word.startswith('-'), argv))
     options = list(filter(lambda word: word.startswith('-'), argv))
 
+    if not command and len(args) == 0:
+        print_utf8("No command or magicwords found") # TODO add warning text here
+        exit(1)
+
     output, err = run_command(magic, command, args, options)
 
     if output:
@@ -48,7 +52,7 @@ def parse_command(argv):
     for arg in argv:
         if arg in commands.map.keys():
             command = arg
-            argv.remove(arg)            
+            argv.remove(arg)
             return command, argv
 
     return None, argv
