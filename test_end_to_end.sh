@@ -422,7 +422,7 @@ function test_15_migrate_data {
     magicword="test_migration"
 
     _cmd_should_fail 'project $project'
-    _cmd_should_succeed 'goto --migrate 0<&-'
+    _cmd_should_fail 'goto --migrate 0<&-'
     _cmd_should_succeed 'echo y | goto --migrate'
     _cmd_should_succeed 'project $project'
 
