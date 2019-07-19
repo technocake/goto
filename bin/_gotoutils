@@ -116,7 +116,7 @@ function create_goto_folders {
 
 
 function detect_unmigrated_data {
-    jfiles=(`find "$GOTOPATH/projects" -maxdepth 1 -name "*.json"`)
+    jfiles=(`find "$GOTOPATH/projects" -type f -maxdepth 1 -name "*.json"`)
     
     if [ ${#jfiles[@]} -eq 0 ]; then 
         # no jfiles, so not detecting unmigrated data

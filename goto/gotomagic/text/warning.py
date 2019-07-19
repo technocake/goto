@@ -144,14 +144,14 @@ Ah hoy!
 Ah hoy!
     - Goto detects that your magicwords needs to be migrated.
 
+
     This is because earlier versions of goto stored the
     project data in a different way.
-
     details: https://github.com/technocake/goto/issues/108
+    But no worries, it can be done automagically:
 
-    But no worries, it can be done automagically,
-    right here right now.
-
+    run the command:
+        goto --migrate
     """,
 
     goto_wont_work_without_migrating_data="""

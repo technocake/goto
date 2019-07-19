@@ -7,9 +7,6 @@ from builtins import dict, str  # redefine dict and str to be py3-like in py2.
 
 import os
 import sys
-
-
-
 import codecs
 
 from .settings import GOTOPATH
@@ -50,7 +47,7 @@ def exit_if_unhealthy():
     err = healthcheck()
     if err:
         print_utf8(err.message)
-        exit(2)
+        exit(1)
 
 
 def exit_with_usage_if_needed():
@@ -81,6 +78,9 @@ def run_command(magic, command, args):
 
     if command == 'list':
         return commands.list(magic, args)
+
+    if command in ['--migrate', '--check-migrate']:
+        return commands.migrate(magic, command, args)
 
     if command == 'subl':
         return commands.subl(magic, args)

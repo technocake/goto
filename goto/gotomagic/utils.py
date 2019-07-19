@@ -104,29 +104,6 @@ def prompt_to_migrate_data():
         return False
 
 
-
-def migrate_data():
-    '''
-        for each <project>.json file in .goto/projects do:
-
-    '''
-    for jfile in list_jfiles():
-        print_utf8(jfile)
-
-
-    print_utf8('I am not migrating any thing right now, really.')
-
-
-def handle_unmigrated_data():
-    print_utf8(GotoWarning('data_not_migrated').message)
-
-    if prompt_to_migrate_data():
-        migrate_data()
-        return None
-    else:
-        return GotoWarning('goto_wont_work_without_migrating_data')
-
-
 def handle_unescaped_ampersand_url():
     command = sys.argv[2]
     magicword = sys.argv[3]
@@ -145,7 +122,9 @@ def healthcheck():
             return handle_unescaped_ampersand_url()
 
     if detect_unmigrated_data():
-        return handle_unmigrated_data()
+        # ugly hack to make it work
+        if '--migrate' not in sys.argv and '--check-migrate' not in sys.argv:
+            return GotoWarning('data_not_migrated')
 
     # No issues detected
     return None

@@ -5,13 +5,24 @@
 ([[ -n $ZSH_EVAL_CONTEXT && $ZSH_EVAL_CONTEXT =~ :file$ ]] || 
 [[ -n $BASH_VERSION ]] && (return 0 2>/dev/null)) && _GOTO_IS_SOURCED=0 || _GOTO_IS_SOURCED=1
 
+. _gotoutils
+
 
 function _goto_main {
     local PROJECT URI
 
+    #   "Neo, sooner or later you're going to realize, just as I did,
+    #   that there's a difference between knowing the
+    #   path and walking the path." - Morpheus
+
+    if [[ ! "$1" =~ ^(--check-migrate|--migrate)$ ]] && detect_unmigrated_data; then
+        goto --check-migrate
+        return $?
+    fi
+
+
     # If goto is  run in sourced mode, contiune.
     # Else: print warning. NO EXIT statement.
-
     if [[ $_GOTO_IS_SOURCED -eq 0 ]]; then
 
         # GOTOPATH may be set from environment, 

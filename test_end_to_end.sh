@@ -388,11 +388,12 @@ function test_13_goto_rename_æøå {
 }
 
 function test_14_unmigrated_data_detection {
-    old_project="unmigrated_project"
+    project="unmigrated_project"
     magicword="test_migration"
     json='{"'$magicword'": "https://github.com/technocake/goto/issues/108"}'
 
-    echo "$json" > "$GOTOPATH/projects/$old_project.json"
+    echo "$json" > "$GOTOPATH/projects/$project.json"
+    touch "$GOTOPATH/projects/$project" # project cmd used to do this
 
     # when json files are present in the root of .goto/projects,
     # goto should detect it and prompt the user to migrate data.
@@ -400,37 +401,50 @@ function test_14_unmigrated_data_detection {
     # so we give it some input.
     
     # Simulating Ctrl+D by closing stdin: 0<&-
-    _cmd_should_fail 'goto 0<&-'
-    _failing_cmd_should_give_human_message 'goto 0<&-'
+    _cmd_should_fail 'goto'
+    _failing_cmd_should_give_human_message 'goto'
 
-    _cmd_should_fail 'echo n | goto'
-    _failing_cmd_should_give_human_message 'echo n | goto'
+    _cmd_should_fail 'goto --check-migrate'
+    _failing_cmd_should_give_human_message 'goto --check-migrate'
+
+    _cmd_should_fail 'echo n | goto --migrate'
+    _failing_cmd_should_give_human_message 'echo n | goto --migrate'
 
     _cmd_should_fail 'project'
     _failing_cmd_should_give_human_message 'project'
+
+    _cmd_should_fail 'goto testcd 0<&-'
 }
 
 
 function test_15_migrate_data {
-    old_project="unmigrated_project"
+    project="unmigrated_project"
     magicword="test_migration"
 
-    _cmd_should_succeed 'echo y | goto'
+    _cmd_should_fail 'project $project'
+    _cmd_should_succeed 'echo y | goto --migrate'
+    _cmd_should_succeed 'project $project'
 
-    if [ -f "$GOTOPATH/projects/$old_project.json" ]; then
+    if [ -f "$GOTOPATH/projects/$project.json" ]; then
         _fail_test 'old project jfile still present in .goto/projects'
     fi
 
-    if [ ! -d "$GOTOPATH/projects/$old_project/private" ]; then
+    if [ ! -d "$GOTOPATH/projects/$project/private" ]; then
         _fail_test "New folder structure not created for migrated project"
+    fi
+
+    jfiles=(`find "$GOTOPATH/projects" -type f -maxdepth 1 -name "*.json"`)
+    if [ ${#jfiles[@]} -eq 0 ]; then 
+        _fail_test "jfiles still present in project folder"
     fi
 
     _cmd_should_succeed "goto list"
     _cmd_should_succeed "goto show $magicword"
     _cmd_should_succeed "goto add test_migration_æøå lol"
 
-    _projectfile_should_contain $magicword
-    _projectfile_should_contain 'test_migration_æøå'
+
+    # reseting to default test project
+    _cmd_should_succeed "project $TESTPROJECT"
 }
 
 
