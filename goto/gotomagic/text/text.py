@@ -1,11 +1,21 @@
-# -*- code: utf-8 -*-
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 """
     Text used by GOTO to do UX.
+
 """
 from . import warning, error
 
 
-class GotoError:
+class GotoText:
+    def __str__(self):
+        return self.message
+
+    def __unicode__(self):
+        return unicode(self.message, 'utf-8')  # noqa
+
+
+class GotoError(GotoText):
     def __init__(self, name, **kwargs):
         self.name = name
         self.kwargs = kwargs
@@ -20,11 +30,8 @@ class GotoError:
                 "Missing error message with name: {}".format(self.name))
         return text.format(**self.kwargs)
 
-    def __str__(self):
-        return self.message
 
-
-class GotoWarning:
+class GotoWarning(GotoText):
     def __init__(self, name, **kwargs):
         self.name = name
         self.kwargs = kwargs
@@ -38,9 +45,6 @@ class GotoWarning:
             raise Exception(
                 "Missing warning message with name: {}".format(self.name))
         return text.format(**self.kwargs)
-
-    def __str__(self):
-        return self.message
 
 
 def print_text(text, **kwargs):

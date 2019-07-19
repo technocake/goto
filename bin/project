@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 . _gotoutils # load common utility functions
 load_gotopath
-
+if detect_unmigrated_data; then
+    echo "Ah hoy! Project data needs to be migrated."
+    echo "for more info run:"
+    echo "          goto --check-migration"
+    exit 1
+fi
 
 _usage() {
     echo "Usage: project [add <projectname>] | [list]"

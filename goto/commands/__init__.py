@@ -5,6 +5,7 @@ from .rm import rm
 from .show import show
 from .copy import copy
 from .list import list
+from .migrate import migrate
 from .subl import subl
 from .vscode import vscode
 from .intellij import intellij

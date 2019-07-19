@@ -45,7 +45,7 @@ function _fail_test {
 function _cmd_should_fail {
     cmd=$1
     LATEST_RAN_COMMAND="$cmd"
-    if $cmd &> "$OUTPUTFILE"; then
+    if eval "$cmd" &> "$OUTPUTFILE"; then
         _fail_test "command: '$cmd' should fail, but did not."
     else
         return 0
@@ -57,7 +57,7 @@ _cmd_should_fail "ls nosuchfile"
 function _cmd_should_succeed {
     cmd=$1
     LATEST_RAN_COMMAND="$cmd"
-    if $cmd &> "$OUTPUTFILE"; then
+    if eval "$cmd" &> "$OUTPUTFILE"; then
         return 0
     else 
         _fail_test "command: '$cmd' should succeed, but did not."
@@ -69,7 +69,7 @@ _cmd_should_succeed "ls"
 function _cmd_should_be_empty {
     cmd=$1
     LATEST_RAN_COMMAND="$cmd"
-    $cmd &> "$OUTPUTFILE"
+    eval "$cmd" &> "$OUTPUTFILE"
     result="$(cat "$OUTPUTFILE")"
     if [ -n "$result" ]; then
         _fail_test "command: '$cmd' did not return empty"
@@ -82,7 +82,7 @@ function _cmd_should_be_empty {
 function _failing_cmd_should_give_human_message {
     cmd=$1
     LATEST_RAN_COMMAND="$cmd"
-    $cmd &> "$OUTPUTFILE"
+    eval "$cmd" &> "$OUTPUTFILE"
     result="$(cat "$OUTPUTFILE")"
     if [[ ! "$result" =~ "Ah hoy" ]]; then
         _fail_test "command: '$cmd' did not give human readable error message"
@@ -97,7 +97,7 @@ function _failing_cmd_should_give_human_message {
 function _failing_cmd_should_not_print_ah_hoy_twice {
     cmd=$1
     LATEST_RAN_COMMAND="$cmd"
-    $cmd &> "$OUTPUTFILE"
+    eval "$cmd" &> "$OUTPUTFILE"
     result="$(cat "$OUTPUTFILE" | grep -c 'Ah hoy!')"
     if [  "$result" -ne 1 ]; then
         _fail_test "command: '$cmd' did return the wrong number of Ah hoys ($result)"
@@ -387,8 +387,69 @@ function test_13_goto_rename_æøå {
     _projectfile_should_contain $new_magicword
 }
 
+function test_14_unmigrated_data_detection {
+    project="unmigrated_project"
+    magicword="test_migration"
+    json='{"'$magicword'": "https://github.com/technocake/goto/issues/108"}'
 
-function TODO_test_14_goto_copy {
+    echo "$json" > "$GOTOPATH/projects/$project.json"
+    touch "$GOTOPATH/projects/$project" # project cmd used to do this
+
+    # when json files are present in the root of .goto/projects,
+    # goto should detect it and prompt the user to migrate data.
+    # But running a prompting command would hault the test run forever,
+    # so we give it some input.
+    
+    # Simulating Ctrl+D by closing stdin: 0<&-
+    _cmd_should_fail 'goto'
+    _failing_cmd_should_give_human_message 'goto'
+
+    _cmd_should_fail 'goto --check-migrate'
+    _failing_cmd_should_give_human_message 'goto --check-migrate'
+
+    _cmd_should_fail 'echo n | goto --migrate'
+    _failing_cmd_should_give_human_message 'echo n | goto --migrate'
+
+    _cmd_should_fail 'project'
+    _failing_cmd_should_give_human_message 'project'
+
+    _cmd_should_fail 'goto testcd 0<&-'
+}
+
+
+function test_15_migrate_data {
+    project="unmigrated_project"
+    magicword="test_migration"
+
+    _cmd_should_fail 'project $project'
+    _cmd_should_fail 'goto --migrate 0<&-'
+    _cmd_should_succeed 'echo y | goto --migrate'
+    _cmd_should_succeed 'project $project'
+
+    if [ -f "$GOTOPATH/projects/$project.json" ]; then
+        _fail_test 'Old project jfile still present in .goto/projects'
+    fi
+
+    if [ ! -d "$GOTOPATH/projects/$project/private" ]; then
+        _fail_test "New folder structure not created for migrated project"
+    fi
+
+    jfiles=(`find "$GOTOPATH/projects" -maxdepth 1 -type f -name "*.json"`)
+    if [ ${#jfiles[@]} -ne 0 ]; then 
+        _fail_test "jfiles still present in project folder"
+    fi
+
+    _cmd_should_succeed "goto list"
+    _cmd_should_succeed "goto show $magicword"
+    _cmd_should_succeed "goto add test_migration_æøå lol"
+
+
+    # reseting to default test project
+    _cmd_should_succeed "project $TESTPROJECT"
+}
+
+
+function TODO_test_16_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
     
@@ -408,7 +469,9 @@ function tear_down {
         rm -rf "$GOTOPATH"
     fi
 
-    rm "$OUTPUTFILE"
+    if [[ -f "$OUTPUTFILE" ]]; then
+        rm "$OUTPUTFILE"
+    fi
 }
 
 function discover_and_run_tests {
@@ -428,6 +491,9 @@ function discover_and_run_tests {
 
 }
 
+
+# If previous test runs are aborted, new runs should start clean.
+tear_down
 
 set_up
 discover_and_run_tests

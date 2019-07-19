@@ -139,4 +139,34 @@ Ah hoy!
 
         goto {command} {magicword} "http://your-url?a=1&b=2"
     """,
+
+    data_not_migrated="""
+Ah hoy!
+    - Goto detects that your magicwords needs to be migrated.
+
+
+    This is because earlier versions of goto stored the
+    project data in a different way.
+    details: https://github.com/technocake/goto/issues/108
+    But no worries, it can be done automagically:
+
+    run the command:
+        goto --migrate
+    """,
+
+    goto_wont_work_without_migrating_data="""
+Ah hoy!
+
+    Goto will not work before data is migrated.
+    (the next time you run goto you will be prompted again)
+    """,
+
+    not_all_projects_migrated="""
+Ah hoy!
+
+    Not all projects could be migrated.
+    Please check the output above and move files manually.
+
+    Unmigrated projects: {projects}
+""",
 )

@@ -7,15 +7,12 @@ from builtins import dict, str  # redefine dict and str to be py3-like in py2.
 
 import os
 import sys
-
-
-
 import codecs
 
 from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
-from .gotomagic.utils import healthcheck
+from .gotomagic.utils import healthcheck, print_utf8, fix_python2
 
 from . import commands
 
@@ -25,32 +22,6 @@ try:
         sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
 except:
     pass
-
-
-def print_utf8(message):
-    ''' fixes utf-8 unicode printing bugs in python 2.
-        Making sure all printed strings are of the unicode type,
-        and that they are encoded to bytes using the utf-8 encoding.
-
-        All internal strings in goto should be utf-8 encoded.
-
-        In python3 this is the default behaviour.
-    '''
-    if sys.version_info[0] == 2:
-        if not isinstance(message, unicode):
-            message = unicode(message, 'utf-8')
-        message = message.encode('utf-8')
-
-    print(message)
-
-
-def fix_python2():
-    '''
-        Assume all input is utf-8.
-        I am sure this will cause issues
-    '''
-    if sys.version_info[0] == 2:
-        sys.argv = map(lambda arg: unicode(arg, 'utf8'), sys.argv)
 
 
 def main():
@@ -64,19 +35,21 @@ def main():
     args = sys.argv[3:]
 
     output, err = run_command(magic, command, args)
+    if output:
+        print_utf8(output)
+
     if err:
         print_utf8(err.message)
         exit(1)
-    if output:
-        print_utf8(output)
-        exit(0)
+
+    exit(0)
 
 
 def exit_if_unhealthy():
     err = healthcheck()
     if err:
         print_utf8(err.message)
-        exit(2)
+        exit(1)
 
 
 def exit_with_usage_if_needed():
@@ -107,6 +80,9 @@ def run_command(magic, command, args):
 
     if command == 'list':
         return commands.list(magic, args)
+
+    if command in ['--migrate', '--check-migrate']:
+        return commands.migrate(magic, command, args)
 
     if command == 'subl':
         return commands.subl(magic, args)
