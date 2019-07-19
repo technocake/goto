@@ -44,8 +44,8 @@ def migrate_data():
 
     for jfile in jfiles:
         project = jfile.split('.json')[0]
-        fpath = os.path.join(projects_folder, jfile)
-        target = os.path.join(projects_folder, project, 'private', 'magicwords.json')  # noqa
+        from_file = os.path.join(projects_folder, jfile)
+        destination = os.path.join(projects_folder, project, 'private', 'magicwords.json')  # noqa
 
         # project cmd used to leave empty files for each project
         stubfile = os.path.join(projects_folder, project)
@@ -54,16 +54,12 @@ def migrate_data():
 
         create_project_folder(project)
 
-        if not os.path.exists(target):
-            shutil.move(
-                fpath,
-                target
-            )
+        if move_magicwords(from_file, destination):
             migrations += 1
             projects += [project]
         else:
             unmigrated_projects += [project]
-            output.append('Skipping project {} (source file: {} destination file already exists: {}'.format(project, fpath, target))  # noqa
+            output.append('Skipping project {} (source file: {} destination file already exists: {}'.format(project, from_file, destination))  # noqa
 
     output.append('{} of {} projects were migrated'.format(migrations, len(jfiles)))  # noqa
     output.append('Migrated projects: {}'.format(" ".join(projects)))  # noqa
@@ -73,3 +69,15 @@ def migrate_data():
 
     output = '\n'.join(output)
     return output, warning
+
+
+def move_magicwords(from_file, destination):
+    try:
+        if not os.path.exists(destination):
+            shutil.move(from_file, destination)
+            return True
+        else:
+            return False
+    except shutil.Error:
+        # todo: user-friendly warning here.
+        raise
