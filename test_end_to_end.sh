@@ -433,8 +433,8 @@ function test_15_migrate_data {
         _fail_test "New folder structure not created for migrated project"
     fi
 
-    jfiles=(`find "$GOTOPATH/projects" -type f -maxdepth 1 -name "*.json"`)
-    if [ ${#jfiles[@]} -eq 0 ]; then 
+    jfiles=(`find "$GOTOPATH/projects" -maxdepth 1 -type f -name "*.json"`)
+    if [ ${#jfiles[@]} -ne 0 ]; then 
         _fail_test "jfiles still present in project folder"
     fi
 
