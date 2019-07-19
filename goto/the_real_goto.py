@@ -35,14 +35,14 @@ def main():
     args = sys.argv[3:]
 
     output, err = run_command(magic, command, args)
-    if err:
-        if output:
-            print_utf8(output)
-        print_utf8(err.message)
-        exit(1)
     if output:
         print_utf8(output)
-        exit(0)
+
+    if err:
+        print_utf8(err.message)
+        exit(1)
+
+    exit(0)
 
 
 def exit_if_unhealthy():
