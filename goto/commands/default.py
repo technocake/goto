@@ -4,7 +4,7 @@ from ..gotomagic.text import GotoWarning
 from .open import open
 
 
-def default(magic, args, options):
+def default(magic, command, args, options):
     """
     Default behaviour when no commands are found in the first argument
     """

@@ -5,6 +5,8 @@ source _gotoutils
 
 TESTPROJECT=testproject
 OUTPUTFILE=/tmp/.gototest-cmd-output
+LATEST_RAN_COMMAND=""
+
 # PROJECTFILE
 
 RED='\033[0;31m'
@@ -22,14 +24,18 @@ function set_up {
     echo "setting up tests"
     create_goto_folders "$GOTOPATH"
     touch "$OUTPUTFILE"
-    PROJECTFILE="$GOTOPATH/projects/$TESTPROJECT.json"
+    PROJECTFOLDER="$GOTOPATH/projects/$TESTPROJECT"
+    PROJECTFILE="$PROJECTFOLDER/private/magicwords.json"
 }
 
 
 function _fail_test {
     message=$1
     echo -e "${RED}Test failed - $message${NC}"
+    echo "LAST RUN CMD: $LATEST_RAN_COMMAND"
+    echo 
     echo "OUTPUT: $(cat "$OUTPUTFILE")"
+    echo
     _display_projectfile
     echo "Test failed - $message"
     tear_down
@@ -38,7 +44,8 @@ function _fail_test {
 
 function _cmd_should_fail {
     cmd=$1
-    if $cmd &> "$OUTPUTFILE"; then
+    LATEST_RAN_COMMAND="$cmd"
+    if eval "$cmd" &> "$OUTPUTFILE"; then
         _fail_test "command: '$cmd' should fail, but did not."
     else
         return 0
@@ -49,7 +56,8 @@ _cmd_should_fail "ls nosuchfile"
 
 function _cmd_should_succeed {
     cmd=$1
-    if $cmd &> "$OUTPUTFILE"; then
+    LATEST_RAN_COMMAND="$cmd"
+    if eval "$cmd" &> "$OUTPUTFILE"; then
         return 0
     else
         _fail_test "command: '$cmd' should succeed, but did not."
@@ -60,7 +68,8 @@ _cmd_should_succeed "ls"
 
 function _cmd_should_be_empty {
     cmd=$1
-    $cmd &> "$OUTPUTFILE"
+    LATEST_RAN_COMMAND="$cmd"
+    eval "$cmd" &> "$OUTPUTFILE"
     result="$(cat "$OUTPUTFILE")"
     if [ -n "$result" ]; then
         _fail_test "command: '$cmd' did not return empty"
@@ -72,7 +81,8 @@ function _cmd_should_be_empty {
 
 function _failing_cmd_should_give_human_message {
     cmd=$1
-    $cmd &> "$OUTPUTFILE"
+    LATEST_RAN_COMMAND="$cmd"
+    eval "$cmd" &> "$OUTPUTFILE"
     result="$(cat "$OUTPUTFILE")"
     if [[ ! "$result" =~ "Ah hoy" ]]; then
         _fail_test "command: '$cmd' did not give human readable error message"
@@ -86,7 +96,8 @@ function _failing_cmd_should_give_human_message {
 
 function _failing_cmd_should_not_print_ah_hoy_twice {
     cmd=$1
-    $cmd &> "$OUTPUTFILE"
+    LATEST_RAN_COMMAND="$cmd"
+    eval "$cmd" &> "$OUTPUTFILE"
     result="$(cat "$OUTPUTFILE" | grep -c 'Ah hoy!')"
     if [  "$result" -ne 1 ]; then
         _fail_test "command: '$cmd' did return the wrong number of Ah hoys ($result)"
@@ -107,7 +118,7 @@ function _display_projectfile {
 
 function _projectfile_should_contain {
     local magicword="$1"
-    if [[ $(cat $PROJECTFILE | grep $magicword | wc -l) -ne 1 ]]; then
+    if [[ $(cat $PROJECTFILE | grep "\"$magicword\"" | wc -l) -ne 1 ]]; then
         _fail_test "magicword '$magicword' missing in project file"
     else
         return 0
@@ -116,7 +127,7 @@ function _projectfile_should_contain {
 
 function _projectfile_should_not_contain {
     local magicword="$1"
-    if [[ $(cat $PROJECTFILE | grep $magicword | wc -l) -ne 0 ]]; then
+    if [[ $(cat $PROJECTFILE | grep "\"$magicword\"" | wc -l) -ne 0 ]]; then
         _fail_test "magicword '$magicword' should not be in project file"
     else
         return 0
@@ -178,8 +189,8 @@ function test_04_switch_to_nonexistent_project {
 
 function test_05_add_project {
     _cmd_should_succeed "project add $TESTPROJECT"
-    if [ ! -f "${GOTOPATH}/projects/${TESTPROJECT}" ]; then
-        _fail_test "project file not created"
+    if [ ! -d "$PROJECTFOLDER" ]; then
+        _fail_test "project folder not created"
     fi
     _cmd_should_succeed "goto list"
 }
@@ -270,7 +281,7 @@ function test_07_goto_nonexisting_magicword {
     _failing_cmd_should_not_print_ah_hoy_twice "goto $nonexisting_magicword"
 }
 
-function TODO_test_08_goto_add_æøå {
+function test_08_goto_add_æøå {
     existing_magicword="test_æøå"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com/æøå"
@@ -280,9 +291,8 @@ function TODO_test_08_goto_add_æøå {
 
 }
 
-
-function test_09_goto_show {
-    existing_magicword="test_show"
+function test_09_goto_show_æøå {
+    existing_magicword="test_shæw"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
 
@@ -298,8 +308,8 @@ function test_09_goto_show {
     _failing_cmd_should_give_human_message "goto show $nonexisting_magicword"
 }
 
-function test_10_goto_rm {
-    existing_magicword="test_rm"
+function test_10_goto_rm_æøå {
+    existing_magicword="test_ræmøve"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
     _cmd_should_succeed "goto add $existing_magicword $uri"
@@ -348,17 +358,17 @@ function test_12_only_one_ah_hoy_at_the_time_please {
 }
 
 
-function test_13_goto_rename {
-    existing_magicword1="test_1"
-    existing_magicword2="test_2"
-    new_magicword="test_3"
+function test_13_goto_rename_æøå {
+    existing_magicword1="test_æ"
+    existing_magicword2="test_ø"
+    new_magicword="test_ålræit"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
 
     _cmd_should_succeed "goto add $existing_magicword1 $uri"
     _cmd_should_succeed "goto add $existing_magicword2 $uri"
 
-    # Invoking rename without any magic words
+    echo ... Invoking rename without any magic words
     _cmd_should_fail "goto rename"
     _failing_cmd_should_give_human_message "goto rename"
 
@@ -366,7 +376,7 @@ function test_13_goto_rename {
     _projectfile_should_contain $existing_magicword2
 
 
-    # Invoking rename with one magicword
+    echo ... Invoking rename with one magicword
     _cmd_should_fail "goto rename $existing_magicword1"
     _failing_cmd_should_give_human_message "goto rename $existing_magicword1"
 
@@ -374,7 +384,7 @@ function test_13_goto_rename {
     _projectfile_should_contain $existing_magicword2
 
 
-    # Invoking rename with both magicwords
+    echo ... Invoking rename with both magicwords
     _cmd_should_succeed "goto rename $existing_magicword1 $new_magicword"
     _cmd_should_fail "goto rename $existing_magicword1 $new_magicword"
     _failing_cmd_should_give_human_message "goto rename $existing_magicword1 $new_magicword"
@@ -384,11 +394,11 @@ function test_13_goto_rename {
     _projectfile_should_contain $new_magicword
 
 
-    # re add existing_magicword1
+    echo ... re-add existing_magicword1
     _cmd_should_succeed "goto add $existing_magicword1 $uri"
 
 
-    # Invoking rename targeting existing magicword
+    echo ... Invoking rename targeting existing magicword
     _cmd_should_fail "goto rename $existing_magicword1 $existing_magicword2"
     _failing_cmd_should_give_human_message "goto rename $existing_magicword1 $existing_magicword2"
 
@@ -397,16 +407,84 @@ function test_13_goto_rename {
     _projectfile_should_contain $new_magicword
 
 
-    # Invoking rename targeting existing magicword and setting force flag to true
+    echo ... Invoking rename targeting existing magicword and setting force flag to true
+    _cmd_should_succeed "goto rename $existing_magicword1 $existing_magicword2 --force"
+<<<<<<< HEAD:goto/tests/test_end_to_end.sh
+
+=======
+    _cmd_should_succeed "goto rename $existing_magicword2 $existing_magicword1 -f"
     _cmd_should_succeed "goto rename $existing_magicword1 $existing_magicword2 --force"
 
+    
+>>>>>>> develop:test_end_to_end.sh
     _projectfile_should_not_contain $existing_magicword1
     _projectfile_should_contain $existing_magicword2
     _projectfile_should_contain $new_magicword
 }
 
+function test_14_unmigrated_data_detection {
+    project="unmigrated_project"
+    magicword="test_migration"
+    json='{"'$magicword'": "https://github.com/technocake/goto/issues/108"}'
 
-function TODO_test_14_goto_copy {
+    echo "$json" > "$GOTOPATH/projects/$project.json"
+    touch "$GOTOPATH/projects/$project" # project cmd used to do this
+
+    # when json files are present in the root of .goto/projects,
+    # goto should detect it and prompt the user to migrate data.
+    # But running a prompting command would hault the test run forever,
+    # so we give it some input.
+    
+    # Simulating Ctrl+D by closing stdin: 0<&-
+    _cmd_should_fail 'goto'
+    _failing_cmd_should_give_human_message 'goto'
+
+    _cmd_should_fail 'goto --check-migrate'
+    _failing_cmd_should_give_human_message 'goto --check-migrate'
+
+    _cmd_should_fail 'echo n | goto --migrate'
+    _failing_cmd_should_give_human_message 'echo n | goto --migrate'
+
+    _cmd_should_fail 'project'
+    _failing_cmd_should_give_human_message 'project'
+
+    _cmd_should_fail 'goto testcd 0<&-'
+}
+
+
+function test_15_migrate_data {
+    project="unmigrated_project"
+    magicword="test_migration"
+
+    _cmd_should_fail 'project $project'
+    _cmd_should_fail 'goto --migrate 0<&-'
+    _cmd_should_succeed 'echo y | goto --migrate'
+    _cmd_should_succeed 'project $project'
+
+    if [ -f "$GOTOPATH/projects/$project.json" ]; then
+        _fail_test 'Old project jfile still present in .goto/projects'
+    fi
+
+    if [ ! -d "$GOTOPATH/projects/$project/private" ]; then
+        _fail_test "New folder structure not created for migrated project"
+    fi
+
+    jfiles=(`find "$GOTOPATH/projects" -maxdepth 1 -type f -name "*.json"`)
+    if [ ${#jfiles[@]} -ne 0 ]; then 
+        _fail_test "jfiles still present in project folder"
+    fi
+
+    _cmd_should_succeed "goto list"
+    _cmd_should_succeed "goto show $magicword"
+    _cmd_should_succeed "goto add test_migration_æøå lol"
+
+
+    # reseting to default test project
+    _cmd_should_succeed "project $TESTPROJECT"
+}
+
+
+function TODO_test_16_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
 
@@ -426,7 +504,9 @@ function tear_down {
         rm -rf "$GOTOPATH"
     fi
 
-    rm "$OUTPUTFILE"
+    if [[ -f "$OUTPUTFILE" ]]; then
+        rm "$OUTPUTFILE"
+    fi
 }
 
 function discover_and_run_tests {
@@ -446,6 +526,9 @@ function discover_and_run_tests {
 
 }
 
+
+# If previous test runs are aborted, new runs should start clean.
+tear_down
 
 set_up
 discover_and_run_tests

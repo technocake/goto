@@ -1,3 +1,4 @@
+# coding: utf-8
 from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
@@ -20,4 +21,4 @@ def add(magic, command, args, options):
     magic.add_shortcut(magicword, uri)
     magic.save()
 
-    return u'Added magic word %s' % magicword, None
+    return 'Added magic word {}'.format(magicword), None
