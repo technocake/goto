@@ -36,6 +36,8 @@ def main():
 
     output, err = run_command(magic, command, args)
     if err:
+        if output:
+            print_utf8(output)
         print_utf8(err.message)
         exit(1)
     if output:

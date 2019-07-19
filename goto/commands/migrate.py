@@ -1,6 +1,7 @@
 # coding: utf-8
 from __future__ import unicode_literals
 import os
+import shutil
 
 from ..gotomagic.text import GotoError, GotoWarning
 from ..gotomagic.utils import detect_unmigrated_data, prompt_to_migrate_data, list_jfiles, create_project_folder
@@ -18,8 +19,7 @@ def migrate(magic, command, args):
         return None, GotoWarning('data_not_migrated')
 
     if prompt_to_migrate_data():
-        migrate_data()
-        return 'All projects are now migrated', None
+        return migrate_data()
     else:
         return None, GotoWarning('goto_wont_work_without_migrating_data')
 
@@ -33,9 +33,15 @@ def migrate_data():
     '''
     GOTOPATH = settings.GOTOPATH
     projects_folder = os.path.join(GOTOPATH, 'projects')
+    jfiles = list_jfiles()
+    migrations = 0
 
-    for jfile in list_jfiles():
+    output = ['Found {} projects to migrate'.format(len(jfiles))]
+    warning = None
+
+    for jfile in jfiles:
         project = jfile.split('.json')[0]
+        fpath = os.path.join(projects_folder, jfile)
         target = os.path.join(projects_folder, project, 'private', 'magicwords.json')  # noqa
 
         # project cmd used to leave empty files for each project
@@ -46,7 +52,19 @@ def migrate_data():
         create_project_folder(project)
 
         if not os.path.exists(target):
-            os.rename(
-                os.path.join(projects_folder, jfile),
+            shutil.move(
+                fpath,
                 target
             )
+            migrations += 1
+            output.append('moved {} to {}'.format(fpath, target))
+        else:
+            output.append('Skipping project {} (source file: {} destination file already exists: {}'.format(project, fpath, target))  # noqa
+
+    output.append('{} of {} projects were migrated'.format(migrations, len(jfiles)))  # noqa
+
+    if not migrations == len(jfiles):
+        warning = GotoWarning('not_all_projects_migrated')  # noqa
+
+    output = '\n'.join(output)
+    return output, warning

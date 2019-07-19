@@ -160,4 +160,11 @@ Ah hoy!
     Goto will not work before data is migrated.
     (the next time you run goto you will be prompted again)
     """,
+
+    not_all_projects_migrated="""
+Ah hoy!
+
+    Not all projects could be migrated.
+    Please check the output below and move files manually.
+""",
 )
