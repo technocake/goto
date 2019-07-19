@@ -32,8 +32,9 @@ def main():
     options = list(filter(lambda word: word.startswith('-'), argv))
 
     if not command and len(args) == 0:
-        print_utf8("No command or magicwords found") # TODO add warning text here
-        exit(1)
+        output, _ = commands.usage()
+        print_utf8(output)
+        exit(0)
 
     output, err = run_command(magic, command, args, options)
 
