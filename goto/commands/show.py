@@ -3,7 +3,13 @@ from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def show(magic, command, args, options):
+def names():
+    return [
+        'show',
+        '--show',
+    ]
+
+def run(magic, command, args, options):
     """
     Show magicword.
     """

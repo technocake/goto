@@ -1,8 +1,18 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
+def help():
+    return []
 
-def usage():
+def names():
+    return [
+        'help',
+        '--help',
+        '-h',
+        '/?',
+    ]
+
+def run():
     """
     Get information about usage
     """

@@ -1,15 +1,4 @@
-from .add import add
-from .usage import usage
-from .update import update
-from .rm import rm
-from .show import show
-from .copy import copy
-from .list import list
-from .migrate import migrate
-from .check_migrate import check_migrate
-from .subl import subl
-from .vscode import vscode
-from .intellij import intellij
-from .open import open
-from .default import default
-from .rename import rename
+name='commands'
+
+from . import usage
+from . import default

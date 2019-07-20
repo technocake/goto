@@ -2,7 +2,13 @@
 from __future__ import unicode_literals
 
 
-def list(magic, command, args, options):
+def names():
+    return [
+        'list',
+        '--list',
+    ]
+
+def run(magic, command, args, options):
     """
     List commands
     """

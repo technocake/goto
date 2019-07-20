@@ -3,7 +3,28 @@ from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def add(magic, command, args, options):
+def help():
+    return [
+        [
+            'add',
+            '<magicword> <url or path>',
+            'Add shortcut',
+        ],
+        [
+            '--add',
+            '=',
+            '=',
+        ],
+    ]
+
+def names():
+    return [
+        'add',
+        '--add'
+    ]
+
+
+def run(magic, command, args, options):
     """
     Add magicword
     """

@@ -5,7 +5,12 @@ from ..gotomagic.text import GotoError, GotoWarning
 from ..gotomagic.utils import detect_unmigrated_data
 
 
-def check_migrate(magic, command, args, options):
+def names():
+    return [
+        '--check-migrate'
+    ]
+
+def run(magic, command, args, options):
     ''' checks if we need to migrate underlaying data structure in goto'''
 
     if detect_unmigrated_data():

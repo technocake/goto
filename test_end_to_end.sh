@@ -169,10 +169,6 @@ function test_02_initialization_should_work {
     # When goto is inititalized, cd should work
     _cmd_should_succeed "goto add testcd ${testcdpath}"
     _cmd_should_succeed "goto testcd"
-    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
-
-    _cmd_should_succeed "goto cd testcd"
-    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
 }
 
 
@@ -262,16 +258,6 @@ function TODOtest_07_goto_many {
     _cmd_should_succeed "goto ${magicwords[*]}"
 }
 
-function test_07_goto_cd {
-    testcdpath="/tmp"
-
-    _cmd_should_succeed "goto add testcd2 $testcdpath"
-    _cmd_should_succeed "goto testcd2"
-    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
-
-    _cmd_should_succeed "goto cd testcd"
-    if [[ "$PWD" != "$testcdpath" ]]; then _fail_test "goto cd failed"; fi
-}
 
 function test_07_goto_nonexisting_magicword {
     nonexisting_magicword="IDoNotExist"
@@ -337,7 +323,7 @@ function test_11_goto_list {
     #         _fail_test "magicwords should (atleast in this test) contain only one word"
     #     fi
     # done
-    
+
     echo ... "goto list --verbose"
     _cmd_should_succeed 'goto list -v'
     _cmd_should_succeed 'goto list --verbose'

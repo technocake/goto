@@ -7,7 +7,13 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def open(magic, command, args, options):
+def names():
+    return [
+        'open',
+        '--open',
+    ]
+
+def run(magic, command, args, options):
     """
     Open folder
     """

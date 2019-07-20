@@ -3,7 +3,13 @@ from __future__ import unicode_literals
 from ..gotomagic.text import GotoWarning
 
 
-def rename(magic, command, args, options):
+def names():
+    return [
+        'rename',
+        '--rename'
+    ]
+
+def run(magic, command, args, options):
     if len(args) == 0:
         return None, GotoWarning("missing_both_magicwords", command=command)
 
