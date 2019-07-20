@@ -6,13 +6,13 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
+def help():
+    return ['idea', '', 'Opens IntelliJ in code folder*']
+
+
 def names():
-    return [
-        'intellij',
-        '--intellij',
-        'idea',
-        '--idea',
-    ]
+    return ['intellij', '--intellij', 'idea', '--idea',]
+
 
 def run(magic, command, args, options):
     """

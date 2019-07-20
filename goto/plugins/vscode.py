@@ -5,11 +5,12 @@ import subprocess
 from ..gotomagic.text import GotoError, GotoWarning
 
 
+def help():
+    return ['vscode', '', 'Opens Visual Studio Code in code']
+
+
 def names():
-    return [
-        'vscode',
-        '--vscode',
-    ]
+    return ['vscode', '--vscode']
 
 def run(magic, command, args, options):
     """

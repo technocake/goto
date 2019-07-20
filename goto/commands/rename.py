@@ -3,11 +3,13 @@ from __future__ import unicode_literals
 from ..gotomagic.text import GotoWarning
 
 
+def help():
+    return ['rename', '<magicword> <new name>', 'Rename shortcut']
+
+
 def names():
-    return [
-        'rename',
-        '--rename'
-    ]
+    return ['rename', '--rename']
+
 
 def run(magic, command, args, options):
     if len(args) == 0:

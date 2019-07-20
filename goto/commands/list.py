@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 
 
+def help():
+    return ['list', '[-v]', 'List all shortcuts']
+
+
 def names():
-    return [
-        'list',
-        '--list',
-    ]
+    return ['list', '--list']
+
 
 def run(magic, command, args, options):
     """

@@ -3,8 +3,6 @@ from ..gotomagic.utils import is_file
 from ..gotomagic.text import GotoWarning, GotoError
 from . import open
 
-def names():
-    return []
 
 def run(magic, command, args, options):
     """

@@ -14,9 +14,14 @@ from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck, print_utf8, fix_python2
-from .commands import usage, default, command_map
+from .commands import command_map, default
+from .plugins import plugin_map
+
+commands_and_plugins = command_map.copy()
+commands_and_plugins.update(plugin_map)
 
 def main():
+
     fix_python2()
     make_sure_we_print_in_utf8()
 
@@ -32,7 +37,7 @@ def main():
     options = list(filter(lambda word: word.startswith('-'), argv))
 
     if not command and len(args) == 0:
-        output = usage.run()
+        output = usage()
         print_utf8(output)
         exit(0)
 
@@ -49,10 +54,10 @@ def main():
 
 
 def parse_command(argv):
-    global command_map
+    global commands_and_plugins
 
     for arg in argv:
-        if arg in command_map.keys():
+        if arg in commands_and_plugins.keys() or arg in ['help', '--help', '-h', '/?']:
             command = arg
             argv.remove(arg)
             return command, argv
@@ -61,10 +66,13 @@ def parse_command(argv):
 
 
 def run_command(magic, command, args, options):
-    global command_map
+    global commands_and_plugins
+
+    if command in ['help', '--help', '-h', '/?']:
+        return usage()
 
     if command:
-        return command_map[command].run(magic, command, args, options)
+        return commands_and_plugins[command].run(magic, command, args, options)
     else:
         return default.run(magic, None, args, options)
 
@@ -78,7 +86,7 @@ def exit_if_unhealthy():
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
-        output = usage.run()
+        output = usage()
         print_utf8(output)
         exit(0)
 
@@ -91,7 +99,60 @@ def make_sure_we_print_in_utf8():
         pass  # TODO: implement utf-8 encoding of py2.7
 
 
+def usage():
+    global command_map, plugin_map
+    """
+    Get information about usage
+    """
 
+    header = """
+Goto - the magic traveler, how may I help you?
+
+Wondering how to change project?
+    project help                  Consult my brother in command
+
+Basic usage
+    goto <magicword>      Go to shortcut
+    goto [<magicword>...] Go to many shortcuts
+"""
+
+    from functools import reduce
+
+
+    commands_help = set([x for x in command_map.values()])
+    commands_help = map(lambda x: x.help(), commands_help)
+    commands_helptext = reduce(lambda x,y: x + "    goto {} {} {}\n".format(y[0], y[1], y[2]), commands_help, "\nCommands\n")
+
+    plugins_help = set([x for x in plugin_map.values()])
+    plugins_help = map(lambda x: x.help(), plugins_help)
+    plugins_helptext = reduce(lambda x, y: x + "    goto {} {} {}\n".format(y[0], y[1], y[2]), plugins_help, "\nPlugins\n")
+
+    return "{}{}{}".format(header, commands_helptext, plugins_helptext), None
+
+"""
+    Goto - the magic traveler, how may I help you?
+
+    Wondering how to change project?
+        project help                  Consult my brother in command
+
+    Basic usage
+        goto <magicword>      Go to shortcut
+        goto [<magicword>...] Go to many shortcuts
+
+    Commands
+        goto add    <magicword> <url or path>   Add shortcut
+        goto update <magicword> <new url/path>  Update shortcut
+        goto rename <magicword> <new name>      Rename shortcut
+        goto rm     <magicword>                 Remove shortcut
+        goto show   <magicword>                 Show url of shortcut
+        goto list   [-v]                          List all shortcuts
+        goto open   <magicword>         Open in finder/file explorer
+
+    Plugins
+        goto subl                     Opens Sublime Text in code folder*
+        goto idea                     Opens IntelliJ in code folder*
+        goto vscode                   Opens Visual Studio Code in code folder*
+"""
 
 
 if __name__ == '__main__':

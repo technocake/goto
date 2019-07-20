@@ -4,11 +4,13 @@ import pyperclip
 from ..gotomagic.text import GotoError, GotoWarning
 
 
+def help():
+    return ['copy', '<magicword>', 'Copy magicword to the clipboard']
+
+
 def names():
-    return [
-        'copy',
-        '--copy',
-    ]
+    return ['copy','--copy']
+
 
 def run(magic, command, args, options):
     """

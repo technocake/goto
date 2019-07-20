@@ -8,10 +8,13 @@ from ..gotomagic.utils import detect_unmigrated_data, prompt_to_migrate_data, li
 from .. import settings
 
 
+def help():
+    return ['--migrate', '', 'Migrate data to new format']
+
+
 def names():
-    return [
-        '--migrate'
-    ]
+    return ['--migrate']
+
 
 def run(magic, command, args, options):
     """

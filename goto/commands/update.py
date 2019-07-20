@@ -1,7 +1,8 @@
 from ..gotomagic.text import GotoError, GotoWarning
 
 def help():
-    return []
+    return ['update', '<magicword> <new url/path>', 'Update shortcut']
+
 
 def names():
     return [

@@ -4,24 +4,10 @@ from ..gotomagic.text import GotoError, GotoWarning
 
 
 def help():
-    return [
-        [
-            'add',
-            '<magicword> <url or path>',
-            'Add shortcut',
-        ],
-        [
-            '--add',
-            '=',
-            '=',
-        ],
-    ]
+    return ['add','<magicword> <url or path>','Add shortcut']
 
 def names():
-    return [
-        'add',
-        '--add'
-    ]
+    return ['add','--add']
 
 
 def run(magic, command, args, options):

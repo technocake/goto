@@ -2,12 +2,13 @@
 from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
+def help():
+    return ['show', '<magicword>', 'Show url of shortcut']
+
 
 def names():
-    return [
-        'show',
-        '--show',
-    ]
+    return ['show','--show']
+
 
 def run(magic, command, args, options):
     """

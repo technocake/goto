@@ -7,11 +7,13 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
+def help():
+    return ['open', '<magicword>', 'Open magicword in window']
+
+
 def names():
-    return [
-        'open',
-        '--open',
-    ]
+    return ['open', '--open']
+
 
 def run(magic, command, args, options):
     """
