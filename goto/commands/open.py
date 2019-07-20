@@ -8,7 +8,7 @@ from ..gotomagic.text import GotoError, GotoWarning
 
 
 def help():
-    return ['open', '<magicword>', 'Open magicword in window']
+    return "{0:10}{1:30}{2}".format('open', '<magicword>', 'Open magicword in window')
 
 
 def names():
@@ -19,6 +19,7 @@ def run(magic, command, args, options):
     """
     Open folder
     """
+    command = command if command else ''
     verbose = '-v' in options or '--verbose' in options
 
     if (len(args) == 0):

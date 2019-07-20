@@ -4,7 +4,7 @@ from ..gotomagic.text import GotoError, GotoWarning
 
 
 def help():
-    return ['add','<magicword> <url or path>','Add shortcut']
+    return "{0:10}{1:30}{2}".format('add','<magicword> <url or path>','Add shortcut')
 
 def names():
     return ['add','--add']

@@ -4,7 +4,7 @@ from ..gotomagic.text import GotoWarning
 
 
 def help():
-    return ['rename', '<magicword> <new name>', 'Rename shortcut']
+    return "{0:10}{1:30}{2}".format('rename', '<magicword> <new name>', 'Rename shortcut')
 
 
 def names():

@@ -6,7 +6,7 @@ from ..gotomagic.utils import detect_unmigrated_data
 
 
 def help():
-    return ['--check-migrate', '', 'Check if you need to migrate']
+    return "{0:40}{1}".format('--check-migrate', 'Check if you need to migrate')
 
 
 def names():

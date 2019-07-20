@@ -6,7 +6,7 @@ from ..gotomagic.text import GotoError, GotoWarning
 
 
 def help():
-    return ['vscode', '', 'Opens Visual Studio Code in code']
+    return "{0:10}{1}".format('vscode', 'Opens Visual Studio Code in code folder')
 
 
 def names():

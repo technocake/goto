@@ -5,7 +5,7 @@ from ..gotomagic.text import GotoError, GotoWarning
 
 
 def help():
-    return ['copy', '<magicword>', 'Copy magicword to the clipboard']
+    return "{0:10}{1:30}{2}".format('copy', '<magicword>', 'Copy magicword to the clipboard')
 
 
 def names():

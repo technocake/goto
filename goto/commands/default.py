@@ -18,7 +18,7 @@ def run(magic, command, args, options):
             return None, GotoWarning('magicword_does_not_exist', magicword=magicword)  # noqa
 
         if is_file(uri):
-            _output, err = open.run(magic, '', [magicword], verbose)
+            _output, err = open.run(magic, None, [magicword], verbose)
             if err:
                 return None, err
             output += "%s\n" % _output

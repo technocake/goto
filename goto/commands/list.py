@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 
 def help():
-    return ['list', '[-v]', 'List all shortcuts']
+    return "{0:10}{1:30}{2}".format('list', '[-v]', 'List all shortcuts')
 
 
 def names():

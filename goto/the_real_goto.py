@@ -8,7 +8,7 @@ from builtins import dict, str  # redefine dict and str to be py3-like in py2.
 import os
 import sys
 import codecs
-import importlib
+from functools import reduce
 
 from .settings import GOTOPATH
 from .gotomagic import text
@@ -116,44 +116,15 @@ Basic usage
     goto [<magicword>...] Go to many shortcuts
 """
 
-    from functools import reduce
+    def map_to_text(command_map):
+        commands_help = set([x for x in command_map.values()])
+        commands_help = list(map(lambda x: x.help(), commands_help))
+        commands_help = sorted(commands_help)
+        commands_help = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
+        commands_help = reduce(lambda x,y: x + "    goto {}\n".format(y), commands_help, "\nCommands\n")
+        return commands_help
 
-
-    commands_help = set([x for x in command_map.values()])
-    commands_help = map(lambda x: x.help(), commands_help)
-    commands_helptext = reduce(lambda x,y: x + "    goto {} {} {}\n".format(y[0], y[1], y[2]), commands_help, "\nCommands\n")
-
-    plugins_help = set([x for x in plugin_map.values()])
-    plugins_help = map(lambda x: x.help(), plugins_help)
-    plugins_helptext = reduce(lambda x, y: x + "    goto {} {} {}\n".format(y[0], y[1], y[2]), plugins_help, "\nPlugins\n")
-
-    return "{}{}{}".format(header, commands_helptext, plugins_helptext), None
-
-"""
-    Goto - the magic traveler, how may I help you?
-
-    Wondering how to change project?
-        project help                  Consult my brother in command
-
-    Basic usage
-        goto <magicword>      Go to shortcut
-        goto [<magicword>...] Go to many shortcuts
-
-    Commands
-        goto add    <magicword> <url or path>   Add shortcut
-        goto update <magicword> <new url/path>  Update shortcut
-        goto rename <magicword> <new name>      Rename shortcut
-        goto rm     <magicword>                 Remove shortcut
-        goto show   <magicword>                 Show url of shortcut
-        goto list   [-v]                          List all shortcuts
-        goto open   <magicword>         Open in finder/file explorer
-
-    Plugins
-        goto subl                     Opens Sublime Text in code folder*
-        goto idea                     Opens IntelliJ in code folder*
-        goto vscode                   Opens Visual Studio Code in code folder*
-"""
-
+    return "{}{}{}".format(header, map_to_text(command_map), map_to_text(plugin_map))
 
 if __name__ == '__main__':
     main()

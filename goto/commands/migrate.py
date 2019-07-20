@@ -9,7 +9,7 @@ from .. import settings
 
 
 def help():
-    return ['--migrate', '', 'Migrate data to new format']
+    return "{0:40}{1}".format('--migrate', 'Migrate data to new format')
 
 
 def names():

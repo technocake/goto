@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
 def help():
-    return ['rm', '<magicword>', 'Remove shortcut']
+    return "{0:10}{1:30}{2}".format('rm', '<magicword>', 'Remove shortcut')
 
 
 def names():
