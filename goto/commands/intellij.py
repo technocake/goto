@@ -9,7 +9,9 @@ from ..gotomagic.text import GotoError, GotoWarning
 def names():
     return [
         'intellij',
-        '--intellij'
+        '--intellij',
+        'idea',
+        '--idea',
     ]
 
 def run(magic, command, args, options):
