@@ -14,9 +14,7 @@ from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck, print_utf8, fix_python2
-from .commands import usage, default
-
-command_map = {}
+from .commands import usage, default, command_map
 
 def main():
     fix_python2()
@@ -28,8 +26,6 @@ def main():
     project = sys.argv[1]
     magic = GotoMagic(project)
     argv = sys.argv[2:]
-
-    register_commands()
 
     command, argv = parse_command(argv)
     args = list(filter(lambda word: not word.startswith('-'), argv))
@@ -51,17 +47,6 @@ def main():
 
     exit(0)
 
-def register_commands():
-    global command_map
-    command_dir = '{}/commands'.format(os.path.dirname(os.path.realpath(__file__)))
-    module_names = list(filter(lambda file: file.endswith('.py') and not file == '__init__.py', os.listdir(command_dir)))
-    module_names = list(map(lambda file: '.commands.{}'.format(file.split('.')[0]), module_names))
-
-    for module_name in module_names:
-        module = importlib.import_module(module_name, 'goto')
-        for name in module.names():
-            command_map[name] = module.run
-
 
 def parse_command(argv):
     global command_map
@@ -79,7 +64,7 @@ def run_command(magic, command, args, options):
     global command_map
 
     if command:
-        return command_map[command](magic, command, args, options)
+        return command_map[command].run(magic, command, args, options)
     else:
         return default.run(magic, None, args, options)
 
