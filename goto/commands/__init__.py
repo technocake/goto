@@ -19,4 +19,4 @@ for command in commands:
     for name in command.names():
         command_map[name] = command
 
-__all__ = ['default', 'command_map']
+__all__ = ['default', 'command_map', 'commands']
