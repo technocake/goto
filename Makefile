@@ -52,7 +52,7 @@ uninstall:
 	pip uninstall magicgoto
 
 
-testcircleci:
+circleci:
 	# Testing circleci tests locally using cli:
 	# https://circleci.com/docs/2.0/local-cli/
 	circleci config validate

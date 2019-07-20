@@ -439,7 +439,7 @@ function test_14_goto_rename_æøå {
     _projectfile_should_contain $new_magicword
 }
 
-function test_15_goto_copy {
+function TODOtest_15_goto_copy {
     # By using the python pyperclip module,
     # It would be possible to inspect the content of the clipboard:
 
