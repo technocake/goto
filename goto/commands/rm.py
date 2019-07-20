@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def rm(magic, args):
+def rm(magic, command, args, options):
     """
     Remove magicword
     """
@@ -13,6 +13,12 @@ def rm(magic, args):
 
     word = args[0]
 
-    magic.remove_shortcut(word)
-    magic.save()
+    err = magic.remove_shortcut(word)
+    if err:
+        return None, err
+
+    # TODO: move save inside magic.
+    err = magic.save()
+    if err:
+        return None, err
     return 'Removed magic word %s' % word, None

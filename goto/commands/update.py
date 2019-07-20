@@ -1,7 +1,7 @@
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def update(magic, args):
+def update(magic, command, args, options):
     """
     Update magicword
     """
@@ -17,7 +17,12 @@ def update(magic, args):
     word = args[0]
     uri = args[1]
 
-    magic.update_shortcut(word, uri)
-    magic.save()
+    err = magic.update_shortcut(word, uri)
+    if err:
+        return None, err
+
+    err = magic.save()
+    if err:
+        return None, err
 
     return 'Updated magic word %s' % word, None

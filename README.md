@@ -1,7 +1,7 @@
-## Goto 
+## Goto
 v1.5.3
 
-*Goto is a magic tool that takes you were you want to be, now.* 
+*Goto is a magic tool that takes you were you want to be, now.*
 
 When you are involved in different projects,  they all  have their own folders, important files, links to good articles or key websites. The problem is that all these are spread out on different locations.
 
@@ -19,10 +19,10 @@ $ goto add github https://github.com/user/your-project
 Added magic word github
 
 $ goto github
-# opens https://github.com/user/your-project in your browser 
+# opens https://github.com/user/your-project in your browser
 ```
 
-### Setup 
+### Setup
 
 #### Mac OS-X / Linux
 ```
@@ -37,9 +37,10 @@ Do the same as above, but **open git bash as Administrator**
 #### Linux - User Site install
 On linux, the recommended way to install goto is by `pip install --user magicgoto`
 
+
 > This requires that you have your User site bin  in your path.
 > Usually this is `~/.local/bin`. So adding `PATH="${HOME}/.local/bin:$PATH"` to
-> your rcfile should do the trick in most cases. 
+> your rcfile should do the trick in most cases.
 
 
 ### Commands
@@ -51,6 +52,7 @@ On linux, the recommended way to install goto is by `pip install --user magicgot
 ```
     The basics
         goto <magicword>                        Go to shortcut
+        goto [<magicword>...]                   Go to many shortcuts
         goto add    <magicword> <url or path>   Add shortcut
         goto update <magicword> <new url/path>  Update shortcut
         goto rename <magicword> <new name>      Rename shortcut
@@ -65,13 +67,12 @@ On linux, the recommended way to install goto is by `pip install --user magicgot
         goto open <magicword>         Open in finder/file explorer
 
     Launching Code editors
-        goto subl                     Opens Sublime Text in code folder* 
+        goto subl                     Opens Sublime Text in code folder*
         goto idea                     Opens IntelliJ in code folder*
         goto vscode                   Opens Visual Studio Code in code folder*
 
     * requires a magicword named code pointing to a folder.
         goto add code <path to folder with code>
-                       
 ```
 
 
@@ -122,7 +123,7 @@ You tell Goto with the command:
 
      project add <project-name>
 
- 
+
 
 
 
@@ -132,19 +133,19 @@ Define them once, and use them a thousand times. By this command:
 
      goto add <magic-word> <URI>
 
-A **magic-word** is the name of your shortcut. 
+A **magic-word** is the name of your shortcut.
 The **URI** is the target of your shortcut. It could be a file, a directory, a web-url.
 
 ##### Examples:
 
 * `goto add github https://github.com/technocake/goto`
-* `goto add music ~/the/sound/of/music`  
+* `goto add music ~/the/sound/of/music`
 * `goto add jira http://jira.com/project/X`
 
 First one adds a url to a repo on github relevant to the project.
 The second one adds a folder path.
 
-When you activate a project, Goto remembers which project you are thinking about right now. 
+When you activate a project, Goto remembers which project you are thinking about right now.
 
 Then it makes sense to call the shortcut visualstudio, because it implicit means the visual studio project associated with this project.
 
@@ -161,4 +162,12 @@ pip uninstall magicgoto
 # remove source start_goto from your ~/.bash_profile | ~/.bashrc | ~/.zshrc
 # project data is kept intact in ~/.goto
 ```
+
+
+## Features
+
+### Goto many things with one command
+
+![goto-many](./images/goto-many.gif)
+
 

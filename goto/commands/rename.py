@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from ..gotomagic.text import GotoWarning
 
 
-def rename(magic, command, args):
+def rename(magic, command, args, options):
     if len(args) == 0:
         return None, GotoWarning("missing_both_magicwords", command=command)
 
@@ -14,7 +14,7 @@ def rename(magic, command, args):
                                  command=command, magicword=from_magicword)
 
     to_magicword = args[1]
-    overwrite = '-f' in args or '--force' in args
+    overwrite = '-f' in options or '--force' in options
 
     err = magic.rename_shortcut(from_magicword, to_magicword, overwrite)
     if err:

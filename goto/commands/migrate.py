@@ -8,15 +8,13 @@ from ..gotomagic.utils import detect_unmigrated_data, prompt_to_migrate_data, li
 from .. import settings
 
 
-def migrate(magic, command, args):
+def migrate(magic, command, args, options):
     """
     migrate magicwords.
     """
 
     if not detect_unmigrated_data():
         return "Nothing to migrate", None
-    elif '--check-migrate' in command:
-        return None, GotoWarning('data_not_migrated')
 
     if prompt_to_migrate_data():
         return migrate_data()

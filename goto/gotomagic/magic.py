@@ -11,8 +11,6 @@ import codecs
 import os
 import sys
 
-from . import text
-from .text import print_text
 from .text import GotoWarning
 from .. import settings
 from . import utils
@@ -61,39 +59,42 @@ class GotoMagic():
                 value = unicode(value, encoding='utf-8')
 
         self.magic[key] = value
+        return None
 
     def save(self):
         """ Saves the magic to jsonfile jfile """
-        save_magic(self.jfile, self.magic)
+        err = save_magic(self.jfile, self.magic)
+        return err
 
     def add_shortcut(self, magicword, uri):
         """ Adds a magic shortcut if it does not exist yet.
             If it exists, it warns the user.
         """
         if magicword in self.magic.keys():
-            print_text(
-                text.warning.messages["adding_existing_magicword"],
+            return GotoWarning("adding_existing_magicword", 
                 magicword=magicword,
                 uri=self.magic[magicword],
                 newuri=uri
             )
-            exit(1)
 
         # setting the magic
         uri = parse_uri(uri)
-        self._magic_set(magicword, uri)
+        err = self._magic_set(magicword, uri)
+        if err:
+            return err
+        return None
 
     def update_shortcut(self, magicword, uri):
         """ Simply overwrites the content of the magicword """
         uri = parse_uri(uri)
         if magicword in self.magic.keys():
-            self._magic_set(magicword, uri)
+            err = self._magic_set(magicword, uri)
+            if err:
+                return err
+            return None
         else:
-            print_text(
-                text.warning.messages["updating_nonexisting_magicword"],
-                magicword=magicword
-            )
-            exit(1)
+            return GotoWarning("updating_nonexisting_magicword", magicword=magicword)
+
 
     def rename_shortcut(self, from_magicword, to_magicword, overwrite=False):
         """ Renaming a shortcut 
@@ -115,53 +116,35 @@ class GotoMagic():
 
         from_uri = self.magic[from_magicword]
         del self.magic[from_magicword]
-        self._magic_set(to_magicword, from_uri)
+        err = self._magic_set(to_magicword, from_uri)
+        
+        if err:
+            return err
+        return None
 
     def remove_shortcut(self, magicword):
         """ Simply removes a shortcut """
         try:
             self.magic.pop(magicword)
+            return None
         except KeyError:
-            print_text(
-                text.warning.messages["removing_nonexisting_magicword"],
-                magicword=magicword
-            )
-            exit(1)
-
-    def show_shortcut(self, magicword):
-        """ shows a shortcut """
-        try:
-            print(self.magic[magicword])
-        except KeyError:
-            print_text(
-                text.warning.messages["magicword_does_not_exist"],
-                magicword=magicword
-            )
-            exit(1)
+            return GotoWarning("removing_nonexisting_magicword", magicword=magicword)
 
     def get_uri(self, magicword):
         """ returns the uri from the shortcut of name <magicword> """
-        try:
+        if magicword in self.magic.keys():
             return self.magic[magicword]
-        except KeyError:
-            print_text(
-                text.warning.messages["magicword_does_not_exist"],
-                magicword=magicword
-            )
-            exit(1)
+        else:
+            return None
+            
 
     def list_shortcuts(self, verbose=False):
         """ Lists all magicwords.
             Optionally may list verbosedly all uris too
             if verbose = True.
         """
-        if verbose:
-            for key in sorted(self.magic.keys()):
-                value = self.magic[key]
-                print("%16s --> %s" % (key, value))
-        else:
-            for key in sorted(self.magic.keys()):
-                print(key)
+        return sorted(self.magic.keys())
+        
 
     def __getitem__(self, key):
         """
@@ -173,10 +156,7 @@ class GotoMagic():
         """
             ux when magicword is missing
         """
-        print_text(
-            text.warning.messages["magicword_does_not_exist"],
-            magicword=key
-        )
+        pass
 
     def __setitem__(self, key, value):
         """ sets a magicword. Brutal style """
@@ -246,11 +226,6 @@ def save_magic(jfile, magic):
             else:
                 data = json.dumps(magic, sort_keys=True, indent=4, ensure_ascii=False)
                 f.write(data)
+            return None
         except Exception as e:
-            print_text(
-                text.error.messages["magic_could_not_be_saved"],
-                message=str(e)
-            )
-            # TODO: handle more elegantly
-            raise
-            exit(1)
+            return GotoWarning("magic_could_not_be_saved", message=str(e))

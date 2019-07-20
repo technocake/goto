@@ -13,28 +13,55 @@ from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck, print_utf8, fix_python2
-
 from . import commands
 
-# make sure we print in utf-8
-try:
-    if sys.stdout.encoding != 'utf-8':
-        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-except:
-    pass
 
+command_map = {
+    '--help':  commands.usage,
+    '-h':  commands.usage,
+    'help':  commands.usage,
+    '/?':  commands.usage,
+
+    'add': commands.add,
+    'update': commands.update,
+    'rm': commands.rm,
+    'show': commands.show,
+    'copy': commands.copy,
+    'list': commands.list,
+    'mv': commands.rename,
+    'rename': commands.rename,
+
+    '--migrate': commands.migrate,
+    '--check-migrate': commands.check_migrate,
+
+    'subl': commands.subl,
+    'vscode': commands.vscode,
+    'intelij': commands.intellij,
+    'idea': commands.intellij,
+}
 
 def main():
     fix_python2()
+    make_sure_we_print_in_utf8()
+
     exit_if_unhealthy()
     exit_with_usage_if_needed()
 
     project = sys.argv[1]
     magic = GotoMagic(project)
-    command = sys.argv[2]
-    args = sys.argv[3:]
+    argv = sys.argv[2:]
 
-    output, err = run_command(magic, command, args)
+    command, argv = parse_command(argv)
+    args = list(filter(lambda word: not word.startswith('-'), argv))
+    options = list(filter(lambda word: word.startswith('-'), argv))
+
+    if not command and len(args) == 0:
+        output = commands.usage()
+        print_utf8(output)
+        exit(0)
+
+    output, err = run_command(magic, command, args, options)
+
     if output:
         print_utf8(output)
 
@@ -43,6 +70,24 @@ def main():
         exit(1)
 
     exit(0)
+
+
+def parse_command(argv):
+
+    for arg in argv:
+        if arg in command_map.keys():
+            command = arg
+            argv.remove(arg)
+            return command, argv
+
+    return None, argv
+
+
+def run_command(magic, command, args, options):
+    if command:
+        return command_map[command](magic, command, args, options)
+    else:
+        return commands.default(magic, None, args, options)
 
 
 def exit_if_unhealthy():
@@ -54,55 +99,20 @@ def exit_if_unhealthy():
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
-        output, _ = commands.usage()
+        output = commands.usage()
         print_utf8(output)
         exit(0)
 
 
-def run_command(magic, command, args):
-    if command in ['help', '-h', '/?', '--help']:
-        return commands.usage()
+def make_sure_we_print_in_utf8():
+    try:
+        if sys.stdout.encoding != 'utf-8':
+            sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    except:
+        pass  # TODO: implement utf-8 encoding of py2.7
 
-    if command == 'add':
-        return commands.add(magic, args)
 
-    if command == 'update':
-        return commands.update(magic, args)
 
-    if command == 'rm':
-        return commands.rm(magic, args)
-
-    if command == 'show':
-        return commands.show(magic, args)
-
-    if command == 'copy':
-        return commands.copy(magic, args)
-
-    if command == 'list':
-        return commands.list(magic, args)
-
-    if command in ['--migrate', '--check-migrate']:
-        return commands.migrate(magic, command, args)
-
-    if command == 'subl':
-        return commands.subl(magic, args)
-
-    if command == 'vscode':
-        return commands.vscode(magic, args)
-
-    if command in ['intellij', 'idea']:
-        return commands.intellij(magic, args)
-
-    if '-o' in sys.argv or '--open' in sys.argv or 'open' in sys.argv:
-        return commands.open(magic, args)
-
-    if command == 'cd':
-        return commands.cd(magic, args)
-
-    if command in ['mv', 'rename']:
-        return commands.rename(magic, command, args)
-
-    return commands.default(magic, command)
 
 
 if __name__ == '__main__':

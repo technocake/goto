@@ -15,6 +15,7 @@ def usage():
 
     The basics
         goto <magicword>                        Go to shortcut
+        goto [<magicword>...]                   Go to many shortcuts
         goto add    <magicword> <url or path>   Add shortcut
         goto update <magicword> <new url/path>  Update shortcut
         goto rename <magicword> <new name>      Rename shortcut
@@ -29,11 +30,11 @@ def usage():
         goto open <magicword>         Open in finder/file explorer
 
     Launching Code editors
-        goto subl                     Opens Sublime Text in code folder* 
+        goto subl                     Opens Sublime Text in code folder*
         goto idea                     Opens IntelliJ in code folder*
         goto vscode                   Opens Visual Studio Code in code folder*
 
     * requires a magicword named code pointing to a folder.
         goto add code <path to folder with code>
 
-    """, None # noqa
+    """

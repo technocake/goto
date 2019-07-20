@@ -6,7 +6,7 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def intellij(magic, _):
+def intellij(magic, command, args, options):
     """
     Launch IntelliJ. Open it in the code folder.
     """
@@ -18,9 +18,8 @@ def intellij(magic, _):
     elif platform == 'win':
         cmd = "idea.exe"
 
-    try:
-        code = magic['code']
-    except KeyGotoError:
+    code = magic.get_uri('code')
+    if code is None:
         return None, GotoWarning("no_magicword_named_code")
 
     try:
