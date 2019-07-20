@@ -17,19 +17,23 @@ def open(magic, command, args, options):
         return None, GotoWarning("missing_magicword", command)
 
     magicword = args[0]
-    url = magic.get_uri(magicword)
-    url = os.path.expanduser(url)
+    uri = magic.get_uri(magicword)
+
+    if uri is None:
+        return None, GotoWarning("magicword_does_not_exist", magicword=magicword)
+
+    uri = os.path.expanduser(uri)
     platform = detect_platform()
 
     try:
         if platform == 'linux':
-            subprocess.call('xdg-open "%s"' % url, shell=True)
+            subprocess.call('xdg-open "%s"' % uri, shell=True)
         elif platform == 'osx':
-            subprocess.call('open "%s"' % url, shell=True)
+            subprocess.call('open "%s"' % uri, shell=True)
         elif platform == 'win':
-            subprocess.call('start "%s"' % url, shell=True)
+            subprocess.call('start "%s"' % uri, shell=True)
 
     except subprocess.CalledProcessError as e:
         return None, GotoError("open_failed", message=e.message)
 
-    return url if verbose else None, None
+    return uri if verbose else None, None

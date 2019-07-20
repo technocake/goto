@@ -13,6 +13,12 @@ def rm(magic, command, args, options):
 
     word = args[0]
 
-    magic.remove_shortcut(word)
-    magic.save()
+    err = magic.remove_shortcut(word)
+    if err:
+        return None, err
+
+    # TODO: move save inside magic.
+    err = magic.save()
+    if err:
+        return None, err
     return 'Removed magic word %s' % word, None

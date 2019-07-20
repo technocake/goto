@@ -10,9 +10,8 @@ def vscode(magic, command, args, options):
     Launch Visual Studio Code in the code folder
     """
 
-    try:
-        code = magic['code']
-    except KeyError:
+    code = magic.get_uri('code')
+    if code is None:
         return None, GotoWarning("no_magicword_named_code")
 
     try:

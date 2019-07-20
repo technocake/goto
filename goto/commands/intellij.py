@@ -18,9 +18,8 @@ def intellij(magic, command, args, options):
     elif platform == 'win':
         cmd = "idea.exe"
 
-    try:
-        code = magic['code']
-    except KeyGotoError:
+    code = magic.get_uri('code')
+    if code is None:
         return None, GotoWarning("no_magicword_named_code")
 
     try:

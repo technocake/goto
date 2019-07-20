@@ -10,11 +10,13 @@ def copy(magic, command, args, options):
     """
 
     if (len(args) == 0):
-        return None, GotoWarning("missing_magicword", command='cd')
+        return None, GotoWarning("missing_magicword", command='copy')
 
     word = args[0]
-    url = str(magic.get_uri(word))
+    uri = str(magic.get_uri(word))
 
-    pyperclip.copy(url)
-
-    return None, None
+    if uri:
+        pyperclip.copy(uri)
+        return "Copied uri to clipboard", None
+    else:
+        return None, GotoWarning("magicword_does_not_exist", magicword=word)
