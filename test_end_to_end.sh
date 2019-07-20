@@ -327,16 +327,27 @@ function test_10_goto_rm_æøå {
     _cmd_should_succeed "goto add $existing_magicword $uri"
 }
 
-function test_99_goto_list {
+function test_11_goto_list {
     _cmd_should_succeed "goto list"
-    _cmd_should_succeed '[ $(goto list | grep -v -\> | wc -l) -eq 0 ]'
+
+    for line in $(goto list); do
+        if [ $(echo $line | wc -w) -gt 1 ]; then
+            _fail_test "magicwords should (atleast in this test) contain only one word"
+        fi
+    done
     
     echo ... "goto list --verbose"
     _cmd_should_succeed 'goto list -v'
     _cmd_should_succeed 'goto list --verbose'
+
+    for line in $(goto list --verbose); do
+        if [ $(echo $line | wc -w) -eq 1 ]; then
+            _fail_test "verbose goto list should show uris."
+        fi
+    done
 }
 
-function test_11_goto_update {
+function test_12_goto_update {
     existing_magicword="test_update"
     nonexisting_magicword="IDoNotExist"
     uri="http://example.com"
@@ -356,7 +367,7 @@ function test_11_goto_update {
     _failing_cmd_should_give_human_message "goto update $nonexisting_magicword"
 }
 
-function test_12_only_one_ah_hoy_at_the_time_please {
+function test_13_only_one_ah_hoy_at_the_time_please {
     nonexisting_magicword="IDoNotExist"
 
     for command in '' show add update rm rename mv; do
@@ -367,7 +378,7 @@ function test_12_only_one_ah_hoy_at_the_time_please {
 }
 
 
-function test_13_goto_rename_æøå {
+function test_14_goto_rename_æøå {
     existing_magicword1="test_æ"
     existing_magicword2="test_ø"
     new_magicword="test_ålræit"
@@ -426,7 +437,7 @@ function test_13_goto_rename_æøå {
     _projectfile_should_contain $new_magicword
 }
 
-function test_14_unmigrated_data_detection {
+function test_15_unmigrated_data_detection {
     project="unmigrated_project"
     magicword="test_migration"
     json='{"'$magicword'": "https://github.com/technocake/goto/issues/108"}'
@@ -456,7 +467,7 @@ function test_14_unmigrated_data_detection {
 }
 
 
-function test_15_migrate_data {
+function test_16_migrate_data {
     project="unmigrated_project"
     magicword="test_migration"
 
