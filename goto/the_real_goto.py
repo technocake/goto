@@ -69,7 +69,7 @@ def run_command(magic, command, args, options):
     global commands_and_plugins
 
     if command in ['help', '--help', '-h', '/?']:
-        return usage()
+        return usage(), None
 
     if command:
         return commands_and_plugins[command].run(magic, command, args, options)
@@ -116,15 +116,15 @@ Basic usage
     goto [<magicword>...] Go to many shortcuts
 """
 
-    def map_to_text(command_map):
+    def map_to_text(title, command_map):
         commands_help = set([x for x in command_map.values()])
         commands_help = list(map(lambda x: x.help(), commands_help))
         commands_help = sorted(commands_help)
         commands_help = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
-        commands_help = reduce(lambda x,y: x + "    goto {}\n".format(y), commands_help, "\nCommands\n")
+        commands_help = reduce(lambda x,y: x + "    goto {}\n".format(y), commands_help, "\n{}\n".format(title))
         return commands_help
 
-    return "{}{}{}".format(header, map_to_text(command_map), map_to_text(plugin_map))
+    return "{}{}{}".format(header, map_to_text('Commands', command_map), map_to_text('Plugins', plugin_map))
 
 if __name__ == '__main__':
     main()
