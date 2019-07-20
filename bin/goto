@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+
 # Checking if we are sourced
 # see: https://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced
 ([[ -n $ZSH_EVAL_CONTEXT && $ZSH_EVAL_CONTEXT =~ :file$ ]] || 
 [[ -n $BASH_VERSION ]] && (return 0 2>/dev/null)) && _GOTO_IS_SOURCED=0 || _GOTO_IS_SOURCED=1
 
+
 . _gotoutils
+load_gotopath
 
 
 function _goto_main {
@@ -25,32 +28,11 @@ function _goto_main {
     # Else: print warning. NO EXIT statement.
     if [[ $_GOTO_IS_SOURCED -eq 0 ]]; then
 
-        # GOTOPATH may be set from environment, 
-        # if not default to ~/.goto
-        if [[ -z "$GOTOPATH" ]]; then
-            GOTOPATH="${HOME}/.goto"
-        fi
-
-
         PROJECT=$(cat "${GOTOPATH}/active-project")
 
         # Catching deactivated state
-        # TODO: make a better way to print to stderr
         if [ -z "$PROJECT" ]; then
-            echo "Ah hoy!" >&2
-            echo >&2
-            echo "Goto has no project context set." >&2
-            echo >&2
-            echo "An example project is bundled with goto, it is called goto." >&2
-            echo "You may try  it by typing:" >&2
-            echo >&2
-            echo "     project goto" >&2
-            echo >&2
-            echo "Other usefull commands to work with projects:" >&2
-            echo "    create project:   project add <project-name>" >&2
-            echo "    more help:        project help" >&2
-
-            
+            _no_project
             return 1
         fi
 
@@ -86,7 +68,6 @@ function _goto_main {
         fi
 
 
-
         # General case
         if [ -n "$(command -v the_real_goto.py)" ]; then
             the_real_goto.py "$PROJECT" "$@"
@@ -96,14 +77,34 @@ function _goto_main {
         fi
 
     else
-        echo "Ah hoy!" >&2
-        echo >&2
-        echo "In order to make goto work properly, run this command now:" >&2
-        echo >&2
-        echo "       install_goto" >&2
-        echo >&2
+        _not_installed
         exit 1
     fi
 }
+
+function _no_project {
+    echo "Ah hoy!" >&2
+    echo >&2
+    echo "Goto has no project context set." >&2
+    echo >&2
+    echo "An example project is bundled with goto, it is called goto." >&2
+    echo "You may try  it by typing:" >&2
+    echo >&2
+    echo "     project goto" >&2
+    echo >&2
+    echo "Other usefull commands to work with projects:" >&2
+    echo "    create project:   project add <project-name>" >&2
+    echo "    more help:        project help" >&2
+}
+
+function _not_installed {
+    echo "Ah hoy!" >&2
+    echo >&2
+    echo "In order to make goto work properly, run this command now:" >&2
+    echo >&2
+    echo "       install_goto" >&2
+    echo >&2
+}
+
 
 _goto_main "$@"
