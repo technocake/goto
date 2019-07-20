@@ -28,6 +28,10 @@ jobs:
             - v1-dependencies-
 
       - run:
+          name: make pyperclip work
+          command apt-get install -y xclip
+
+      - run:
           name: install dependencies
           command: |
             python3 -m venv venv
@@ -65,10 +69,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "probe system"
+          name: "pyperclip work"
           command: |
-            cat ~/.bashrc
-            pyenv install --list
+            apt-get install -y xclip
 
       # - restore_cache:
       #     keys:
