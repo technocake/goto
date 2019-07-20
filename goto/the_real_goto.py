@@ -31,6 +31,10 @@ command_map = {
     'mv': commands.rename,
     'rename': commands.rename,
 
+    'open': commands.open,
+    '-o': commands.open,
+    '--open': commands.open,
+
     '--migrate': commands.migrate,
     '--check-migrate': commands.check_migrate,
 
