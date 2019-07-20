@@ -1,22 +1,22 @@
 name='commands'
 
-import os
-import importlib
-
 from . import default
+from . import add
+from . import check_migrate
+from . import copy
+from . import list
+from . import migrate
+from . import open
+from . import rename
+from . import rm
+from . import show
+from . import update
+
+commands = [add,check_migrate,copy,list,migrate,open,rename,rm,show,update]
 command_map = {}
 
+for command in commands:
+    for name in command.names():
+        command_map[name] = command
+
 __all__ = ['default', 'command_map']
-
-#
-# Import modules dynamically, and register the mapping between commands and modules
-#
-command_dir = os.listdir(os.path.dirname(os.path.realpath(__file__)))
-module_names = list(filter(lambda file: file.endswith('.py') and not file == '__init__.py' and not file == 'default.py', command_dir))
-module_names = list(map(lambda file: '.{}'.format(file.split('.')[0]), module_names))
-
-for module_name in module_names:
-    module = importlib.import_module(module_name, 'goto.commands')
-    for name in module.names():
-        command_map[name] = module
-
