@@ -9,7 +9,7 @@ def help():
 
 
 def names():
-    return [None]
+    return [None, '--default']
 
 
 def run(magic, command, args, options):
