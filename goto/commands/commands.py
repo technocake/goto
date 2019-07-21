@@ -14,6 +14,7 @@ commands = [
     add,
     check_migrate,
     copy,
+    default,
     list,
     migrate,
     open,

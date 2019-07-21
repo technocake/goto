@@ -12,8 +12,8 @@ import codecs
 from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
-from .gotomagic.utils import healthcheck, print_utf8, fix_python2
-from .commands import command_map, commands, default, help
+from .gotomagic.utils import healthcheck, print_utf8, fix_python2, make_sure_we_print_in_utf8
+from .commands import command_map, commands, usage
 from .plugins import plugin_map, plugins
 
 
@@ -32,16 +32,10 @@ def main():
     commands_and_plugins = command_map.copy()
     commands_and_plugins.update(plugin_map)
 
-    command, argv = parse_command(argv, commands_and_plugins)
-    args = list(filter(lambda word: not word.startswith('-'), argv))
-    options = list(filter(lambda word: word.startswith('-'), argv))
+    command, args, options = parse_args(argv, commands_and_plugins.keys())
+    exit_if_no_command_and_no_args(command, args)
 
-    if not command and len(args) == 0:
-        output = usage()
-        print_utf8(output)
-        exit(0)
-
-    output, err = run_command(magic, command, args, options, commands_and_plugins)
+    output, err = commands_and_plugins[command].run(magic, command, args, options)
 
     if output:
         print_utf8(output)
@@ -53,23 +47,18 @@ def main():
     exit(0)
 
 
-def parse_command(argv, commands_and_plugins):
-
+def parse_args(argv, command_and_plugin_names):
+    command = None
     for arg in argv:
-        if arg in commands_and_plugins.keys():
+        if arg in command_and_plugin_names:
             command = arg
             argv.remove(arg)
-            return command, argv
+            break
 
-    return None, argv
+    args = list(filter(lambda word: not word.startswith('-'), argv))
+    options = list(filter(lambda word: word.startswith('-'), argv))
 
-
-def run_command(magic, command, args, options, commands_and_plugins):
-
-    if command:
-        return commands_and_plugins[command].run(magic, command, args, options)
-    else:
-        return default.run(magic, None, args, options)
+    return command, args, options
 
 
 def exit_if_unhealthy():
@@ -81,18 +70,14 @@ def exit_if_unhealthy():
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
-        output = usage()
-        print_utf8(output)
+        print_utf8(usage)
         exit(0)
 
 
-def make_sure_we_print_in_utf8():
-    try:
-        if sys.stdout.encoding != 'utf-8':
-            sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-    except:
-        pass  # TODO: implement utf-8 encoding of py2.7
-
+def exit_if_no_command_and_no_args(command, args):
+    if not command and len(args) == 0:
+        print_utf8(usage)
+        exit(0)
 
 
 if __name__ == '__main__':

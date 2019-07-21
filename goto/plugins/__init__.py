@@ -4,7 +4,12 @@ from . import intellij
 from . import subl
 from . import vscode
 
-plugins = [intellij, subl, vscode]
+plugins = [
+    intellij,
+    subl,
+    vscode
+]
+
 plugin_map = {}
 
 for plugin in plugins:

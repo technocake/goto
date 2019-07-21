@@ -1,6 +1,5 @@
 from functools import reduce
 
-
 from .commands import commands
 from ..plugins import plugins
 

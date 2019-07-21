@@ -1,6 +1,5 @@
 name='commands'
 
-from . import default
 from . import help
 from .commands import commands
 
@@ -13,4 +12,6 @@ for command in commands:
         command_map[name] = command
 
 
-__all__ = ['default', 'help', 'command_map', 'commands']
+usage, _ = help.run(None,None,None,None)
+
+__all__ = ['usage', 'command_map', 'commands']

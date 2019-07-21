@@ -4,6 +4,14 @@ from ..gotomagic.text import GotoWarning, GotoError
 from . import open
 
 
+def help():
+    return "<magicword>"
+
+
+def names():
+    return [None]
+
+
 def run(magic, command, args, options):
     """
     Default behaviour when no commands are found in the first argument
