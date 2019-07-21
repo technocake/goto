@@ -114,13 +114,15 @@ Basic usage
     goto [<magicword>...] Go to many shortcuts
 """
 
-    def map_to_text(title, commands):
-        commands_help = [x.help() for x in commands]
-        commands_sorted = sorted(commands_help)
-        commands_sorted = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
-        return reduce(lambda x,y: x + "    goto {}\n".format(y), commands_sorted, "\n{}\n".format(title))
+    commands_help = map(lambda x: x.help(), commands)
+    commands_sorted = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
+    commands_text = reduce(lambda x,y: x + "    goto {}\n".format(y), commands_sorted, '\nCommands\n')
 
-    return "{}{}{}".format(header, map_to_text('Commands', commands), map_to_text('Plugins', plugins))
+    plugins_help = map(lambda x: x.help(), plugins)
+    plugins_sorted = sorted(plugins_help, key=lambda x: x.startswith('-'), reverse=False)
+    plugins_text = reduce(lambda x,y: x + "    goto {}\n".format(y), plugins_sorted, '\nPlugins\n')
+
+    return "{}{}{}".format(header, commands_text, plugins_text)
 
 if __name__ == '__main__':
     main()
