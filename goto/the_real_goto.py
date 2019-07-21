@@ -14,11 +14,9 @@ from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck, print_utf8, fix_python2
-from .commands import command_map, default
-from .plugins import plugin_map
+from .commands import command_map, commands, default
+from .plugins import plugin_map, plugins
 
-commands_and_plugins = command_map.copy()
-commands_and_plugins.update(plugin_map)
 
 def main():
 
@@ -32,7 +30,10 @@ def main():
     magic = GotoMagic(project)
     argv = sys.argv[2:]
 
-    command, argv = parse_command(argv)
+    commands_and_plugins = command_map.copy()
+    commands_and_plugins.update(plugin_map)
+
+    command, argv = parse_command(argv, commands_and_plugins)
     args = list(filter(lambda word: not word.startswith('-'), argv))
     options = list(filter(lambda word: word.startswith('-'), argv))
 
@@ -41,7 +42,7 @@ def main():
         print_utf8(output)
         exit(0)
 
-    output, err = run_command(magic, command, args, options)
+    output, err = run_command(magic, command, args, options, commands_and_plugins)
 
     if output:
         print_utf8(output)
@@ -53,8 +54,7 @@ def main():
     exit(0)
 
 
-def parse_command(argv):
-    global commands_and_plugins
+def parse_command(argv, commands_and_plugins):
 
     for arg in argv:
         if arg in commands_and_plugins.keys() or arg in ['help', '--help', '-h', '/?']:
@@ -65,8 +65,7 @@ def parse_command(argv):
     return None, argv
 
 
-def run_command(magic, command, args, options):
-    global commands_and_plugins
+def run_command(magic, command, args, options, commands_and_plugins):
 
     if command in ['help', '--help', '-h', '/?']:
         return usage(), None
@@ -100,7 +99,6 @@ def make_sure_we_print_in_utf8():
 
 
 def usage():
-    global command_map, plugin_map
     """
     Get information about usage
     """
@@ -116,15 +114,13 @@ Basic usage
     goto [<magicword>...] Go to many shortcuts
 """
 
-    def map_to_text(title, command_map):
-        commands_help = set([x for x in command_map.values()])
-        commands_help = list(map(lambda x: x.help(), commands_help))
-        commands_help = sorted(commands_help)
-        commands_help = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
-        commands_help = reduce(lambda x,y: x + "    goto {}\n".format(y), commands_help, "\n{}\n".format(title))
-        return commands_help
+    def map_to_text(title, commands):
+        commands_help = [x.help() for x in commands]
+        commands_sorted = sorted(commands_help)
+        commands_sorted = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
+        return reduce(lambda x,y: x + "    goto {}\n".format(y), commands_sorted, "\n{}\n".format(title))
 
-    return "{}{}{}".format(header, map_to_text('Commands', command_map), map_to_text('Plugins', plugin_map))
+    return "{}{}{}".format(header, map_to_text('Commands', commands), map_to_text('Plugins', plugins))
 
 if __name__ == '__main__':
     main()
