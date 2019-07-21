@@ -8,13 +8,12 @@ from builtins import dict, str  # redefine dict and str to be py3-like in py2.
 import os
 import sys
 import codecs
-from functools import reduce
 
 from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck, print_utf8, fix_python2
-from .commands import command_map, commands, default
+from .commands import command_map, commands, default, help
 from .plugins import plugin_map, plugins
 
 
@@ -57,7 +56,7 @@ def main():
 def parse_command(argv, commands_and_plugins):
 
     for arg in argv:
-        if arg in commands_and_plugins.keys() or arg in ['help', '--help', '-h', '/?']:
+        if arg in commands_and_plugins.keys():
             command = arg
             argv.remove(arg)
             return command, argv
@@ -66,9 +65,6 @@ def parse_command(argv, commands_and_plugins):
 
 
 def run_command(magic, command, args, options, commands_and_plugins):
-
-    if command in ['help', '--help', '-h', '/?']:
-        return usage(), None
 
     if command:
         return commands_and_plugins[command].run(magic, command, args, options)
@@ -98,30 +94,6 @@ def make_sure_we_print_in_utf8():
         pass  # TODO: implement utf-8 encoding of py2.7
 
 
-def usage():
-    """
-    Get information about usage
-    """
-    header = """
-Goto - the magic traveler, how may I help you?
-
-Wondering how to change project?
-    project help                  Consult my brother in command
-
-Basic usage
-    goto <magicword>      Go to shortcut
-    goto [<magicword>...] Go to many shortcuts
-"""
-
-    commands_help = map(lambda x: x.help(), commands)
-    commands_sorted = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
-    commands_text = reduce(lambda x,y: x + "{0:>8} {1}\n".format('goto', y), commands_sorted, '\nCommands\n')
-
-    plugins_help = map(lambda x: x.help(), plugins)
-    plugins_sorted = sorted(plugins_help, key=lambda x: x.startswith('-'), reverse=False)
-    plugins_text = reduce(lambda x,y: x + "{0:>8} {1}\n".format('goto', y), plugins_sorted, '\nPlugins\n')
-
-    return "{}{}{}".format(header, commands_text, plugins_text)
 
 if __name__ == '__main__':
     main()

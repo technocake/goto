@@ -1,22 +1,16 @@
 name='commands'
 
 from . import default
-from . import add
-from . import check_migrate
-from . import copy
-from . import list
-from . import migrate
-from . import open
-from . import rename
-from . import rm
-from . import show
-from . import update
+from . import help
+from .commands import commands
 
-commands = [add,check_migrate,copy,list,migrate,open,rename,rm,show,update]
+commands = [help] + commands
+
 command_map = {}
 
 for command in commands:
     for name in command.names():
         command_map[name] = command
 
-__all__ = ['default', 'command_map', 'commands']
+
+__all__ = ['default', 'help', 'command_map', 'commands']
