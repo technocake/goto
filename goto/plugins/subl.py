@@ -6,7 +6,7 @@ from ..gotomagic.text import GotoError, GotoWarning
 
 
 def help():
-    return "{0:10}{1}".format('subl',  'Opens Sublime Text in code folder')
+    return "{0:40}{1}".format('subl',  'Opens Sublime Text in code folder')
 
 
 def names():

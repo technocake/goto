@@ -1,11 +1,15 @@
 name='plugins'
 
+from . import copy
 from . import intellij
+from . import open
 from . import subl
 from . import vscode
 
 plugins = [
+    copy,
     intellij,
+    open,
     subl,
     vscode
 ]

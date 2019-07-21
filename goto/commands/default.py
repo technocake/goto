@@ -1,7 +1,7 @@
 import webbrowser
 from ..gotomagic.utils import is_file
 from ..gotomagic.text import GotoWarning, GotoError
-from . import open
+from ..plugins import open
 
 
 def help():
