@@ -102,7 +102,6 @@ def usage():
     """
     Get information about usage
     """
-
     header = """
 Goto - the magic traveler, how may I help you?
 
@@ -116,11 +115,11 @@ Basic usage
 
     commands_help = map(lambda x: x.help(), commands)
     commands_sorted = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
-    commands_text = reduce(lambda x,y: x + "    goto {}\n".format(y), commands_sorted, '\nCommands\n')
+    commands_text = reduce(lambda x,y: x + "{0:>8} {1}\n".format('goto', y), commands_sorted, '\nCommands\n')
 
     plugins_help = map(lambda x: x.help(), plugins)
     plugins_sorted = sorted(plugins_help, key=lambda x: x.startswith('-'), reverse=False)
-    plugins_text = reduce(lambda x,y: x + "    goto {}\n".format(y), plugins_sorted, '\nPlugins\n')
+    plugins_text = reduce(lambda x,y: x + "{0:>8} {1}\n".format('goto', y), plugins_sorted, '\nPlugins\n')
 
     return "{}{}{}".format(header, commands_text, plugins_text)
 
