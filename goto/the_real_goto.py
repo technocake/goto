@@ -18,10 +18,8 @@ from .plugins import plugins
 
 
 def main():
-
     fix_python2()
     make_sure_we_print_in_utf8()
-
     exit_if_unhealthy()
     exit_with_usage_if_needed()
 
@@ -35,10 +33,8 @@ def main():
     exit_if_no_command_and_no_args(command, args)
 
     output, err = commands[command].run(magic, command, args, options)
-
     if output:
         print_utf8(output)
-
     if err:
         print_utf8(err.message)
         exit(1)
