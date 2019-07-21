@@ -165,3 +165,12 @@ def fix_python2():
     '''
     if sys.version_info[0] == 2:
         sys.argv = map(lambda arg: unicode(arg, 'utf8'), sys.argv)  # noqa
+
+
+def make_sure_we_print_in_utf8():
+    try:
+        if sys.stdout.encoding != 'utf-8':
+            sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    except:
+        pass  # TODO: implement utf-8 encoding of py2.7
+
