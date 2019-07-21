@@ -1,17 +1,18 @@
 name='commands'
 
 from . import help
-from .commands import commands
+from . import default
+from .commands import commands_list
 
-commands = [help] + commands
+commands_list = [help, default] + commands_list
 
-command_map = {}
+commands = {}
 
-for command in commands:
+for command in commands_list:
     for name in command.names():
-        command_map[name] = command
+        commands[name] = command
 
 
 usage, _ = help.run(None,None,None,None)
 
-__all__ = ['usage', 'command_map', 'commands']
+__all__ = ['usage', 'commands', 'commands_list']

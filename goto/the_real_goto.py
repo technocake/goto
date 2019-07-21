@@ -13,8 +13,8 @@ from .settings import GOTOPATH
 from .gotomagic import text
 from .gotomagic.magic import GotoMagic
 from .gotomagic.utils import healthcheck, print_utf8, fix_python2, make_sure_we_print_in_utf8
-from .commands import command_map, commands, usage
-from .plugins import plugin_map, plugins
+from .commands import commands, usage
+from .plugins import plugins
 
 
 def main():
@@ -29,13 +29,12 @@ def main():
     magic = GotoMagic(project)
     argv = sys.argv[2:]
 
-    commands_and_plugins = command_map.copy()
-    commands_and_plugins.update(plugin_map)
+    commands.update(plugins)
 
-    command, args, options = parse_args(argv, commands_and_plugins.keys())
+    command, args, options = parse_args(argv, commands.keys())
     exit_if_no_command_and_no_args(command, args)
 
-    output, err = commands_and_plugins[command].run(magic, command, args, options)
+    output, err = commands[command].run(magic, command, args, options)
 
     if output:
         print_utf8(output)
@@ -47,10 +46,10 @@ def main():
     exit(0)
 
 
-def parse_args(argv, command_and_plugin_names):
+def parse_args(argv, command_names):
     command = None
     for arg in argv:
-        if arg in command_and_plugin_names:
+        if arg in command_names:
             command = arg
             argv.remove(arg)
             break

@@ -1,7 +1,7 @@
 from functools import reduce
 
-from .commands import commands
-from ..plugins import plugins
+from .commands import commands_list
+from ..plugins import plugins_list
 
 
 def help():
@@ -27,11 +27,11 @@ Basic usage
     goto [<magicword>...] Go to many shortcuts
 """
 
-    commands_help = map(lambda x: x.help(), commands)
+    commands_help = map(lambda x: x.help(), commands_list)
     commands_sorted = sorted(commands_help, key=lambda x: x.startswith('-'), reverse=False)
     commands_text = reduce(lambda x,y: x + "{0:>8} {1}\n".format('goto', y), commands_sorted, '\nCommands\n')
 
-    plugins_help = map(lambda x: x.help(), plugins)
+    plugins_help = map(lambda x: x.help(), plugins_list)
     plugins_sorted = sorted(plugins_help, key=lambda x: x.startswith('-'), reverse=False)
     plugins_text = reduce(lambda x,y: x + "{0:>8} {1}\n".format('goto', y), plugins_sorted, '\nPlugins\n')
 

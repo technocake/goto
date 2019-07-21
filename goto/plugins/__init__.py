@@ -6,7 +6,7 @@ from . import open
 from . import subl
 from . import vscode
 
-plugins = [
+plugins_list = [
     copy,
     intellij,
     open,
@@ -14,10 +14,10 @@ plugins = [
     vscode
 ]
 
-plugin_map = {}
+plugins = {}
 
-for plugin in plugins:
+for plugin in plugins_list:
     for name in plugin.names():
-        plugin_map[name] = plugin
+        plugins[name] = plugin
 
-__all__ = ['plugin_map', 'plugins']
+__all__ = ['plugins', 'plugins_list']
