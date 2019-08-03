@@ -5,6 +5,7 @@ from __future__ import absolute_import, unicode_literals, print_function
 from builtins import dict, str  # redefine dict and str to be py3-like in py2.
 # http://johnbachman.net/building-a-python-23-compatible-unicode-sandwich.html
 
+import re
 import os
 import sys
 import codecs
@@ -83,7 +84,11 @@ def read_args(cmd_args, stdin):
         return cmd_args
 
     lines = stdin.readlines()
-    stdin_args = " ".join(lines).replace('\n', '').split(' ')
+    stdin_args = " ".join(lines)
+    stdin_args = re.sub(r'\s+', ' ', stdin_args)
+    stdin_args = stdin_args.split(' ')
+    stdin_args = filter(lambda x: x != "", stdin_args)
+
     return cmd_args + stdin_args
 
 
