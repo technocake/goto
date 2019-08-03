@@ -48,9 +48,9 @@ def main():
     fix_python2()
     make_sure_we_read_and_write_in_utf8()
     exit_if_unhealthy()
-    exit_with_usage_if_needed()
 
-    args = read_args()
+    args = read_args(sys.argv, sys.stdin)
+    exit_with_usage_if_needed(args)
 
     project = args[1]
     magic = GotoMagic(project)
@@ -77,14 +77,14 @@ def main():
     exit(0)
 
 
-def read_args():
+def read_args(cmd_args, stdin):
     stdin_is_empty = os.isatty(0)
     if stdin_is_empty:
-        return sys.argv
+        return cmd_args
 
-    lines = sys.stdin.readlines()
+    lines = stdin.readlines()
     stdin_args = " ".join(lines).replace('\n', '').split(' ')
-    return sys.argv + stdin_args
+    return cmd_args + stdin_args
 
 
 def parse_command(argv):
@@ -111,8 +111,8 @@ def exit_if_unhealthy():
         exit(1)
 
 
-def exit_with_usage_if_needed():
-    if len(sys.argv) < 3:
+def exit_with_usage_if_needed(args):
+    if len(args) < 3:
         output = commands.usage()
         print_utf8(output)
         exit(0)
