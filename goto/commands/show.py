@@ -11,10 +11,13 @@ def show(magic, command, args, options):
     if (len(args) == 0):
         return None, GotoWarning("missing_magicword", command='show')
 
-    magicword = args[0]
-    uri = magic.get_uri(magicword)
+    uris = ''
+    for arg in args:
+        uri = magic.get_uri(arg)
 
-    if uri:
-        return uri, None
-    else:
-        return None, GotoWarning("magicword_does_not_exist", magicword=magicword)
+        if uri:
+            uris += uri + '\n';
+        else:
+            return None, GotoWarning("magicword_does_not_exist", magicword=arg)
+
+    return uris, None
