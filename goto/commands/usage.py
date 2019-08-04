@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 
-def usage(magic, command, args, options):
+def usage(magic=None, command=None, args=None, options=None):
     """
     Get information about usage
     """
