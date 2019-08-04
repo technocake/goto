@@ -5,6 +5,7 @@ from __future__ import absolute_import, unicode_literals, print_function
 from builtins import dict, str  # redefine dict and str to be py3-like in py2.
 # http://johnbachman.net/building-a-python-23-compatible-unicode-sandwich.html
 
+import re
 import os
 import sys
 import codecs
@@ -46,18 +47,19 @@ command_map = {
 
 def main():
     fix_python2()
-    make_sure_we_print_in_utf8()
-
+    make_sure_we_read_and_write_in_utf8()
     exit_if_unhealthy()
-    exit_with_usage_if_needed()
 
-    project = sys.argv[1]
+    args = read_args(sys.argv, sys.stdin)
+    exit_with_usage_if_needed(args)
+
+    project = args[1]
     magic = GotoMagic(project)
-    argv = sys.argv[2:]
+    args = args[2:]
 
-    command, argv = parse_command(argv)
-    args = list(filter(lambda word: not word.startswith('-'), argv))
-    options = list(filter(lambda word: word.startswith('-'), argv))
+    command, args = parse_command(args)
+    args = list(filter(lambda word: not word.startswith('-'), args))
+    options = list(filter(lambda word: word.startswith('-'), args))
 
     if not command and len(args) == 0:
         output = commands.usage()
@@ -76,8 +78,21 @@ def main():
     exit(0)
 
 
-def parse_command(argv):
+def read_args(cmd_args, stdin):
+    stdin_is_empty = os.isatty(0)
+    if stdin_is_empty:
+        return cmd_args
 
+    lines = stdin.readlines()
+    stdin_args = " ".join(lines)
+    stdin_args = re.sub(r'\s+', ' ', stdin_args)
+    stdin_args = stdin_args.split(' ')
+    stdin_args = filter(lambda x: x != "", stdin_args)
+
+    return cmd_args + stdin_args
+
+
+def parse_command(argv):
     for arg in argv:
         if arg in command_map.keys():
             command = arg
@@ -101,22 +116,22 @@ def exit_if_unhealthy():
         exit(1)
 
 
-def exit_with_usage_if_needed():
-    if len(sys.argv) < 3:
+def exit_with_usage_if_needed(args):
+    if len(args) < 3:
         output = commands.usage()
         print_utf8(output)
         exit(0)
 
 
-def make_sure_we_print_in_utf8():
+def make_sure_we_read_and_write_in_utf8():
     try:
+        if sys.stdin.encoding != 'utf-8':
+            sys.stdin = codecs.getwriter('utf-8')(sys.stdin.buffer, 'strict')
+
         if sys.stdout.encoding != 'utf-8':
             sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     except:
         pass  # TODO: implement utf-8 encoding of py2.7
-
-
-
 
 
 if __name__ == '__main__':
