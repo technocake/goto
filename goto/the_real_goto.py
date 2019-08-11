@@ -104,7 +104,7 @@ def exit_if_unhealthy():
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
-        output = commands.usage()
+        output, err  = commands.usage()
         print_utf8(output)
         exit(0)
 
