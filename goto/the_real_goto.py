@@ -44,6 +44,7 @@ command_map = {
     'idea': commands.intellij,
 }
 
+
 def main():
     fix_python2()
     make_sure_we_print_in_utf8()
@@ -60,7 +61,7 @@ def main():
     options = list(filter(lambda word: word.startswith('-'), argv))
 
     if not command and len(args) == 0:
-        output = commands.usage()
+        output, err = commands.usage()
         print_utf8(output)
         exit(0)
 
@@ -103,7 +104,7 @@ def exit_if_unhealthy():
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
-        output = commands.usage()
+        output, err  = commands.usage()
         print_utf8(output)
         exit(0)
 

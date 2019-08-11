@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 
-def usage():
+def usage(magic=None, command=None, args=None, options=None):
     """
     Get information about usage
     """
@@ -37,4 +37,4 @@ def usage():
     * requires a magicword named code pointing to a folder.
         goto add code <path to folder with code>
 
-    """
+    """, None
