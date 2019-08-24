@@ -17,6 +17,7 @@ from .commands import commands, usage
 from .plugins import plugins
 
 
+
 def main():
     fix_python2()
     make_sure_we_print_in_utf8()
@@ -65,15 +66,18 @@ def exit_if_unhealthy():
 
 def exit_with_usage_if_needed():
     if len(sys.argv) < 3:
-        print_utf8(usage)
+        print_usage()
         exit(0)
 
 
 def exit_if_no_command_and_no_args(command, args):
     if not command and len(args) == 0:
-        print_utf8(usage)
+        print_usage()
         exit(0)
 
+
+def print_usage():
+    print_utf8(usage())
 
 if __name__ == '__main__':
     main()

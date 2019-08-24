@@ -24,14 +24,23 @@ $ goto github
 
 ### Setup
 
-#### Mac OS-X / Linux
+#### Mac OS-X / Linux / Win (git bash)
 ```
 pip install magicgoto
 ```
 After install, close and reopen your terminal.
 
 #### Windows (using gitbash)
-Do the same as above, but **open git bash as Administrator**
+Open git bash and do the same as above.
+
+
+git bash is included when you install git on windows usually.
+
+Some git bash installs comes without any rcfile. 
+If you get this error: `Ah hoy! Failed to determine rcfile...` 
+you can fix it by running`touch ~/.bash_profile` and then `install_goto`
+
+
 
 
 #### Linux - User Site install

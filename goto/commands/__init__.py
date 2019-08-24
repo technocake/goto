@@ -13,6 +13,16 @@ for command in commands_list:
         commands[name] = command
 
 
-usage, _ = help.run(None,None,None,None)
+def usage():
+    '''
+        Making this a procedure to avoid  that the help_text could
+        be outdated if any later methods inject plugins or other commands.
+
+        This will evaluate the help text for all
+        installed commands.
+    '''
+    help_text, _ = help.run(None, None, None, None)
+    return help_text
+
 
 __all__ = ['usage', 'commands', 'commands_list']
