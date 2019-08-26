@@ -28,10 +28,6 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: make pyperclip work
-          command: sudo apt-get install -y xsel 
-
-      - run:
           name: install dependencies
           command: |
             python3 -m venv venv
@@ -69,9 +65,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "pyperclip work"
-          command: |
-            sudo apt-get install -y xsel
 
       # - restore_cache:
       #     keys:
