@@ -5,13 +5,15 @@ from . import intellij
 from . import open
 from . import subl
 from . import vscode
+from . import rider
 
 plugins_list = [
     copy,
     intellij,
     open,
     subl,
-    vscode
+    vscode,
+    rider,
 ]
 
 plugins = {}

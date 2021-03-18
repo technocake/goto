@@ -6,7 +6,7 @@ from ..gotomagic.text import GotoError, GotoWarning
 
 
 def help():
-    return "{0:40}{1}".format('subl',  'Opens Sublime Text in code folder')
+    return "{0:40}{1}".format('subl',  'Opens Sublime Text in code folder')  # noqa
 
 
 def names():
@@ -17,13 +17,15 @@ def run(magic, command, args, options):
     """
     Launch Sublime Text in the code folder
     """
+    magicword = 'code' if len(args) == 0 else args[0]
 
-    code = magic.get_uri('code')
-    if code is None:
-        return None, GotoWarning("no_magicword_named_code")
+    uri = magic.get_uri(magicword)
+
+    if not uri:
+        return None, GotoWarning("magicword_does_not_exist", magicword=magicword)
 
     try:
-        subprocess.check_call('subl "%s"' % code, shell=True)
+        subprocess.check_call('subl "%s"' % uri, shell=True)
     except subprocess.CalledProcessGotoError:
         return None, GotoError("subl_launch_failed")
 

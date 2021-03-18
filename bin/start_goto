@@ -17,7 +17,7 @@ _goto_completions()
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="--verbose --force --open"
 
-    if [[ "$prev" =~ ^(goto|show|copy|cd|rm|update|mv|rename|open|-o|--open)$ ]]; then
+    if [[ "$prev" =~ ^(goto|show|copy|cd|rm|update|mv|rename|open|-o|--open|subl)$ ]]; then
         COMPREPLY=( $(compgen -W "$(goto list)" ${cur}) )
         return 0
     fi
