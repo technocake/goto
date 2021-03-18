@@ -7,10 +7,19 @@ from ..gotomagic.utils import detect_platform
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def open(magic, command, args, options):
+def help():
+    return "{0:10}{1:30}{2}".format('open', '<magicword>', 'Open magicword in window')
+
+
+def names():
+    return ['open', '--open']
+
+
+def run(magic, command, args, options):
     """
     Open folder
     """
+    command = command if command else ''
     verbose = '-v' in options or '--verbose' in options
 
     if (len(args) == 0):

@@ -4,7 +4,15 @@ import pyperclip
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def copy(magic, command, args, options):
+def help():
+    return "{0:10}{1:30}{2}".format('copy', '<magicword>', 'Copy magicword to the clipboard')
+
+
+def names():
+    return ['copy','--copy']
+
+
+def run(magic, command, args, options):
     """
     Copy uri to clipboard
     """

@@ -8,6 +8,7 @@ active-project
 
 *.swp
 *.pyc
+.idea
 
 .DS_Store
 

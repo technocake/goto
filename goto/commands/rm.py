@@ -2,8 +2,15 @@
 from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
+def help():
+    return "{0:10}{1:30}{2}".format('rm', '<magicword>', 'Remove shortcut')
 
-def rm(magic, command, args, options):
+
+def names():
+    return ['rm','--rm', 'remove','--remove']
+
+
+def run(magic, command, args, options):
     """
     Remove magicword
     """

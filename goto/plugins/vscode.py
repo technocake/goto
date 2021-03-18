@@ -5,7 +5,14 @@ import subprocess
 from ..gotomagic.text import GotoError, GotoWarning
 
 
-def vscode(magic, command, args, options):
+def help():
+    return "{0:40}{1}".format('vscode', 'Opens Visual Studio Code in code folder')
+
+
+def names():
+    return ['vscode', '--vscode']
+
+def run(magic, command, args, options):
     """
     Launch Visual Studio Code in the code folder
     """

@@ -1,7 +1,16 @@
 from ..gotomagic.text import GotoError, GotoWarning
 
+def help():
+    return "{0:10}{1:30}{2}".format('update', '<magicword> <new url/path>', 'Update shortcut')
 
-def update(magic, command, args, options):
+
+def names():
+    return [
+        'update',
+        '--update'
+    ]
+
+def run(magic, command, args, options):
     """
     Update magicword
     """

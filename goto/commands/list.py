@@ -2,7 +2,15 @@
 from __future__ import unicode_literals
 
 
-def list(magic, command, args, options):
+def help():
+    return "{0:10}{1:30}{2}".format('list', '[-v]', 'List all shortcuts')
+
+
+def names():
+    return ['list', '--list']
+
+
+def run(magic, command, args, options):
     """
     List commands
     """

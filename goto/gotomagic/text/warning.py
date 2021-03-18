@@ -169,4 +169,15 @@ Ah hoy!
 
     Unmigrated projects: {projects}
 """,
+
+    rider_launch_failed="""
+Error:  could not launch Rider.
+
+    This is most likely due to not having set up the Rider
+    Command Line Launching yet.
+
+    To be able to launch Rider from the command line, see:
+
+        https://www.jetbrains.com/help/rider/Opening_Files_from_Command_Line.html
+    """,
 )

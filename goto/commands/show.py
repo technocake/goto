@@ -2,8 +2,15 @@
 from __future__ import unicode_literals
 from ..gotomagic.text import GotoError, GotoWarning
 
+def help():
+    return "{0:10}{1:30}{2}".format('show', '<magicword>', 'Show url of shortcut')
 
-def show(magic, command, args, options):
+
+def names():
+    return ['show','--show']
+
+
+def run(magic, command, args, options):
     """
     Show magicword.
     """

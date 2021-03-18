@@ -1,10 +1,18 @@
 import webbrowser
 from ..gotomagic.utils import is_file
 from ..gotomagic.text import GotoWarning, GotoError
-from .open import open
+from ..plugins import open
 
 
-def default(magic, command, args, options):
+def help():
+    return "<magicword>"
+
+
+def names():
+    return [None, '--default']
+
+
+def run(magic, command, args, options):
     """
     Default behaviour when no commands are found in the first argument
     """
@@ -18,7 +26,7 @@ def default(magic, command, args, options):
             return None, GotoWarning('magicword_does_not_exist', magicword=magicword)  # noqa
 
         if is_file(uri):
-            _output, err = open(magic, '', [magicword], verbose)
+            _output, err = open.run(magic, None, [magicword], verbose)
             if err:
                 return None, err
             output += "%s\n" % _output
