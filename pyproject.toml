@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "goto"
+version = "1.5.4"
+description = "Goto - Goto is a magic tool that takes you were you want to be, now."
+authors = ["technocake <robin.garen@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+GitPython = "^3.1.14"
+pyperclip = "^1.8.2"
+future = "^0.18.2"
+
+[tool.poetry.dev-dependencies]
+tox = "^3.23.0"
+GitPython = "^3.1.14"
+pyperclip = "^1.8.2"
+future = "^0.18.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
