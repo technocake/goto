@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "goto"
-version = "1.5.4"
+version = "1.6.0"
 description = "Goto - Goto is a magic tool that takes you were you want to be, now."
 authors = ["technocake <robin.garen@gmail.com>"]
 license = "MIT"
