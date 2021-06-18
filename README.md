@@ -1,5 +1,5 @@
 ## Goto
-v1.5.3
+v1.6.0
 
 *Goto is a magic tool that takes you were you want to be, now.*
 
