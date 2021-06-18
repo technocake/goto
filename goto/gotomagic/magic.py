@@ -30,6 +30,8 @@ class GotoMagic():
         """ Loads json from jfile """
         if GOTOPATH is None:
             GOTOPATH = settings.GOTOPATH
+        self.gotopath = GOTOPATH
+
         self.project = project
 
         # Creates folder only if not exisiting
@@ -37,11 +39,12 @@ class GotoMagic():
 
         self.jfile = os.path.join(
             GOTOPATH, 'projects', project, scope, "magicwords.json")
+
         self.magic = load_magic(self.jfile)
 
     def reload(self):
-        """ reload the magic """
-        self.__init__(self.jfile)   
+        """Reload the magic."""
+        self.__init__(self.jfile)
 
     def _magic_set(self, key, value):
         '''
@@ -136,7 +139,6 @@ class GotoMagic():
             return self.magic[magicword]
         else:
             return None
-            
 
     def list_shortcuts(self, verbose=False):
         """ Lists all magicwords.
@@ -144,7 +146,10 @@ class GotoMagic():
             if verbose = True.
         """
         return sorted(self.magic.keys())
-        
+
+    def list_projects(self):
+        """List all projects."""
+        return sorted(list_projects(self.gotopath))
 
     def __getitem__(self, key):
         """
@@ -201,6 +206,13 @@ def parse_uri(raw_uri):
         # But which kind?
         return raw_uri
 
+
+
+def list_projects(gotopath):
+    """Given a gotopath, lists and filters all project folders as a list of string."""
+    path = os.path.join(gotopath, 'projects')
+    projects = list(os.walk(path))[0][1]
+    return projects
 
 
 def load_magic(jfile):

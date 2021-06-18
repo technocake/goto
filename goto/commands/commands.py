@@ -6,6 +6,7 @@ from . import rename
 from . import rm
 from . import show
 from . import update
+from . import search
 
 commands_list = [
     add,
@@ -15,5 +16,6 @@ commands_list = [
     rename,
     rm,
     show,
-    update
+    update,
+    search,
 ]
