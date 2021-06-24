@@ -13,7 +13,7 @@ def names():
 
 def run(magic, command, args, options):
     """
-    List commands
+    Search magicwords!
     """
     verbose = '-v' in options or '--verbose' in options
     global_search = '-g' in options or '--global' in options
