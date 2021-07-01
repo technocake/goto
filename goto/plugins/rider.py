@@ -25,12 +25,14 @@ def run(magic, command, args, options):
     elif platform == 'win':
         cmd = "rider.exe"
 
-    code = magic.get_uri('code')
-    if code is None:
-        return None, GotoWarning("no_magicword_named_code")
+    magicword = 'code' if len(args) == 0 else args[0]
+
+    uri = magic.get_uri(magicword)
+    if uri is None:
+        return None, GotoWarning("magicword_does_not_exist", magicword=magicword)
 
     try:
-        subprocess.check_call('%s "%s"' % (cmd, code), shell=True)
+        subprocess.check_call('%s "%s"' % (cmd, uri), shell=True)
     except subprocess.CalledProcessError:
         return None, GotoWarning("rider_launch_failed")
 
