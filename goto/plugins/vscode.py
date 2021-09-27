@@ -16,13 +16,15 @@ def run(magic, command, args, options):
     """
     Launch Visual Studio Code in the code folder
     """
+    magicword = 'code' if len(args) == 0 else args[0]
 
-    code = magic.get_uri('code')
-    if code is None:
+    uri = magic.get_uri(magicword)
+
+    if uri is None:
         return None, GotoWarning("no_magicword_named_code")
 
     try:
-        subprocess.check_call('code "%s"' % code, shell=True)
+        subprocess.check_call('code "%s"' % uri, shell=True)
     except subprocess.CalledProcessError:
         return None, GotoError("vscode_launch_failed")
 
