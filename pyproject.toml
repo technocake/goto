@@ -1,9 +1,13 @@
 [tool.poetry]
-name = "goto"
-version = "1.6.0"
+name = "magicgoto"
+version = "1.6.1"
 description = "Goto - Goto is a magic tool that takes you were you want to be, now."
 authors = ["technocake <robin.garen@gmail.com>"]
 license = "MIT"
+packages = [
+    {include = "goto"}
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.7"
