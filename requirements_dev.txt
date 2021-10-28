@@ -1,4 +1,0 @@
-tox
-pyperclip
-gitpython
-future
