@@ -11,7 +11,7 @@ with open("POST_INSTALL_INSTRUCTIONS.txt", "r") as fh:
 
 setuptools.setup(
     name="magicgoto",
-    version="1.6.0",
+    version="1.6.2",
     author="Robin Aaberg",
     author_email="robin.garen@gmail.com",
     description="Magic goto - goto where you need to be, right now.",

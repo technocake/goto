@@ -30,6 +30,9 @@ testpublish:
 	make clean
 	make compile
 	make test
+	make _testpublish
+
+_testpublish:
 	twine upload --repository testpypi dist/*
 
 publish:
