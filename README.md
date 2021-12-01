@@ -38,7 +38,7 @@ git bash is included when you install git on windows usually.
 
 Some git bash installs comes without any rcfile. 
 If you get this error: `Ah hoy! Failed to determine rcfile...` 
-you can fix it by running`touch ~/.bash_profile` and then `install_goto`
+you can fix it by running`touch ~/.bashrc` and then `install_goto`
 
 
 
