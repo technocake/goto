@@ -21,7 +21,7 @@ source start_goto || check_status
 
 
 # Set up goto project if it is not present already.
-if [ ! -f "$GOTOPATH/projects/goto.json" ]; then
+if [ ! -d "$GOTOPATH/projects/goto" ]; then
     # add your first project
     project add goto || check_status
 

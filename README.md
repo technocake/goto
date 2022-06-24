@@ -1,5 +1,5 @@
 ## Goto
-v1.6.0
+v1.6.2
 
 *Goto is a magic tool that takes you were you want to be, now.*
 
@@ -38,7 +38,7 @@ git bash is included when you install git on windows usually.
 
 Some git bash installs comes without any rcfile. 
 If you get this error: `Ah hoy! Failed to determine rcfile...` 
-you can fix it by running`touch ~/.bash_profile` and then `install_goto`
+you can fix it by running`touch ~/.bashrc` and then `install_goto`
 
 
 

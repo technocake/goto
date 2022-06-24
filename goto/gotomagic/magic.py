@@ -11,7 +11,7 @@ import codecs
 import os
 import sys
 
-from .text import GotoWarning
+from .text import GotoWarning, GotoError
 from .. import settings
 from . import utils
 
@@ -228,4 +228,4 @@ def save_magic(jfile, magic):
                 f.write(data)
             return None
         except Exception as e:
-            return GotoWarning("magic_could_not_be_saved", message=str(e))
+            return GotoError("magic_could_not_be_saved", message=str(e))
