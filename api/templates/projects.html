@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% set title = "projects" %}
+
+{% block content %}
+    <code>project</code>
+
+    <b>{{ project }}</b>
+    <section class="dl-blurbs">
+    <dl>
+    {% for p in projects %}
+        <!-- <li><a href="{{uri}}"> {{shortcut}} <a/> </li> -->
+        <a href="{{ url_for('map', project=p) }}"><dt>{{p}}</dt><a/>
+        <!--<dd></dd>-->
+    {% endfor %}
+    </dl>
+
+    </section>
+{% endblock %}
