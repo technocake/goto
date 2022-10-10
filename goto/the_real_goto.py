@@ -33,7 +33,7 @@ def main():
     command, args, options = parse_args(argv, commands.keys())
     exit_if_no_command_and_no_args(command, args)
 
-    output, err = commands[command].run(magic, command, args, options)
+    output, err = run_command(magic, command, args, options)
     if output:
         print_utf8(output)
     if err:
@@ -43,8 +43,21 @@ def main():
     exit(0)
 
 
-def parse_args(argv, command_names):
+def run_command(magic, command, args, options):
+    """Run the goto command.
+
+    Exposes this to external things.
+    TODO: add plugins loading.
+    """
+    breakpoint
+    commands.update(plugins)
+    return commands[command].run(magic, command, args, options)
+
+
+def parse_args(argv, command_names=None):
     command = None
+    if command_names is None:
+        command_names = commands.keys()
     for arg in argv:
         if arg in command_names:
             command = arg

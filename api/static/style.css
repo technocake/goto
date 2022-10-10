@@ -1,0 +1,80 @@
+/*- Screen Sizes*/
+/* COLOR HEX */
+/* COLOR Gradient */
+/*import fonts*/
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+/*media queries*/
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #eaeaeaff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.875em;
+  color: #444444;
+  line-height: 1.5;
+}
+
+
+
+.dl-blurbs {
+  display: grid;
+  margin: 0 10rem;
+}
+@media (min-width: 768px) {
+  .dl-blurbs {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vw;
+  }
+}
+
+/* LIST */
+dl {
+  counter-reset: count;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04) 20%, rgba(255, 255, 255, 0) 0%);
+  padding-left: 4vw;
+  padding-right: 4vw;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  dl {
+    padding-left: 2vw;
+  }
+}
+@media (min-width: 1024px) {
+  dl {
+    padding-top: 3vw;
+    padding-bottom: 3vw;
+  }
+}
+
+dl + dl {
+  counter-reset: counter 4;
+}
+
+dt {
+  counter-increment: count;
+  color: #4f6d7aff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 4vw;
+  text-transform: uppercase;
+}
+
+dt::before {
+  content: counter(count, decimal-leading-zero) ".";
+  font-family: "Abril Fatface", cursive;
+  color: #5ea5b8ff;
+  margin-left: -1vw;
+  padding-right: 12px;
+}
+
+dd {
+  margin-left: 5vw;
+  margin-bottom: 2vh;
+}
